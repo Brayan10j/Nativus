@@ -1,0 +1,12 @@
+query{
+  news{
+    _id
+    tittle
+    shortDesc
+    description
+    category
+    image
+    author
+    date
+  }
+}

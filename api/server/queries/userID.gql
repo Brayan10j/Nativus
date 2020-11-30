@@ -1,0 +1,25 @@
+query(
+  $_id: ID
+) {
+  userID(
+    _id: $_id
+  ){
+    _id
+    name
+    email
+    password
+    codReferal
+    registrationCode
+    licenses
+    rol
+    photo
+    permissions
+    balance
+    cycrons
+    cycronsGen
+    referals
+    isAdmin
+    isSuperUser
+    dateCreated
+  }
+}

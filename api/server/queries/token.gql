@@ -1,0 +1,12 @@
+query(
+  $code: String
+) {
+  token(
+    code: $code
+  ){
+    _id
+    value
+    code
+    active
+  }
+}

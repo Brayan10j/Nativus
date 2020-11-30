@@ -1,0 +1,9 @@
+mutation(
+  $_id: ID
+  $data: inputPost
+) {
+  editPost(
+    _id: $_id
+    data: $data
+  )
+}

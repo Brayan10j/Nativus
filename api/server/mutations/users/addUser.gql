@@ -1,0 +1,9 @@
+mutation(
+  $data: inputUser
+) {
+  addUser(
+    data: $data
+  ){
+    _id
+  }
+}

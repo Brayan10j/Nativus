@@ -1,0 +1,9 @@
+query{
+  transactions{
+    _id
+    user
+    description
+    credits
+    date
+  }
+}

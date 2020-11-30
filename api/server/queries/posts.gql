@@ -1,0 +1,13 @@
+query{
+  posts{
+    _id
+    tittle
+    shortDesc
+    description
+    category
+    image
+    author
+    date
+    files
+  }
+}

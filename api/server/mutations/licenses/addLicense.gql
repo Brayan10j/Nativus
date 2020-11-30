@@ -1,0 +1,15 @@
+mutation(
+  $name: String
+  $price: Int
+  $duration: String
+  $permission: [String]
+) {
+  addLicense(
+    name: $name
+    price: $price
+    duration: $duration
+    permission: $permission
+  ) {
+    _id
+  }
+}

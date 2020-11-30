@@ -1,0 +1,9 @@
+mutation(
+  $_id: ID
+  $data: inputLicense
+) {
+  editLicense(
+    _id: $_id
+    data: $data
+  )
+}

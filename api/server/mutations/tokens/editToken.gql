@@ -1,0 +1,9 @@
+mutation(
+  $_id: ID
+  $data: inputToken
+) {
+  editToken(
+    _id: $_id
+    data: $data
+  )
+}

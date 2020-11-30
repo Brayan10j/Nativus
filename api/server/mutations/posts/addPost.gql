@@ -1,0 +1,23 @@
+mutation(
+  $tittle: String
+  $description: String
+  $category: String
+  $image: String
+  $author: String
+  $shortDesc: String
+  $date: String
+  $files:[String]
+) {
+  addPost(
+    tittle: $tittle
+    description: $description
+    category: $category
+    image: $image
+    author: $author
+    shortDesc: $shortDesc
+    date: $date
+    files: $files
+  ) {
+    _id
+  }
+}

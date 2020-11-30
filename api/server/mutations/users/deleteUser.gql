@@ -1,0 +1,7 @@
+mutation(
+  $_id: ID
+) {
+  deleteUser(
+    _id: $_id
+  )
+}

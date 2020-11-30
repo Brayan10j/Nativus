@@ -1,0 +1,9 @@
+query{
+  licenses{
+    _id
+    name
+    price
+    duration
+    permission
+  }
+}

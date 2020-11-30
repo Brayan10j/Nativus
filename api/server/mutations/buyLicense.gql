@@ -1,0 +1,27 @@
+mutation(
+  $_idUser: ID
+  $_idLicense: ID
+) {
+  buyLicense(
+    _idUser: $_idUser
+    _idLicense: $_idLicense
+  ){
+    _id
+    name
+    email
+    password
+    codReferal
+    registrationCode
+    licenses
+    rol
+    photo
+    permissions
+    balance
+    cycrons
+    cycronsGen
+    referals
+    isAdmin
+    isSuperUser
+    dateCreated
+  }
+}

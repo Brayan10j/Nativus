@@ -1,0 +1,9 @@
+mutation(
+  $_id: ID
+  $data: inputUser
+) {
+  editUser(
+    _id: $_id
+    data: $data
+  )
+}

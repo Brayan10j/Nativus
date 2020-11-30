@@ -1,0 +1,7 @@
+query(
+  $codReferal: String
+) {
+  userToken(
+    codReferal: $codReferal
+  )
+}

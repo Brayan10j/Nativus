@@ -1,0 +1,7 @@
+mutation(
+  $_id: ID
+) {
+  deleteLicense(
+    _id: $_id
+  )
+}

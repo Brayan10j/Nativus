@@ -1,0 +1,7 @@
+mutation(
+  $data: [inputToken]
+) {
+  addTokens(
+    data: $data
+  )
+}

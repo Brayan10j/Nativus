@@ -1,0 +1,12 @@
+query(
+  $user: String
+){
+  transaction(user: $user )
+    {
+    _id
+    user
+    description
+    credits
+    date
+  }
+}

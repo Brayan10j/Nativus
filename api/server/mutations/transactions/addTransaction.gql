@@ -1,0 +1,7 @@
+mutation(
+  $data: inputTransaction
+) {
+  addTransaction(
+    data: $data
+  )
+}

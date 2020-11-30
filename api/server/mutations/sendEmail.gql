@@ -1,0 +1,13 @@
+mutation(
+  $name: String
+  $subject: String
+  $email: String
+  $message: String
+){
+  sendEmail(
+    name: $name
+    subject: $subject
+    email: $email
+    message: $message
+  )
+}
