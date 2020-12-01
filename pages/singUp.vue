@@ -3,11 +3,25 @@
     <v-container fluid>
       <v-row align="center" justify="center">
         <v-col cols="12" sm="12" md="5">
-          <v-img
+          <v-dialog v-model="dialog" persistent max-width="290">
+            <v-card>
+              <v-card-title class="headline">
+                You are registered !!
+              </v-card-title>
+              <v-card-text
+                >your access token was sent to your email
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="#787b7f" text to="/login"> Agree </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <!--<v-img
             class="mx-auto my-10"
             src="/images/logo.png"
             max-width="370"
-          ></v-img>
+          ></v-img>-->
           <v-toolbar class="overflow-hidden" flat color="#4c4c53" dark>
             <template v-slot:img="{ props }">
               <v-img
@@ -105,28 +119,28 @@
           </v-stepper>
           <v-row align="center" justify="center">
             You have an account?
-            <v-btn text color="#787b7f" to="/"> LOGIN </v-btn></v-row
+            <v-btn text color="#787b7f" to="/login"> LOGIN </v-btn></v-row
           >
           <v-overlay :absolute="absolute" :value="alerta" :opacity="opacity">
-        <v-alert
-          :value="alerta"
-          color="red darken-2"
-          type="error"
-          border="top"
-          transition="scale-transition"
-          >{{errord.description}}
-          <v-btn
-            color="white"
-            elevation="3"
-            class="ml-3"
-            right
-            icon
-            small
-            @click="alerta = !alerta"
-            ><v-icon dark> mdi-close </v-icon></v-btn
-          ></v-alert
-        >
-      </v-overlay>
+            <v-alert
+              :value="alerta"
+              color="red darken-2"
+              type="error"
+              border="top"
+              transition="scale-transition"
+              >{{ errord.description }}
+              <v-btn
+                color="white"
+                elevation="3"
+                class="ml-3"
+                right
+                icon
+                small
+                @click="alerta = !alerta"
+                ><v-icon dark> mdi-close </v-icon></v-btn
+              ></v-alert
+            >
+          </v-overlay>
         </v-col>
       </v-row>
     </v-container>
@@ -138,6 +152,7 @@ export default {
   layout: "empty",
   data() {
     return {
+      dialog: false,
       e1: 1,
       alerta: false,
       absolute: true,
@@ -159,9 +174,11 @@ export default {
         isAdmin: false,
         isSuperUser: false,
         dateCreated: new Date().toISOString().substr(0, 10),
+        active: true,
+        verify: false
       },
       errord: {
-        description: "",        
+        description: "",
       },
       valid: true,
       name: "",
@@ -211,15 +228,15 @@ export default {
               this.overlay = false;
             } else {
               //alert("token no found");
-              this.errord.description="token no found";
-              this.alerta=true;
+              this.errord.description = "token no found";
+              this.alerta = true;
               this.overlay = false;
             }
           });
       } catch (error) {
         //alert(error);
-        this.errord.description=error;
-        this.alerta=true;
+        this.errord.description = error;
+        this.alerta = true;
       }
     },
     async singUp() {
@@ -231,9 +248,9 @@ export default {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
-           // alert(errorMessage);
-            this.errord.description=errorMessage;
-              this.alerta=true;
+            // alert(errorMessage);
+            this.errord.description = errorMessage;
+            this.alerta = true;
 
             // ...
           });
@@ -265,18 +282,15 @@ export default {
                   .then(async (data) => {
                     console.log(data);
                   });
-               // alert("your access token was sent to your email" );
-                this.errord.description="your access token was sent to your email";
-              this.alerta=true;
+                this.overlay = false;
+                this.dialog = true;
               });
           });
-        this.overlay = false;
-        this.$router.push("/login");
       } catch (error) {
         this.overlay = false;
         //alert(error);
-        this.errord.description=error;
-              this.alerta=true;
+        this.errord.description = error;
+        this.alerta = true;
         this.$router.push("/singUp");
       }
     },
@@ -285,8 +299,8 @@ export default {
         this.singUp();
       } else {
         //alert("form invalide");
-        this.errord.description="form invalide";
-              this.alerta=true;
+        this.errord.description = "form invalide";
+        this.alerta = true;
       }
     },
 

@@ -34,8 +34,8 @@
                     ></v-select>
                   </v-col>
                   <v-col cols="12" sm="6" md="4" class="px-0" fluid>
-                    <v-switch v-model="verify" label="Verify"></v-switch>
-                    <v-switch v-model="active" label="Active"></v-switch>
+                    <v-switch v-model="editedItem.verify" label="Verify"></v-switch>
+                    <v-switch v-model="editedItem.active" label="Active"></v-switch>
                   </v-col>
                 </v-row>
               </v-container>
@@ -61,12 +61,6 @@
         <v-icon color="blue" small> mdi-pencil </v-icon>
       </v-btn>
     </template>
-    <template v-slot:[`item.verify`]="{ item }">
-      {{item.isAdmin || item.isSuperUser || verify ? "YES" : "NO"}}
-    </template>
-    <template v-slot:[`item.active`]="{ item }">
-      {{item.isAdmin || item.isSuperUser || active ? "YES" : "NO"}}
-    </template>
   </v-data-table>
 </template>
 
@@ -87,8 +81,6 @@ export default {
   ],
     dialogeditUser: false,
     dialogDelete: false,
-    verify: false,
-    active: true,
     headers: [
       {
         text: "Name",

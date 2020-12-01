@@ -11,11 +11,10 @@ export const state = () => ({
   },
   categories: [
     "News",
-    "Courses",
-    "Market Updates",
-    "Webinars",
+    "Culture",
     "Events",
-    "Investments"
+    "Webinars",
+    "Store"
   ]
 });
 

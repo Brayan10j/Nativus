@@ -61,6 +61,8 @@ const typeDefs = gql`
     isAdmin: Boolean
     isSuperUser: Boolean
     dateCreated: String
+    active: Boolean
+    verify: Boolean
   }
 
   input inputUser {
@@ -80,6 +82,8 @@ const typeDefs = gql`
     isAdmin: Boolean
     isSuperUser: Boolean
     dateCreated: String
+    active: Boolean
+    verify: Boolean
   }
 
   type Post {

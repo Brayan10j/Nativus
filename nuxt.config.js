@@ -18,7 +18,7 @@ export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     titleTemplate: "%s",
-    title: "CYCRON",
+    title: "AH-UM PILGRIM",
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },

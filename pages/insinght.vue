@@ -10,7 +10,7 @@
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="model" class="my-2">
-      <v-tab-item v-for="x in 6" :key="x" :value="`tab-${x}`" class="px-2">
+      <v-tab-item v-for="x in 5" :key="x" :value="`tab-${x}`" class="px-2">
         <v-row v-if="isAccess">
           <v-col
             cols="12"

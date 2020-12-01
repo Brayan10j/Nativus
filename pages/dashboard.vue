@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card elevation="24" max-width="800" class="mx-auto pt-5 mt-1">
+    <v-card elevation="24"  class="mx-auto pt-5 mt-1">
       <v-carousel
         cycle
         interval="12000"

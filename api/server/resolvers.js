@@ -75,11 +75,11 @@ const resolvers = {
       }
       let newLicenses = user.licenses.concat([license.name]);
       let newBalance = user.balance - license.price;
-      let newPermissions = user.permissions.concat(license.permission);
+      license.permission.filter(data => user.permissions.includes(data)?data:user.permissions.push(data));//.concat();
       await User.findByIdAndUpdate(user._id, {
         balance: newBalance,
         licenses: newLicenses,
-        permissions: newPermissions,
+        permissions: user.permissions,
       });
       const transaction = new Transaction({
         user: user._id,

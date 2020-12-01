@@ -18,6 +18,11 @@ const UserSchema = new Schema({
   isAdmin: Boolean,
   isSuperUser: Boolean,
   dateCreated: String,
+  active: Boolean,
+  verify: Boolean
 });
+
+module.exports = mongoose.model('User', UserSchema);
+
 
 module.exports = mongoose.model('User', UserSchema);

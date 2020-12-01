@@ -3,11 +3,11 @@
     <v-container fluid>
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8" md="4">
-          <v-img
+          <!--<v-img
             class="mx-auto my-15"
             src="/images/logo.png"
             max-width="270"
-          ></v-img>
+          ></v-img>-->
           <v-card class="elevation-12 mx-auto" width="400">
             <v-toolbar class="overflow-hidden" flat color="#4c4c53" dark>
               <template v-slot:img="{ props }">

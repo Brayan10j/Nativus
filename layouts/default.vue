@@ -27,7 +27,7 @@
       <v-row align="center" justify="space-around" rounded>
         <v-btn color="info" elevation="9" rounded @click="balance = !balance">
           <v-icon left> mdi-cash-multiple </v-icon>
-          Balance :
+          Wood :
           {{ user == undefined ? 0 : user.balance }}
         </v-btn>
       </v-row>
@@ -39,6 +39,7 @@
         class="mt-n7 subtitle-2 d-flex align-end mx-auto"
         rounded="xl"
         ><p class="mx-auto mb-0 text-subtitle-1 font-weight-black">
+          Pilgrim :
           {{
             $store.state.userInfo == undefined
               ? 0
@@ -78,7 +79,7 @@
             <v-list-item-title v-text="'Insinght'"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item
+        <!--<v-list-item
           to="/brain"
           v-if="
             $store.state.userInfo.permissions == undefined
@@ -95,6 +96,7 @@
             <v-list-item-title v-text="'The Brain'"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        -->
 
         <v-list-item
           to="/transaccions"
@@ -181,12 +183,12 @@
     <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>
-        <v-img
+        <!--<v-img
           max-height="50"
           width="200"
           contain
           src="/images/logo.png"
-        ></v-img>
+        ></v-img>-->
       </v-toolbar-title>
       <v-spacer />
       <v-btn
