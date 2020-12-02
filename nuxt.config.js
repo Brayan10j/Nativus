@@ -58,7 +58,7 @@ export default {
           if (process.env.NODE_ENV === "development") {
             return "http://localhost:3000/graphql";
           } else {
-            return "https://cycron.herokuapp.com/graphql";
+            return "https://pilgrimplatform.herokuapp.com/graphql";
           }
         })()
       }
