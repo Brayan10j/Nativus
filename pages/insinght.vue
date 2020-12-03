@@ -315,9 +315,9 @@ export default {
       overlay: false,
       formAdd: {
         tittle: "",
-        description: "",
+        description: "<p></p>",
         category: "",
-        image: "/images/cycron.jpg",
+        image: "/images/default.jpeg",
         author: "",
         shortDesc: "",
         date: new Date().toISOString().substr(0, 10),

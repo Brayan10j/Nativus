@@ -25,9 +25,9 @@
       <v-divider></v-divider>
       <br />
       <v-row align="center" justify="space-around" rounded>
-        <v-btn color="info" elevation="9" rounded @click="balance = !balance">
+        <v-btn color="info" elevation="9"  @click="balance = !balance">
           <v-icon left> mdi-cash-multiple </v-icon>
-          Wood :
+          Wood Coins :
           {{ user == undefined ? 0 : user.balance }}
         </v-btn>
       </v-row>
@@ -35,11 +35,11 @@
         color="teal darken-1"
         elevation="6"
         height="60"
-        width="110"
+        width="150"
         class="mt-n7 subtitle-2 d-flex align-end mx-auto"
         rounded="xl"
         ><p class="mx-auto mb-0 text-subtitle-1 font-weight-black">
-          Pilgrim :
+          Pilgrim Coins :
           {{
             $store.state.userInfo == undefined
               ? 0
