@@ -98,14 +98,7 @@
                 <v-col cols="12" sm="6" md="4">
                   <v-select
                     v-model="formAdd.category"
-                    :items="[
-                      'New',
-                      'Course',
-                      'Webinar',
-                      'Event',
-                      'Market',
-                      'Investment',
-                    ]"
+                    :items="['News', 'Culture', 'Events', 'Webinars', 'Store']"
                     label="Category"
                     required
                   ></v-select>
@@ -114,7 +107,7 @@
                   <v-text-field
                     v-model="formAdd.shortDesc"
                     label="Short Description"
-                    hint="Sort description of the new"
+                    hint="Short description of the new"
                     required
                   ></v-text-field>
                 </v-col>
@@ -154,7 +147,10 @@
                   </v-menu>
                 </v-col>
                 <v-col cols="12">
-                  <v-btn color="gray darken-2" @click="overlay = !overlay">
+                  <v-btn
+                    color="gray darken-2"
+                    @click="dialogDesc = !dialogDesc"
+                  >
                     Add Description
                   </v-btn>
                 </v-col>
@@ -193,7 +189,11 @@
             <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
             <v-btn color="blue darken-1" text type="submit"> Save </v-btn>
           </v-card-actions>
-          <v-overlay :absolute="absolute" :opacity="opacity" :value="overlay">
+          <v-overlay
+            :absolute="absolute"
+            :opacity="opacity"
+            :value="dialogDesc"
+          >
             <v-sheet
               color="gray darken-2"
               elevation="10"
@@ -208,7 +208,7 @@
               </client-only>
             </v-sheet>
 
-            <v-btn color="grey darken-3" @click="overlay = false">
+            <v-btn color="grey darken-3" @click="dialogDesc = false">
               Confirm
             </v-btn>
           </v-overlay>
@@ -296,6 +296,7 @@ export default {
   data() {
     return {
       overlay: false,
+      dialogDesc: false,
       snackbar: false,
       textSnackbar: "",
       timeout: 4000,
@@ -312,7 +313,6 @@ export default {
       content: "",
       absolute: true,
       opacity: 1,
-      overlay: false,
       formAdd: {
         tittle: "",
         description: "<p></p>",
@@ -327,7 +327,7 @@ export default {
         tittle: "",
         description: "",
         category: "",
-        image: "/images/cycron.jpg",
+        image: "/images/default.jpeg",
         author: "",
         shortDesc: "",
         date: new Date().toISOString().substr(0, 10),

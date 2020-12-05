@@ -226,7 +226,7 @@ export default {
         { text: "Name", value: "name", class: "text-lg-subtitle-1" },
         { text: "Email", value: "email", class: "text-lg-subtitle-1" },
         { text: "Registration Date", value: "dateCreated", class: "text-lg-subtitle-1" },
-        { text: "Cycrons Generated", value: "cycronsGen" , class: "text-lg-subtitle-1" },
+        { text: "Pilgrim Generated", value: "cycronsGen" , class: "text-lg-subtitle-1" },
       ],
       events: [],
       input: null,

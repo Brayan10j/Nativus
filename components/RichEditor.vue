@@ -41,7 +41,9 @@ export default {
     return {
       editor: ClassicEditor,
       editorConfig: {
-
+        mediaEmbed: {
+          previewsInData: true
+        }
       },
     };
   },
