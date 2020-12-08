@@ -1,148 +1,154 @@
 <template>
   <v-layout justify-center>
     <v-container fluid>
-      <v-row align="center" justify="center">
-        <v-col cols="12" sm="12" md="5">
-          <v-dialog v-model="dialog" persistent max-width="290">
-            <v-card>
-              <v-card-title class="headline">
-                You are registered !!
-              </v-card-title>
-              <v-card-text
-                >your access token was sent to your email
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="#787b7f" text to="/login"> Agree </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <!--<v-img
+      <v-parallax
+        dark
+        :src="wallPaper"
+        height="800"
+      >
+        <v-row align="center" justify="center">
+          <v-col cols="12" sm="12" md="5">
+            <v-dialog v-model="dialog" persistent max-width="290">
+              <v-card>
+                <v-card-title class="headline">
+                  You are registered !!
+                </v-card-title>
+                <v-card-text
+                  >your access token was sent to your email
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="#787b7f" text to="/login"> Agree </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+            <!--<v-img
             class="mx-auto my-10"
             src="/images/logo.png"
             max-width="370"
           ></v-img>-->
-          <v-toolbar class="overflow-hidden" flat color="#4c4c53" dark>
-            <template v-slot:img="{ props }">
-              <v-img
-                v-bind="props"
-                gradient="to top right, rgba(3,32,24,.1), rgba(39,42,57,.7)"
-              ></v-img>
-            </template>
-            <v-toolbar-title>User Register</v-toolbar-title>
-          </v-toolbar>
-          <v-stepper v-model="e1">
-            <v-overlay :value="overlay">
-              <v-progress-circular
-                indeterminate
-                size="64"
-              ></v-progress-circular>
-            </v-overlay>
-            <v-stepper-header>
-              <v-stepper-step :complete="e1 > 1" step="1" color="info">
-                Referral Token
-              </v-stepper-step>
+            <v-toolbar class="overflow-hidden" flat color="#4c4c53" dark>
+              <template v-slot:img="{ props }">
+                <v-img
+                  v-bind="props"
+                  gradient="to top right, rgba(3,32,24,.1), rgba(39,42,57,.7)"
+                ></v-img>
+              </template>
+              <v-toolbar-title>User Register</v-toolbar-title>
+            </v-toolbar>
+            <v-stepper v-model="e1">
+              <v-overlay :value="overlay">
+                <v-progress-circular
+                  indeterminate
+                  size="64"
+                ></v-progress-circular>
+              </v-overlay>
+              <v-stepper-header>
+                <v-stepper-step :complete="e1 > 1" step="1" color="info">
+                  Referral Token
+                </v-stepper-step>
 
-              <v-divider></v-divider>
+                <v-divider></v-divider>
 
-              <v-stepper-step :complete="e1 > 2" step="2" color="info">
-                Registration Form
-              </v-stepper-step>
-            </v-stepper-header>
-            <v-form ref="form" v-model="valid" lazy-validation>
-              <v-stepper-items>
-                <v-stepper-content step="1">
-                  <v-col cols="12" sm="12">
-                    <v-text-field
-                      dense
-                      filled
-                      outlined
-                      v-model="user.registrationCode"
-                      label="Reference code*"
-                      hint="The invitation code by another user"
-                      persistent-hint
-                      required
-                    ></v-text-field>
-                  </v-col>
+                <v-stepper-step :complete="e1 > 2" step="2" color="info">
+                  Registration Form
+                </v-stepper-step>
+              </v-stepper-header>
+              <v-form ref="form" v-model="valid" lazy-validation>
+                <v-stepper-items>
+                  <v-stepper-content step="1">
+                    <v-col cols="12" sm="12">
+                      <v-text-field
+                        dense
+                        filled
+                        outlined
+                        v-model="user.registrationCode"
+                        label="Reference code*"
+                        hint="The invitation code by another user"
+                        persistent-hint
+                        required
+                      ></v-text-field>
+                    </v-col>
 
-                  <v-btn color="#787b7f" @click="validateToken">
-                    Continue
-                  </v-btn>
+                    <v-btn color="#787b7f" @click="validateToken">
+                      Continue
+                    </v-btn>
 
-                  <v-btn text @click="cancel"> Cancel </v-btn>
-                </v-stepper-content>
+                    <v-btn text @click="cancel"> Cancel </v-btn>
+                  </v-stepper-content>
 
-                <v-stepper-content step="2">
-                  <v-col cols="12">
-                    <v-text-field
-                      dense
-                      filled
-                      outlined
-                      v-model="user.name"
-                      label="First name*"
-                      :rules="nameRules"
-                      required
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-text-field
-                      dense
-                      filled
-                      outlined
-                      v-model="user.email"
-                      :rules="emailRules"
-                      label="Email*"
-                      required
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-text-field
-                      dense
-                      filled
-                      outlined
-                      v-model="user.password"
-                      :rules="passwordRules"
-                      label="Password*"
-                      type="password"
-                      required
-                    ></v-text-field>
-                  </v-col>
+                  <v-stepper-content step="2">
+                    <v-col cols="12">
+                      <v-text-field
+                        dense
+                        filled
+                        outlined
+                        v-model="user.name"
+                        label="First name*"
+                        :rules="nameRules"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field
+                        dense
+                        filled
+                        outlined
+                        v-model="user.email"
+                        :rules="emailRules"
+                        label="Email*"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field
+                        dense
+                        filled
+                        outlined
+                        v-model="user.password"
+                        :rules="passwordRules"
+                        label="Password*"
+                        type="password"
+                        required
+                      ></v-text-field>
+                    </v-col>
 
-                  <v-btn color="#787b7f" @click="singUp" :disabled="!valid">
-                    Continue
-                  </v-btn>
+                    <v-btn color="#787b7f" @click="singUp" :disabled="!valid">
+                      Continue
+                    </v-btn>
 
-                  <v-btn text @click="cancel"> Cancel </v-btn>
-                </v-stepper-content>
-              </v-stepper-items>
-            </v-form>
-          </v-stepper>
-          <v-row align="center" justify="center">
-            You have an account?
-            <v-btn text color="#787b7f" to="/login"> LOGIN </v-btn></v-row
-          >
-          <v-overlay :absolute="absolute" :value="alerta" :opacity="opacity">
-            <v-alert
-              :value="alerta"
-              color="red darken-2"
-              type="error"
-              border="top"
-              transition="scale-transition"
-              >{{ errord.description }}
-              <v-btn
-                color="white"
-                elevation="3"
-                class="ml-3"
-                right
-                icon
-                small
-                @click="alerta = !alerta"
-                ><v-icon dark> mdi-close </v-icon></v-btn
-              ></v-alert
+                    <v-btn text @click="cancel"> Cancel </v-btn>
+                  </v-stepper-content>
+                </v-stepper-items>
+              </v-form>
+            </v-stepper>
+            <v-row align="center" justify="center">
+              You have an account?
+              <v-btn text color="#787b7f" to="/login"> LOGIN </v-btn></v-row
             >
-          </v-overlay>
-        </v-col>
-      </v-row>
+            <v-overlay :absolute="absolute" :value="alerta" :opacity="opacity">
+              <v-alert
+                :value="alerta"
+                color="red darken-2"
+                type="error"
+                border="top"
+                transition="scale-transition"
+                >{{ errord.description }}
+                <v-btn
+                  color="white"
+                  elevation="3"
+                  class="ml-3"
+                  right
+                  icon
+                  small
+                  @click="alerta = !alerta"
+                  ><v-icon dark> mdi-close </v-icon></v-btn
+                ></v-alert
+              >
+            </v-overlay>
+          </v-col>
+        </v-row>
+      </v-parallax>
     </v-container>
   </v-layout>
 </template>
@@ -152,6 +158,7 @@ export default {
   layout: "empty",
   data() {
     return {
+      wallPaper: "",
       dialog: false,
       e1: 1,
       alerta: false,
@@ -175,7 +182,7 @@ export default {
         isSuperUser: false,
         dateCreated: new Date().toISOString().substr(0, 10),
         active: true,
-        verify: false
+        verify: false,
       },
       errord: {
         description: "",
@@ -209,6 +216,16 @@ export default {
       checkbox: false,
       overlay: false,
     };
+  },
+  created(){
+    var imageURLs = [
+        // We assign in an array the list of URL/filename we want as background
+        "/images/wallPapers/1.jpg",
+        "/images/wallPapers/2.png",
+        "/images/wallPapers/3.jpeg",
+    ];
+    var num = Math.floor((Math.random() * (imageURLs.length)));
+    this.wallPaper = imageURLs[num] ;
   },
   methods: {
     cancel() {
@@ -256,6 +273,7 @@ export default {
           });
         this.user.codReferal = res.user.uid.substr(0, 10);
         console.log(this.user);
+        //
         await this.$apollo
           .mutate({
             mutation: require("../api/server/mutations/users/addUser.gql"),

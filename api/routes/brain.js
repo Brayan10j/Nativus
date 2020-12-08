@@ -2,7 +2,11 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/brain', async (req, res) => {
-  res.json({ responsive: "GET"});
+  res.json({ responsive: req.query});
+});
+
+router.get('/singUp', async (req, res) => {
+  res.json({ responsive: req.query});
 });
 
 router.post('/brain', async (req, res) => {

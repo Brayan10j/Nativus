@@ -1,6 +1,11 @@
 <template>
   <v-layout justify-center>
     <v-container fluid>
+      <v-parallax
+        dark
+        :src="wallPaper"
+        height="800"
+      >
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8" md="4">
           <!--<v-img
@@ -79,6 +84,7 @@
 
         </v-col>
       </v-row>
+      </v-parallax>
     </v-container>
   </v-layout>
 </template>
@@ -89,10 +95,10 @@ export default {
   layout: "empty",
   data() {
     return {
+      wallPaper: "",
       alerta: false,
       absolute: true,
       opacity: 0.8,
-
       overlay : false,
       res: "",
       token: "",
@@ -105,6 +111,16 @@ export default {
       },
 
     };
+  },
+  created(){
+    var imageURLs = [
+        // We assign in an array the list of URL/filename we want as background
+        "/images/wallPapers/1.jpg",
+        "/images/wallPapers/2.png",
+        "/images/wallPapers/3.jpeg",
+    ];
+    var num = Math.floor((Math.random() * (imageURLs.length)));
+    this.wallPaper = imageURLs[num] ;
   },
   methods: {
     ...mapMutations(["sendUserInfo"]),
