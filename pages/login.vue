@@ -1,11 +1,6 @@
 <template>
   <v-layout justify-center>
     <v-container fluid>
-      <v-parallax
-        dark
-        :src="wallPaper"
-        height="800"
-      >
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8" md="4">
           <!--<v-img
@@ -62,29 +57,27 @@
             <v-btn text color="#787b7f" to="/singUp"> SIGN UP </v-btn></v-row
           >
           <v-overlay :absolute="absolute" :value="alerta" :opacity="opacity">
-          <v-alert
-            :value="alerta"
-            color="red darken-2"
-            type="error"
-            border="top"
-            transition="scale-transition"
-            >{{errord.description}}
-            <v-btn
-              color="white"
-              elevation="3"
-              class="ml-3"
-              right
-              icon
-              small
-              @click="alerta = !alerta"
-              ><v-icon dark> mdi-close </v-icon></v-btn
-            ></v-alert
-          >
-        </v-overlay>
-
+            <v-alert
+              :value="alerta"
+              color="red darken-2"
+              type="error"
+              border="top"
+              transition="scale-transition"
+              >{{ errord.description }}
+              <v-btn
+                color="white"
+                elevation="3"
+                class="ml-3"
+                right
+                icon
+                small
+                @click="alerta = !alerta"
+                ><v-icon dark> mdi-close </v-icon></v-btn
+              ></v-alert
+            >
+          </v-overlay>
         </v-col>
       </v-row>
-      </v-parallax>
     </v-container>
   </v-layout>
 </template>
@@ -99,28 +92,27 @@ export default {
       alerta: false,
       absolute: true,
       opacity: 0.8,
-      overlay : false,
+      overlay: false,
       res: "",
       token: "",
       login: {
         email: "",
         password: "",
       },
-      errord:{
+      errord: {
         description: "",
       },
-
     };
   },
-  created(){
+  created() {
     var imageURLs = [
-        // We assign in an array the list of URL/filename we want as background
-        "/images/wallPapers/1.jpg",
-        "/images/wallPapers/2.png",
-        "/images/wallPapers/3.jpeg",
+      // We assign in an array the list of URL/filename we want as background
+      "/images/wallPapers/1.jpg",
+      "/images/wallPapers/2.png",
+      "/images/wallPapers/3.jpeg",
     ];
-    var num = Math.floor((Math.random() * (imageURLs.length)));
-    this.wallPaper = imageURLs[num] ;
+    var num = Math.floor(Math.random() * imageURLs.length);
+    this.wallPaper = imageURLs[num];
   },
   methods: {
     ...mapMutations(["sendUserInfo"]),
@@ -143,7 +135,7 @@ export default {
         this.overlay = false;
         this.$router.push("/dashboard");
       } catch (err) {
-        this.errord.description="Wrong token";
+        this.errord.description = "Wrong token";
         this.alerta = true;
 
         this.overlay = false;
