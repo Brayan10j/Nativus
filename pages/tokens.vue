@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="$store.state.userInfo.isAdmin">
     <form enctype="multipart/form-data">
       <v-file-input
         label="File input"

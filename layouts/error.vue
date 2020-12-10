@@ -14,6 +14,7 @@
 
 <script>
 export default {
+  layout: "guard",
   props: {
     error: {
       type: Object,

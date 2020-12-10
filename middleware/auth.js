@@ -1,10 +1,10 @@
-export default function ({app , redirect}) {
-  app.$fireAuth.onAuthStateChanged((user) => {
-    // If the user is not authenticated
-    if(!user){
-      console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-    }else{
-      console.log("si auth");
-    }
-  })
+export default function ({ store, redirect }) {
+  // If the user is not authenticated
+  //let email = localStorage.getItem("email");
+  if (!store.auth) {
+    console.log("no auth")
+    //return redirect('/login')
+  }else{
+    console.log("si auth")
+  }
 }

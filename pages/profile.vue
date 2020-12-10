@@ -9,7 +9,7 @@
       </template>
       <v-toolbar-title>User Profile</v-toolbar-title>
     </v-toolbar>
-
+    {{user}}
     <v-dialog v-model="editeProfile" persistent max-width="600px">
       <v-card width="800" class="mx-auto">
         <v-card-title>
@@ -18,11 +18,16 @@
         <v-card-text>
           <v-container>
             <v-form ref="form">
-              <v-row>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field label="First name"></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6">
+              <v-col>
+                <v-row>
+                  <v-avatar class="profile mx-auto" size="164" tile>
+                    <v-img
+                      transition="slide-x-transition"
+                      :src="user.photo"
+                    ></v-img>
+                  </v-avatar>
+                </v-row>
+                <v-row>
                   <v-file-input
                     v-model="imageSeleted"
                     small-chips
@@ -31,19 +36,11 @@
                     @change="onImageSelected"
                     prepend-icon="mdi-camera"
                   ></v-file-input>
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field color="grey" label="Email"></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field
-                    color="grey"
-                    label="Password"
-                    type="password"
-                    required
-                  ></v-text-field>
-                </v-col>
-              </v-row>
+                </v-row>
+                <v-row>
+                  <v-text-field label="Name" v-model="user.name"></v-text-field>
+                </v-row>
+              </v-col>
             </v-form>
           </v-container>
         </v-card-text>
@@ -96,7 +93,7 @@
                 <v-avatar class="profile mx-auto" size="164" tile>
                   <v-img
                     transition="slide-x-transition"
-                    src="/images/user.png"
+                    :src="user.photo"
                   ></v-img>
                 </v-avatar>
                 <v-list-item color="rgba(0, 0, 0, .4)" dark>
@@ -147,9 +144,7 @@
             hide-default-footer
           >
             <template v-slot:[`item.image`]="{ item }">
-              <v-icon v-if="item">
-              mdi-account
-            </v-icon>
+              <v-icon v-if="item"> mdi-account </v-icon>
             </template></v-data-table
           >
         </v-card>
@@ -191,27 +186,18 @@
         </v-card>
       </v-tab-item>
     </v-tabs>
-
   </v-card>
-
 </template>
 
 <script>
-const avatars = [
-  "?accessoriesType=Blank&avatarStyle=Circle&clotheColor=PastelGreen&clotheType=ShirtScoopNeck&eyeType=Wink&eyebrowType=UnibrowNatural&facialHairColor=Black&facialHairType=MoustacheMagnum&hairColor=Platinum&mouthType=Concerned&skinColor=Tanned&topType=Turban",
-  "?accessoriesType=Sunglasses&avatarStyle=Circle&clotheColor=Gray02&clotheType=ShirtScoopNeck&eyeType=EyeRoll&eyebrowType=RaisedExcited&facialHairColor=Red&facialHairType=BeardMagestic&hairColor=Red&hatColor=White&mouthType=Twinkle&skinColor=DarkBrown&topType=LongHairBun",
-  "?accessoriesType=Prescription02&avatarStyle=Circle&clotheColor=Black&clotheType=ShirtVNeck&eyeType=Surprised&eyebrowType=Angry&facialHairColor=Blonde&facialHairType=Blank&hairColor=Blonde&hatColor=PastelOrange&mouthType=Smile&skinColor=Black&topType=LongHairNotTooLong",
-  "?accessoriesType=Round&avatarStyle=Circle&clotheColor=PastelOrange&clotheType=Overall&eyeType=Close&eyebrowType=AngryNatural&facialHairColor=Blonde&facialHairType=Blank&graphicType=Pizza&hairColor=Black&hatColor=PastelBlue&mouthType=Serious&skinColor=Light&topType=LongHairBigHair",
-  "?accessoriesType=Kurt&avatarStyle=Circle&clotheColor=Gray01&clotheType=BlazerShirt&eyeType=Surprised&eyebrowType=Default&facialHairColor=Red&facialHairType=Blank&graphicType=Selena&hairColor=Red&hatColor=Blue02&mouthType=Twinkle&skinColor=Pale&topType=LongHairCurly",
-];
 
 const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default {
   data() {
     return {
+      user: this.$store.state.userInfo,
       active: [],
-      avatar: null,
       open: [],
       imageSeleted: null,
       editeProfile: false,
@@ -221,12 +207,20 @@ export default {
           align: "start",
           sortable: false,
           value: "image",
-          class: "text-lg-subtitle-1"
+          class: "text-lg-subtitle-1",
         },
         { text: "Name", value: "name", class: "text-lg-subtitle-1" },
         { text: "Email", value: "email", class: "text-lg-subtitle-1" },
-        { text: "Registration Date", value: "dateCreated", class: "text-lg-subtitle-1" },
-        { text: "Pilgrim Generated", value: "cycronsGen" , class: "text-lg-subtitle-1" },
+        {
+          text: "Registration Date",
+          value: "dateCreated",
+          class: "text-lg-subtitle-1",
+        },
+        {
+          text: "Pilgrim Generated",
+          value: "cycronsGen",
+          class: "text-lg-subtitle-1",
+        },
       ],
       events: [],
       input: null,
@@ -264,16 +258,18 @@ export default {
       }
     },
     selected() {
-
       const code = this.$store.state.userInfo.codReferal;
 
-      return this.users == undefined ? [] : this.users.filter((user) => user.registrationCode === code);
+      return this.users == undefined
+        ? []
+        : this.users.filter((user) => user.registrationCode === code);
     },
     filterTransactions() {
-
       const id = this.$store.state.userInfo._id;
 
-      return this.transactions == undefined ? [] : this.transactions.filter((transaction) => transaction.user === id);
+      return this.transactions == undefined
+        ? []
+        : this.transactions.filter((transaction) => transaction.user === id);
     },
 
     timeline() {
@@ -281,26 +277,9 @@ export default {
     },
   },
 
-  watch: {
-    selected: "randomAvatar",
-  },
-
   methods: {
     onImageSelected(file) {
       file ? (this.imageSeleted = file) : null;
-    },
-    async fetchUsers(item) {
-      // Remove in 6 months and say
-      // you've made optimizations! :)
-      await pause(500);
-
-      return fetch("https://jsonplaceholder.typicode.com/users")
-        .then((res) => res.json())
-        .then((json) => item.children.push(...json))
-        .catch((err) => console.warn(err));
-    },
-    randomAvatar() {
-      this.avatar = avatars[Math.floor(Math.random() * avatars.length)];
     },
   },
 };

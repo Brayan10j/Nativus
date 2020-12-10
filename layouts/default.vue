@@ -1,4 +1,4 @@
-<template>
+<template >
   <v-app dark dense>
     <v-navigation-drawer v-model="drawer" :clipped="clipped" fixed app>
       <v-list class="mx-auto img-center">
@@ -25,7 +25,7 @@
       <v-divider></v-divider>
       <br />
       <v-row align="center" justify="space-around" rounded>
-        <v-btn color="info" elevation="9"  @click="balance = !balance">
+        <v-btn color="info" elevation="9" @click="balance = !balance">
           <v-icon left> mdi-cash-multiple </v-icon>
           Wood Coins :
           {{ user == undefined ? 0 : user.balance }}
@@ -285,25 +285,25 @@
           <v-btn color="blue darken-1" text @click="addBalance"> Send </v-btn>
         </v-card-actions>
         <v-overlay :absolute="absolute" :value="alerta" :opacity="opacity">
-        <v-alert
-          :value="alerta"
-          color="red darken-2"
-          type="error"
-          border="top"
-          transition="scale-transition"
-          >{{errord.description}}
-          <v-btn
-            color="white"
-            elevation="3"
-            class="ml-3"
-            right
-            icon
-            small
-            @click="alerta = !alerta"
-            ><v-icon dark> mdi-close </v-icon></v-btn
-          ></v-alert
-        >
-      </v-overlay>
+          <v-alert
+            :value="alerta"
+            color="red darken-2"
+            type="error"
+            border="top"
+            transition="scale-transition"
+            >{{ errord.description }}
+            <v-btn
+              color="white"
+              elevation="3"
+              class="ml-3"
+              right
+              icon
+              small
+              @click="alerta = !alerta"
+              ><v-icon dark> mdi-close </v-icon></v-btn
+            ></v-alert
+          >
+        </v-overlay>
       </v-card>
     </v-dialog>
     <v-main>
@@ -329,7 +329,7 @@
 <script>
 import { mapMutations } from "vuex";
 export default {
-  //middleware: "auth",
+  //middleware: "persistent",
   data() {
     return {
       email: "",
@@ -436,8 +436,8 @@ export default {
           });
       } catch (error) {
         //alert(error.message);
-        this.errord.description="Wrong token";
-        this.alerta=true;
+        this.errord.description = "Wrong token";
+        this.alerta = true;
       }
     },
     async sendEmail() {

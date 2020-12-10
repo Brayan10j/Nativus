@@ -189,29 +189,30 @@
             <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
             <v-btn color="blue darken-1" text type="submit"> Save </v-btn>
           </v-card-actions>
-          <v-overlay
-            :absolute="absolute"
-            :opacity="opacity"
-            :value="dialogDesc"
+
+          <v-dialog
+            v-model="dialogDesc"
+            fullscreen
+            hide-overlay
+            transition="dialog-bottom-transition"
           >
-            <v-sheet
-              color="gray darken-2"
-              elevation="10"
-              max-height="650"
-              outlined
-              rounded
-              max-width="780"
-            >
-              <client-only>
+            <v-card>
+              <v-toolbar dark color="grey darken-3">
+                <v-spacer></v-spacer>
+                <v-toolbar-items>
+                  <v-btn dark text @click="dialogDesc=false"> Close </v-btn>
+                </v-toolbar-items>
+              </v-toolbar>
+              <client-only >
                 <!-- this component will only be rendered on client-side -->
                 <rich-editor dark v-model="formAdd.description" />
               </client-only>
-            </v-sheet>
 
-            <v-btn color="grey darken-3" @click="dialogDesc = false">
-              Confirm
-            </v-btn>
-          </v-overlay>
+              <v-btn color="grey darken-3" @click="dialogDesc = false">
+                Confirm
+              </v-btn>
+            </v-card>
+          </v-dialog>
         </v-card>
       </v-form>
     </v-dialog>
@@ -511,40 +512,35 @@ export default {
     filerCategory: function () {
       switch (this.model) {
         case "tab-1":
-          this.formAdd.category = "New";
+          this.formAdd.category = "News";
           return this.posts == undefined
             ? []
-            : this.posts.filter((post) => post.category == "New");
+            : this.posts.filter((post) => post.category == "News");
           break;
         case "tab-2":
-          this.formAdd.category = "Course";
+          this.formAdd.category = "Culture";
           return this.posts == undefined
             ? []
-            : this.posts.filter((post) => post.category == "Course");
+            : this.posts.filter((post) => post.category == "Culture");
           break;
         case "tab-3":
-          this.formAdd.category = "New";
-          return []; /*this.posts == undefined
+          this.formAdd.category = "Webinars";
+          return this.posts == undefined
             ? []
-            : this.posts.filter((post) => post.category == "New");*/
+            : this.posts.filter((post) => post.category == "Webinars");
           break;
         case "tab-4":
-          this.formAdd.category = "Webinar";
+          this.formAdd.category = "Events";
           return this.posts == undefined
             ? []
-            : this.posts.filter((post) => post.category == "Webinar");
+            : this.posts.filter((post) => post.category == "Events");
           break;
         case "tab-5":
-          this.formAdd.category = "Event";
-          return this.posts == undefined
+          this.formAdd.category = "Store";
+          return [];
+          this.posts == undefined
             ? []
-            : this.posts.filter((post) => post.category == "Event");
-          break;
-        case "tab-6":
-          this.formAdd.category = "Course";
-          return []; /* this.posts == undefined
-            ? []
-            : this.posts.filter((post) => post.category == "Course");*/
+            : this.posts.filter((post) => post.category == "Store");
           break;
         default:
           return [];
@@ -568,25 +564,18 @@ export default {
               return this.$store.state.userInfo.permissions.includes("News");
               break;
             case "tab-2":
-              return this.$store.state.userInfo.permissions.includes("Courses");
+              return this.$store.state.userInfo.permissions.includes("Culture");
               break;
             case "tab-3":
-              return this.$store.state.userInfo.permissions.includes(
-                "Market Updates"
-              );
-              break;
-            case "tab-4":
               return this.$store.state.userInfo.permissions.includes(
                 "Webinars"
               );
               break;
-            case "tab-5":
+            case "tab-4":
               return this.$store.state.userInfo.permissions.includes("Events");
               break;
-            case "tab-6":
-              return this.$store.state.userInfo.permissions.includes(
-                "Investments"
-              );
+            case "tab-5":
+              return this.$store.state.userInfo.permissions.includes("Store");
               break;
             default:
               return false;
