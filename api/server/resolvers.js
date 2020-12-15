@@ -6,7 +6,6 @@ const Token = require("../models/Token");
 const { PubSub, UserInputError } = require("apollo-server-express");
 const sm = require("./nodemailer");
 
-
 const pubsub = new PubSub();
 const POST_MODIFY = "POST_MODIFY";
 
@@ -35,57 +34,96 @@ const resolvers = {
   },
   Mutation: {
     async addBalance(_, data) {
-      let token = await Token.findOne({ code: data.code });
-      if (token == null) {
-        throw "Token no found";
+      try {
+        let token = await Token.findOne({ code: data.code });
+        if (token == null) {
+          throw "Token no found";
+        }
+        if (token.active == true) {
+          throw "Token active";
+        }
+        const cryptoGen = token.value * 0.2;
+        //agrega al usuario
+        const user = await User.findById(data._id);
+        let newBalance = user.balance + token.value;
+        let newCycrons = user.cycrons + token.value * 0.02;
+        let newcycronsGen = user.cycronsGen + token.value * 0.02;
+        await User.findByIdAndUpdate(user._id, {
+          balance: newBalance,
+          cycrons: newCycrons,
+          cycronsGen: newcycronsGen
+        });
+        //agrega al referido
+        let userReferal = await User.findOne({
+          codReferal: user.registrationCode
+        });
+        let newCycronsRef = userReferal.cycrons + token.value * 0.02;
+        await User.findByIdAndUpdate(userReferal._id, {
+          cycrons: newCycronsRef
+        });
+        /*
+      //agrega a los founders
+      const founderUsers = User.find({type: "FOUNDER"});
+      const cantFounders = (cryptoGen * 0.4) / (await founderUsers).length;
+      founderUsers.map(async function (x) {
+        let newCrypto = x.crypto + cantFounders;
+        await User.findByIdAndUpdate(x._id, { crypto: newCrypto });
+      });
+      //agrega a los team
+      const teamUsers = User.find({type: "TEAM"});
+      const cantTeam = (cryptoGen * 0.2) / (await teamUsers).length;
+      teamUsers.map(async function (x) {
+        let newCrypto = x.crypto + cantTeam;
+        await User.findByIdAndUpdate(x._id, { crypto: newCrypto });
+      });
+      //agrega al fondo o reserva
+      let userAdmin = await User.findOne({
+        rol: "ADMIN"
+      });
+      let newCryptoAdmin = userAdmin.crypto + (cryptoGen * 0.2);
+      await User.findByIdAndUpdate(userAdmin._id, { crypto: newCryptoAdmin });
+*/
+        const transaction = new Transaction({
+          user: user._id,
+          description: "purcharse balance",
+          credits: token.value.toString(),
+          date:
+            new Date().toISOString().substr(0, 10) +
+            "  " +
+            new Date().toISOString().substr(11, 8)
+        });
+        await transaction.save();
+        await Token.findByIdAndUpdate(token._id, { active: true });
+        const res = await User.findById(user._id);
+        return res;
+      } catch (error) {
+        console.log(error);
       }
-      if (token.active == true) {
-        throw "Token active";
-      }
-      const user = await User.findById(data._id);
-      let newBalance = user.balance + token.value;
-      let newCycrons = user.cycrons + token.value * 0.02;
-      let newcycronsGen = user.cycronsGen + token.value * 0.02;
-      await User.findByIdAndUpdate(user._id, {
-        balance: newBalance,
-        cycrons: newCycrons,
-        cycronsGen: newcycronsGen,
-      });
-      let userReferal = await User.findOne({
-        codReferal: user.registrationCode
-      });
-      let newCycronsRef = userReferal.cycrons + token.value * 0.02;
-      await User.findByIdAndUpdate(userReferal._id, { cycrons: newCycronsRef });
-      const transaction = new Transaction({
-        user: user._id,
-        description: "purcharse balance",
-        credits: token.value.toString(),
-        date: new Date().toISOString().substr(0, 10)+"  "+new Date().toISOString().substr(11, 8)
-      });
-      await transaction.save();
-      await Token.findByIdAndUpdate(token._id, {active: true});
-      const res = await User.findById(user._id);
-      return res;
     },
     async buyLicense(_, data) {
       const user = await User.findById(data._idUser);
       const license = await License.findById(data._idLicense);
       if (license.price > user.balance) {
-        throw "Balance insuficient"
+        throw "Balance insuficient";
       }
       let newLicenses = user.licenses.concat([license.name]);
       let newBalance = user.balance - license.price;
-      license.permission.filter(data => user.permissions.includes(data)?data:user.permissions.push(data));//.concat();
+      license.permission.filter(data =>
+        user.permissions.includes(data) ? data : user.permissions.push(data)
+      ); //.concat();
       await User.findByIdAndUpdate(user._id, {
         balance: newBalance,
         licenses: newLicenses,
-        permissions: user.permissions,
+        permissions: user.permissions
       });
       const transaction = new Transaction({
         user: user._id,
         description: "License purchase",
         credits: license.price.toString(),
-        date: new Date().toISOString().substr(0, 10)+"  "+new Date().toISOString().substr(11, 8)
+        date:
+          new Date().toISOString().substr(0, 10) +
+          "  " +
+          new Date().toISOString().substr(11, 8)
       });
       await transaction.save();
       const res = await User.findById(user._id);

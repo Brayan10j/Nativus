@@ -1,6 +1,5 @@
 export const state = () => ({
   user: {},
-  userInfo: {},
   authUser: {},
   categories: ["News", "Culture", "Webinars", "Events", "Store"]
 });
@@ -12,14 +11,15 @@ export const mutations = {
   sendBalance(state, data) {
     state.userInfo.balance = data;
   },
-  sendPermissions(state, data) {
-    state.userInfo.permissions = data;
+  sendCategory(state, data) {
+    state.categories = data;
   },
   ON_AUTH_STATE_CHANGED_MUTATION(state, { authUser, claims, token }) {
     if (!authUser) {
-      this.$router.push('/singUpx');
+      //this.$router.push("/singUpx");
       return "no auth";
     }
+    //console.log(this.app.apolloProvider);
     // you can request additional fields if they are optional (e.g. photoURL)
     const { uid, email, emailVerified, displayName, photoURL } = authUser;
     state.authUser = {
@@ -38,13 +38,27 @@ export const mutations = {
 };
 
 export const actions = {
-  async onAuthStateChangedAction({ commit, dispatch }, { authUser, claims, token }) {
+  async nuxtServerInit({ commit, state }, { app }) {
+    /*let email = localStorage.getItem("email");
+    await this.$apollo
+      .query({
+        query: require("../api/server/queries/user.gql"),
+        variables: { email: email },
+      })
+      .then(async (data) => {
+        this.$store.commit("sendUserInfo", data.data.user);
+        this.email = data.data.user.email;
+      });*/
+  },
+  async onAuthStateChangedAction(
+    { commit, dispatch },
+    { authUser, claims, token }
+  ) {
     if (!authUser) {
       //this.app.router.push('/');
-      console.log("no auth");
+      //console.log("no auth");
       return "no auth";
     }
-
     // you can request additional fields if they are optional (e.g. photoURL)
     const { uid, email, emailVerified, displayName, photoURL } = authUser;
 

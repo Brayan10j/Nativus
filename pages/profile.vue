@@ -9,7 +9,7 @@
       </template>
       <v-toolbar-title>User Profile</v-toolbar-title>
     </v-toolbar>
-    {{user}}
+
     <v-dialog v-model="editeProfile" persistent max-width="600px">
       <v-card width="800" class="mx-auto">
         <v-card-title>
@@ -23,7 +23,11 @@
                   <v-avatar class="profile mx-auto" size="164" tile>
                     <v-img
                       transition="slide-x-transition"
-                      :src="user.photo"
+                      :src="
+                        $store.state.userInfo == undefined
+                          ? ''
+                          : $store.state.userInfo.photo
+                      "
                     ></v-img>
                   </v-avatar>
                 </v-row>
@@ -38,7 +42,7 @@
                   ></v-file-input>
                 </v-row>
                 <v-row>
-                  <v-text-field label="Name" v-model="user.name"></v-text-field>
+                  <v-text-field v-model="editItem.name"></v-text-field>
                 </v-row>
               </v-col>
             </v-form>
@@ -49,9 +53,7 @@
           <v-btn color="grey darken-1" text @click="editeProfile = false">
             Clear
           </v-btn>
-          <v-btn color="grey darken-1" text @click="editeProfile = false">
-            Confirm
-          </v-btn>
+          <v-btn color="grey darken-1" text @click="editUser"> Confirm </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -84,25 +86,49 @@
           >
             <v-app-bar flat color="rgba(0, 0, 0, 0)">
               <v-spacer></v-spacer>
-              <v-btn color="white" icon @click="editeProfile = !editeProfile">
-                <v-icon>mdi-dots-vertical</v-icon>
-              </v-btn>
+
+              <v-menu left bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn icon v-bind="attrs" v-on="on">
+                    <v-icon>mdi-dots-vertical</v-icon>
+                  </v-btn>
+                </template>
+
+                <v-list>
+                  <v-list-item @click="editItemUser($store.state.userInfo)">
+                    <v-list-item-title>Edit Profile</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item @click="dialogDelete = true">
+                    <v-list-item-title>Delete Account</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
             </v-app-bar>
             <v-row>
               <v-col class="ml-auto" cols="12" sm="12" md="3">
                 <v-avatar class="profile mx-auto" size="164" tile>
                   <v-img
                     transition="slide-x-transition"
-                    :src="user.photo"
+                    :src="
+                      $store.state.userInfo == undefined
+                        ? ''
+                        : $store.state.userInfo.photo
+                    "
                   ></v-img>
                 </v-avatar>
                 <v-list-item color="rgba(0, 0, 0, .4)" dark>
                   <v-list-item-content>
                     <v-list-item-title class="title">
-                      {{ $store.state.userInfo.name }}
+                      {{
+                        $store.state.userInfo == undefined
+                          ? ""
+                          : $store.state.userInfo.name
+                      }}
                     </v-list-item-title>
                     <v-list-item-subtitle>{{
-                      $store.state.userInfo.rol
+                      $store.state.userInfo == undefined
+                        ? ""
+                        : $store.state.userInfo.rol
                     }}</v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
@@ -116,14 +142,20 @@
                     <v-col cols="5" class="my-auto text-right" tag="strong"
                       >Token Access:</v-col
                     >
-                    <v-col cols="7">{{ $store.state.userInfo._id }}</v-col>
+                    <v-col cols="7">{{
+                      $store.state.userInfo == undefined
+                        ? ""
+                        : $store.state.userInfo._id
+                    }}</v-col>
                   </v-row>
                   <v-row justify="space-between">
                     <v-col cols="5" class="my-auto text-right" tag="strong"
                       >Invitation Token:</v-col
                     >
                     <v-col cols="7">{{
-                      $store.state.userInfo.codReferal
+                      $store.state.userInfo == undefined
+                        ? ""
+                        : $store.state.userInfo.codReferal
                     }}</v-col>
                   </v-row>
                 </v-row>
@@ -186,17 +218,30 @@
         </v-card>
       </v-tab-item>
     </v-tabs>
+    <v-dialog v-model="dialogDelete" max-width="550px" persistent>
+      <v-card>
+        <v-card-title class="headline"
+          >Are you sure you want to delete your account?</v-card-title
+        >
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="dialogDelete = false">Cancel</v-btn>
+          <v-btn color="blue darken-1" text @click="alert('BORRRAR')">OK</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
 <script>
-
 const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default {
   data() {
     return {
-      user: this.$store.state.userInfo,
+      editItem: {},
+      dialogDelete : false,
       active: [],
       open: [],
       imageSeleted: null,
@@ -258,14 +303,20 @@ export default {
       }
     },
     selected() {
-      const code = this.$store.state.userInfo.codReferal;
+      const code =
+        this.$store.state.userInfo == undefined
+          ? ""
+          : this.$store.state.userInfo.codReferal;
 
       return this.users == undefined
         ? []
         : this.users.filter((user) => user.registrationCode === code);
     },
     filterTransactions() {
-      const id = this.$store.state.userInfo._id;
+      const id =
+        this.$store.state.userInfo == undefined
+          ? ""
+          : this.$store.state.userInfo._id;
 
       return this.transactions == undefined
         ? []
@@ -280,6 +331,64 @@ export default {
   methods: {
     onImageSelected(file) {
       file ? (this.imageSeleted = file) : null;
+    },
+    editItemUser(item) {
+      this.editItem = Object.assign({}, item);
+      this.editeProfile = true;
+    },
+    deleteItem(item) {
+      this.editItem = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
+    async deletePost() {
+      await this.$apollo
+        .mutate({
+          mutation: require("../api/server/mutations/users/deleteUser.gql"),
+          variables: { _id: this.editItem._id },
+        })
+        .then(async (data) => {
+          console.log(data); // mensajes de respuesta
+        });
+      this.dialogDelete = false;
+    },
+    async editUser() {
+      if (this.imageSeleted != null) {
+        const storageRef = this.$fireStorage.ref(
+          `/images/users/${this.editItem.email}`
+        );
+        var fileTask = await storageRef
+          .put(this.imageSeleted)
+          .then((snapshot) => {
+            return snapshot.ref.getDownloadURL().then((url) => {
+              this.editItem.photo = url;
+              this.imageSeleted = null;
+              return url;
+            });
+          })
+          .catch((error) => {
+            console.error("Error uploading image", error);
+          });
+      }
+      let id = this.editItem._id;
+      delete this.editItem._id;
+      delete this.editItem.__typename;
+      await this.$apollo
+        .mutate({
+          mutation: require("../api/server/mutations/users/editUser.gql"),
+          variables: { _id: id, data: this.editItem },
+        })
+        .then(async (data) => {
+          console.log(data);
+        });
+      await this.$apollo
+        .query({
+          query: require("../api/server/queries/user.gql"),
+          variables: { email: this.editItem.email },
+        })
+        .then(async (data) => {
+          this.$store.commit("sendUserInfo", data.data.user);
+        });
+      this.editeProfile = false;
     },
   },
 };

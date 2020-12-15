@@ -5,7 +5,9 @@
         <v-list-item class="mx-auto">
           <v-list-item-content>
             <v-list-item-avatar>
-              <v-img max-width="40" src="/images/user.png"></v-img>
+              <v-img max-width="40" :src="$store.state.userInfo == undefined
+                  ? ''
+                  :$store.state.userInfo.photo"></v-img>
             </v-list-item-avatar>
           </v-list-item-content>
         </v-list-item>
@@ -62,13 +64,11 @@
         <v-list-item
           to="/insinght"
           v-if="
-            $store.state.userInfo.permissions == undefined
+            $store.state.userInfo == undefined
               ? false
-              : $store.state.userInfo.isAdmin ||
-                $store.state.userInfo.isSuperUser
+              : ($store.state.userInfo.isAdmin ||
+                $store.state.userInfo.isSuperUser)
               ? true
-              : $store.state.userInfo.permissions.includes('The brain')
-              ? $store.state.userInfo.permissions.length > 1
               : $store.state.userInfo.permissions.length > 0
           "
         >
@@ -393,12 +393,12 @@ export default {
       fetchPolicy: "cache-and-network",
     },
   },
-  async beforeUpdate() {
-    await this.$apollo.queries.user.refresh();
-  },
-  async mounted() {
+  async beforeMount() {
     let email = localStorage.getItem("email");
-    await this.$apollo
+    if(email==null){
+      this.$router.push("/login");
+    }else{
+      await this.$apollo
       .query({
         query: require("../api/server/queries/user.gql"),
         variables: { email: email },
@@ -407,6 +407,8 @@ export default {
         this.$store.commit("sendUserInfo", data.data.user); // quitarlo
         this.email = data.data.user.email;
       });
+    }
+
   },
   methods: {
     ...mapMutations(["sendUserInfo", "sendBalance"]),

@@ -551,12 +551,12 @@ export default {
       var access =
         this.$store.state.userInfo == undefined
           ? false
-          : this.$store.state.userInfo.isAdmin ||
-            this.$store.state.userInfo.isSuperUser;
+          : (this.$store.state.userInfo.isAdmin ||
+            this.$store.state.userInfo.isSuperUser);
       if (access) {
         return true;
       } else {
-        if (this.$store.state.userInfo.permissions == undefined) {
+        if (this.$store.state.userInfo == undefined) {
           return false;
         } else {
           switch (this.model) {
