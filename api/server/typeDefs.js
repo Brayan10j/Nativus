@@ -9,6 +9,10 @@ const typeDefs = gql`
     message: String
   }
 
+  type Category{
+    name: String
+  }
+
   type Token {
     _id: ID
     code: String
@@ -109,15 +113,6 @@ const typeDefs = gql`
     files: [String]
   }
 
-  enum Category {
-    New
-    Course
-    Market
-    Webinar
-    Event
-    Investment
-  }
-
   type Transaction {
     _id: ID
     user: String
@@ -135,6 +130,7 @@ const typeDefs = gql`
 
   type Query {
     users: [User]
+    categories: [Category]
     plans: [Plan]
     licenses: [License]
     transactions: [Transaction]

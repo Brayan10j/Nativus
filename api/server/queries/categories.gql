@@ -1,7 +1,6 @@
 query{
-  __type(name:"Category"){
-    enumValues{
+    categories{
       name
     }
   }
-}
+

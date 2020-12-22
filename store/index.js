@@ -11,7 +11,7 @@ export const mutations = {
   sendBalance(state, data) {
     state.userInfo.balance = data;
   },
-  sendCategory(state, data) {
+  sendCategories(state, data) {
     state.categories = data;
   },
   ON_AUTH_STATE_CHANGED_MUTATION(state, { authUser, claims, token }) {
@@ -38,25 +38,63 @@ export const mutations = {
 };
 
 export const actions = {
-  async nuxtServerInit({ commit, state }, { app }) {
-    /*let email = localStorage.getItem("email");
-    await this.$apollo
+  async nuxtServerInit({ dispatch, commit }, ctx) {
+
+    if (this.$fireAuth === null) {
+      throw 'nuxtServerInit Example not working - this.$fireAuth cannot be accessed.'
+    }
+
+    if (ctx.$fireAuth === null) {
+      throw 'nuxtServerInit Example not working - ctx.$fireAuth cannot be accessed.'
+    }
+
+    if (ctx.app.$fireAuth === null) {
+      throw 'nuxtServerInit Example not working - ctx.$fireAuth cannot be accessed.'
+    }
+
+    // INFO -> Nuxt-fire Objects can be accessed in nuxtServerInit action via this.$fire___, ctx.$fire___ and ctx.app.$fire___'
+
+    /** Get the VERIFIED authUser from the server */
+    if (ctx.res && ctx.res.locals && ctx.res.locals.user) {
+      let client = ctx.app.apolloProvider.defaultClient
+      const { allClaims: claims, ...authUser } = ctx.res.locals.user
+
+      /*console.info(
+        'Auth User verified on server-side. User: ',
+        authUser,
+        'Claims:',
+        claims
+      )*/
+      await client
       .query({
         query: require("../api/server/queries/user.gql"),
-        variables: { email: email },
+        variables: { email: authUser.email },
       })
       .then(async (data) => {
-        this.$store.commit("sendUserInfo", data.data.user);
-        this.email = data.data.user.email;
-      });*/
+        commit("sendUserInfo", data.data.user);
+      });
+      await client
+      .query({
+        query: require("../api/server/queries/categories.gql")
+      })
+      .then(async (data) => {
+        //commit("sendCategories", data.data.categories);
+        //console.log(data.data.categories);
+      });
+      await dispatch('onAuthStateChangedAction', {
+        authUser,
+        claims,
+      })
+    }else{
+      ctx.redirect("/login")
+    }
   },
+
   async onAuthStateChangedAction(
     { commit, dispatch },
-    { authUser, claims, token }
+    { authUser, claims }
   ) {
     if (!authUser) {
-      //this.app.router.push('/');
-      //console.log("no auth");
       return "no auth";
     }
     // you can request additional fields if they are optional (e.g. photoURL)

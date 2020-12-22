@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Post = require("../models/Post");
 const License = require("../models/License");
 const Transaction = require("../models/Transaction");
+const Category = require("../models/Category");
 const Token = require("../models/Token");
 const { PubSub, UserInputError } = require("apollo-server-express");
 const sm = require("./nodemailer");
@@ -18,7 +19,7 @@ const resolvers = {
   },
   Query: {
     users: async () => await User.find(),
-    news: async () => await Post.find({ category: "New" }),
+    categories: async () => await Category.find(),
     posts: async () => await Post.find(),
     licenses: async () => await License.find(),
     user: async (_, data) => await User.findOne({ email: data.email }),

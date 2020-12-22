@@ -10,7 +10,8 @@
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="model" class="my-2">
-      <v-tab-item v-for="x in 5" :key="x" :value="`tab-${x}`" class="px-2">
+      <v-tab-item v-for="(item, index) in $store.state.categories"
+        :key="index + 1" :value="`tab-${index + 1}`" class="px-2">
         <v-row v-if="isAccess">
           <v-col
             cols="12"
