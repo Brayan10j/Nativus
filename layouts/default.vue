@@ -45,7 +45,7 @@
           {{
             $store.state.userInfo == undefined
               ? 0
-              : $store.state.userInfo.cycrons
+              : $store.state.userInfo.crypto
           }}
         </p></v-sheet
       >

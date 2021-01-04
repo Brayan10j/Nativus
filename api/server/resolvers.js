@@ -47,43 +47,43 @@ const resolvers = {
         //agrega al usuario
         const user = await User.findById(data._id);
         let newBalance = user.balance + token.value;
-        let newCycrons = user.cycrons + token.value * 0.02;
-        let newcycronsGen = user.cycronsGen + token.value * 0.02;
+        let newCrypto = user.crypto + cryptoGen * 0.1;
+        let newCryptoGen = user.cryptoGen + cryptoGen * 0.1;
         await User.findByIdAndUpdate(user._id, {
           balance: newBalance,
-          cycrons: newCycrons,
-          cycronsGen: newcycronsGen
+          crypto: newCrypto,
+          cryptoGen: newCryptoGen
         });
         //agrega al referido
         let userReferal = await User.findOne({
           codReferal: user.registrationCode
         });
-        let newCycronsRef = userReferal.cycrons + token.value * 0.02;
+        let newCryptoRef = userReferal.crypto + cryptoGen * 0.1;
         await User.findByIdAndUpdate(userReferal._id, {
-          cycrons: newCycronsRef
+          crypto: newCryptoRef
         });
-        /*
-      //agrega a los founders
-      const founderUsers = User.find({type: "FOUNDER"});
-      const cantFounders = (cryptoGen * 0.4) / (await founderUsers).length;
-      founderUsers.map(async function (x) {
-        let newCrypto = x.crypto + cantFounders;
-        await User.findByIdAndUpdate(x._id, { crypto: newCrypto });
-      });
-      //agrega a los team
-      const teamUsers = User.find({type: "TEAM"});
-      const cantTeam = (cryptoGen * 0.2) / (await teamUsers).length;
-      teamUsers.map(async function (x) {
-        let newCrypto = x.crypto + cantTeam;
-        await User.findByIdAndUpdate(x._id, { crypto: newCrypto });
-      });
-      //agrega al fondo o reserva
-      let userAdmin = await User.findOne({
-        rol: "ADMIN"
-      });
-      let newCryptoAdmin = userAdmin.crypto + (cryptoGen * 0.2);
-      await User.findByIdAndUpdate(userAdmin._id, { crypto: newCryptoAdmin });
-*/
+
+        //agrega a los founders
+        const founderUsers = User.find({ type: "FOUNDER" });
+        const cantFounders = (cryptoGen * 0.4) / (await founderUsers).length;
+        founderUsers.map(async function(x) {
+          let newCrypto = x.crypto + cantFounders;
+          await User.findByIdAndUpdate(x._id, { crypto: newCrypto });
+        });
+        //agrega a los team
+        const teamUsers = User.find({ type: "TEAM" });
+        const cantTeam = (cryptoGen * 0.2) / (await teamUsers).length;
+        teamUsers.map(async function(x) {
+          let newCrypto = x.crypto + cantTeam;
+          await User.findByIdAndUpdate(x._id, { crypto: newCrypto });
+        });
+        //agrega al fondo o reserva
+        let userAdmin = await User.findOne({
+          rol: "ADMIN"
+        });
+        let newCryptoAdmin = userAdmin.crypto + cryptoGen * 0.2;
+        await User.findByIdAndUpdate(userAdmin._id, { crypto: newCryptoAdmin });
+
         const transaction = new Transaction({
           user: user._id,
           description: "purcharse balance",

@@ -88,6 +88,7 @@ export default {
   layout: "empty",
   data() {
     return {
+      buttonInstall: null,
       wallPaper: "",
       alerta: false,
       absolute: true,
@@ -113,6 +114,21 @@ export default {
     ];
     var num = Math.floor(Math.random() * imageURLs.length);
     this.wallPaper = imageURLs[num];
+
+    let deferredPrompt;
+
+    if (process.client) {
+      window.addEventListener("beforeinstallprompt", (e) => {
+        console.log(e);
+
+        // Stash the event so it can be triggered later.
+        deferredPrompt = e;
+        console.log(deferredPrompt);
+        deferredPrompt.prompt();
+        // Update UI notify the user they can install the PWA
+        showInstallPromotion();
+      });
+    }
   },
   methods: {
     ...mapMutations(["sendUserInfo"]),

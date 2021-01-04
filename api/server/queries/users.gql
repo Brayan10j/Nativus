@@ -11,8 +11,8 @@ query{
     photo
     permissions
     balance
-    cycrons
-    cycronsGen
+    crypto
+    cryptoGen
     referals
     isAdmin
     isSuperUser

@@ -58,8 +58,8 @@ const typeDefs = gql`
     rol: String
     photo: String
     balance: Int
-    cycrons: Int
-    cycronsGen: Int
+    crypto: Int
+    cryptoGen: Int
     permissions: [String]
     referals: [String]
     isAdmin: Boolean
@@ -79,8 +79,8 @@ const typeDefs = gql`
     rol: String
     photo: String
     balance: Int
-    cycrons: Int
-    cycronsGen: Int
+    crypto: Int
+    cryptoGen: Int
     permissions: [String]
     referals: [String]
     isAdmin: Boolean

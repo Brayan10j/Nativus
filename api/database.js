@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const MONGODB_URI = 'mongodb+srv://Cycron:CycronDB@cluster0.fetta.mongodb.net/PilgrimTesting?retryWrites=true&w=majority';
+const MONGODB_URI = 'mongodb+srv://User:DB@cluster0.mebur.mongodb.net/PilgrimDB?retryWrites=true&w=majority';
 
 
 mongoose.connect(MONGODB_URI, {
