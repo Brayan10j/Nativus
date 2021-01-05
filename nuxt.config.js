@@ -65,6 +65,9 @@ export default {
     }
   },
   pwa: {
+    meta:{
+      mobileAppIOS: true
+    },
     // disable the modules you don't need
 
     // if you omit a module key form configuration sensible defaults will be applied

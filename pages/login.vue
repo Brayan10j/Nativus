@@ -2,20 +2,15 @@
   <v-layout justify-center>
     <v-container fluid>
       <v-row align="center" justify="center">
-        <v-banner
-        v-if="deferredPrompt"
-        color="info"
-        dark
-        class="text-left"
-      >
-        Get our free app.
-
-        <template v-slot:actions>
-          <v-btn text @click="deferredPrompt = null">Dismiss</v-btn>
-          <v-btn text @click="install">Install</v-btn>
-        </template>
-      </v-banner>
         <v-col cols="12" sm="8" md="4">
+          <v-banner v-if="banner" color="info" dark class="text-left">
+            Get our free app.
+
+            <template v-slot:actions>
+              <v-btn text @click="banner = false">Dismiss</v-btn>
+              <v-btn text @click="install">Install</v-btn>
+            </template>
+          </v-banner>
           <!--<v-img
             class="mx-auto my-15"
             src="/images/logo.png"
@@ -102,7 +97,7 @@ export default {
   data() {
     return {
       deferredPrompt: null,
-      dialog: false,
+      banner: false,
       buttonInstall: null,
       wallPaper: "",
       alerta: false,
@@ -133,15 +128,17 @@ export default {
       window.addEventListener("beforeinstallprompt", (e) => {
         // Stash the event so it can be triggered later.
         this.deferredPrompt = e;
-        console.log(this.deferredPrompt);
         // Update UI notify the user they can install the PWA
-        this.dialog = true;
+        this.banner = true;
+      });
+      window.addEventListener("appinstalled", () => {
+        this.banner = false;
       });
     }
   },
   methods: {
     install() {
-      this.dialog = false;
+      this.banner = false;
       // Show the install prompt
       this.deferredPrompt.prompt();
       // Wait for the user to respond to the prompt
