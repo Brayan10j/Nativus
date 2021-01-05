@@ -263,7 +263,7 @@ export default {
         },
         {
           text: "Pilgrim Generated",
-          value: "cycronsGen",
+          value: "cryptoGen",
           class: "text-lg-subtitle-1",
         },
       ],
