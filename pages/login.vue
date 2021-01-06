@@ -144,6 +144,7 @@ export default {
         "standalone" in window.navigator && window.navigator.standalone;
 
       console.log(isInStandaloneMode());
+      alert(isIos());
       // Checks if should display install popup notification:
       if (isIos() && !isInStandaloneMode()) {
         this.banner = true;
