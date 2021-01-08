@@ -49,8 +49,16 @@ export default {
     // https://go.nuxtjs.dev/pwa
     "@nuxtjs/pwa",
     "@nuxtjs/apollo",
-    "@nuxtjs/firebase"
+    "@nuxtjs/firebase",
+    'nuxt-i18n',
   ],
+  i18n: {
+    detectBrowserLanguage: {
+      useCookie: false,
+      //cookieKey: 'i18n_redirected',
+      //onlyOnRoot: true,  // recommended
+    }
+  },
   apollo: {
     clientConfigs: {
       default: {
@@ -82,13 +90,12 @@ export default {
   },
   firebase: {
     config: {
-      apiKey: "AIzaSyDXFcML5pKIa1kkrL0Clm7rR59r_5R2K90",
-      authDomain: "cycron-87aa7.firebaseapp.com",
-      databaseURL: "https://cycron-87aa7.firebaseio.com",
-      projectId: "cycron-87aa7",
-      storageBucket: "cycron-87aa7.appspot.com",
-      messagingSenderId: "637194624242",
-      appId: "1:637194624242:web:2fb916d88977de5c3d046b"
+      apiKey: "AIzaSyBdV29XYKmKlqPs1lOKb3qcGMIk9obxfYg",
+      authDomain: "pilgrim-a07fc.firebaseapp.com",
+      projectId: "pilgrim-a07fc",
+      storageBucket: "pilgrim-a07fc.appspot.com",
+      messagingSenderId: "50369241596",
+      appId: "1:50369241596:web:0061117cd25de7b85ed279"
     },
     services: {
       auth: {
