@@ -18,14 +18,8 @@ export default {
     wallPaper: "",
   }),
   mounted() {
-    var imageURLs = [
-      // We assign in an array the list of URL/filename we want as background
-      "/images/wallPapers/1.jpg",
-      "/images/wallPapers/2.jpg",
-      "/images/wallPapers/3.jpg",
-    ];
-    var num = Math.floor(Math.random() * imageURLs.length);
-    this.wallPaper = imageURLs[num];
+    var num = Math.floor((Math.random() * 3) +1);
+    this.wallPaper = `https://firebasestorage.googleapis.com/v0/b/pilgrim-a07fc.appspot.com/o/images%2Fwallpapers%2F${num}.jpg?alt=media&token=2c2df7ac-7ee0-48c4-8226-a9d338a6a482`;
   },
 };
 </script>

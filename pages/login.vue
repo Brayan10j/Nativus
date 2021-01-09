@@ -3,14 +3,16 @@
     <v-container fluid>
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8" md="4">
-          <v-banner v-if="banner" color="info" dark class="text-left">
-            Get our free app.
-
-            <template v-slot:actions>
-              <v-btn text @click="banner = false">Dismiss</v-btn>
-              <v-btn text @click="install">Install</v-btn>
-            </template>
-          </v-banner>
+          <v-dialog v-model="banner" persistent max-width="290">
+            <v-card>
+              <v-card-title class="headline"> Get our free app. </v-card-title>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn text @click="banner = false"> Disagree </v-btn>
+                <v-btn color="white " text @click="install"> Agree </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
           <!--<v-img
             class="mx-auto my-15"
             src="/images/logo.png"
@@ -97,7 +99,7 @@ export default {
   data() {
     return {
       deferredPrompt: null,
-      banner: false,
+      banner: true,
       buttonInstall: null,
       wallPaper: "",
       alerta: false,
@@ -116,14 +118,7 @@ export default {
     };
   },
   created() {
-    var imageURLs = [
-      // We assign in an array the list of URL/filename we want as background
-      "/images/wallPapers/1.jpg",
-      "/images/wallPapers/2.png",
-      "/images/wallPapers/3.jpeg",
-    ];
-    var num = Math.floor(Math.random() * imageURLs.length);
-    this.wallPaper = imageURLs[num];
+
     if (process.client) {
       window.addEventListener("beforeinstallprompt", (e) => {
         // Stash the event so it can be triggered later.
