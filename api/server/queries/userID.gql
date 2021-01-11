@@ -12,6 +12,7 @@ query(
     registrationCode
     licenses
     rol
+    type
     photo
     permissions
     balance

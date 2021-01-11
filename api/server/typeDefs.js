@@ -56,6 +56,7 @@ const typeDefs = gql`
     registrationCode: String
     licenses: [String]
     rol: String
+    type: String
     photo: String
     balance: Int
     crypto: Int
@@ -77,6 +78,7 @@ const typeDefs = gql`
     registrationCode: String
     licenses: [String]
     rol: String
+    type: String
     photo: String
     balance: Int
     crypto: Int

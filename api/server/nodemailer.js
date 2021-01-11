@@ -2,12 +2,10 @@ const nodemailer = require("nodemailer");
 
 exports.sendEmail = async function (data) {
   const transporter = nodemailer.createTransport({
-    host: "cycron.tech",
-    port: 465,
-    secure: true,
+    service: 'gmail',
     auth: {
-      user: "brain@cycron.tech",
-      pass: "0rJlZ45IvUpe"
+      user: "info@ahumpilgrim.org",
+      pass: "RAsiLPp@89"
     },
     tls: {
       rejectUnauthorized: false
@@ -22,8 +20,8 @@ exports.sendEmail = async function (data) {
       <br>
       <p>${data.message}</p>
     `,
-    from: "brain@cycron.tech",
-    to: "support@cycron.tech, " + data.email
+    from: "info@ahumpilgrim.org",
+    to: "info@ahumpilgrim.org, " + data.email
   };
 
   const emailSingUp = {
@@ -33,7 +31,7 @@ exports.sendEmail = async function (data) {
       <br>
       <p>Your token access is: <b>${data.message}</b></p>
     `,
-    from: "brain@cycron.tech",
+    from: "info@ahumpilgrim.org",
     to:  data.email
   };
 

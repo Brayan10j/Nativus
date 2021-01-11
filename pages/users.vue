@@ -32,6 +32,14 @@
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
                       <v-select
+                        :items="types"
+                        v-model="editedItem.type"
+                        label="Type"
+                        item-value="text"
+                      ></v-select>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="6">
+                      <v-select
                         multiple
                         :items="permissions"
                         v-model="editedItem.permissions"
@@ -95,6 +103,10 @@ export default {
       "Investments",
       "The Brain",
     ],
+    types: [
+      "FOUNDER",
+      "TEAMPILGRIM"
+    ],
     dialogeditUser: false,
     dialogDelete: false,
     headers: [
@@ -105,6 +117,7 @@ export default {
         value: "name",
         class: "text-lg-subtitle-1",
       },
+      { text: "Type", value: "type", class: "text-lg-subtitle-1" },
       { text: "Rol", value: "rol", class: "text-lg-subtitle-1" },
       { text: "License", value: "licenses", class: "text-lg-subtitle-1" },
       { text: "Verify", value: "verify", class: "text-lg-subtitle-1" },
