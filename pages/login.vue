@@ -3,16 +3,44 @@
     <v-container fluid>
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8" md="4">
-          <v-dialog v-model="banner" persistent max-width="290">
+          <v-dialog v-model="dialogIOS" persistent max-width="290">
             <v-card>
-              <v-card-title class="headline"> Get our free app. </v-card-title>
-              <v-card-actions>
+              <v-card-title class="headline justify-center">
+                <img src="/icon.png" height="72" width="72" alt="Install PWA" />
+                Pilgrim
+              </v-card-title>
+              <v-card-text class="text-center"
+                ><div>
+                  <p>
+                    Tap
+                    <img
+                      src="/images/AppleShare.png"
+                      className="uk-display-inline-block"
+                      alt="Add to homescreen"
+                      height="20"
+                      width="20"
+                    />
+                    then &quot;Add to Home Screen&quot;
+                  </p>
+                </div></v-card-text
+              >
+              <v-card-actions class="justify-center text-center">
                 <v-spacer></v-spacer>
-                <v-btn text @click="banner = false"> Disagree </v-btn>
-                <v-btn color="white " text @click="install"> Agree </v-btn>
+                <v-btn color="green darken-1" text @click="dialogIOS = false">
+                  Close
+                </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
+          <v-snackbar v-model="banner" timeout="-1">
+            Get our free app.
+            <template v-slot:action="{ attrs }">
+              <v-btn color="blue" text @click="install"> Install </v-btn>
+              <v-btn color="blue" text v-bind="attrs" @click="banner = false">
+                Close
+              </v-btn>
+            </template>
+          </v-snackbar>
           <!--<v-img
             class="mx-auto my-15"
             src="/images/logo.png"
@@ -98,7 +126,9 @@ export default {
   layout: "empty",
   data() {
     return {
+      isIOS: false,
       deferredPrompt: null,
+      dialogIOS: false,
       banner: true,
       buttonInstall: null,
       wallPaper: "",
@@ -118,7 +148,6 @@ export default {
     };
   },
   created() {
-
     if (process.client) {
       window.addEventListener("beforeinstallprompt", (e) => {
         // Stash the event so it can be triggered later.
@@ -132,7 +161,8 @@ export default {
       // Detects if device is on iOS
       const isIos = () => {
         const userAgent = window.navigator.userAgent.toLowerCase();
-        return /iphone|ipad|ipod/.test(userAgent);
+        this.isIOS = /iphone|ipad|ipod/.test(userAgent);
+        return this.isIOS;
       };
       // Detects if device is in standalone mode
       const isInStandaloneMode = () =>
@@ -147,16 +177,22 @@ export default {
   methods: {
     install() {
       this.banner = false;
-      // Show the install prompt
-      this.deferredPrompt.prompt();
-      // Wait for the user to respond to the prompt
-      this.deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === "accepted") {
-          console.log("User accepted the install prompt");
-        } else {
-          console.log("User dismissed the install prompt");
-        }
-      });
+
+      if (this.isIOS) {
+        this.dialogIOS = true;
+      } else {
+        this.banner = false;
+        // Show the install prompt
+        this.deferredPrompt.prompt();
+        // Wait for the user to respond to the prompt
+        this.deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === "accepted") {
+            console.log("User accepted the install prompt");
+          } else {
+            console.log("User dismissed the install prompt");
+          }
+        });
+      }
     },
     ...mapMutations(["sendUserInfo"]),
     async userLogin2() {
@@ -174,9 +210,9 @@ export default {
             );
             this.sendUserInfo(data.data.userID);
             await localStorage.setItem("email", data.data.userID.email);
+            this.overlay = false;
+            this.$router.push("/insinght");
           });
-        this.overlay = false;
-        this.$router.push("/dashboard");
       } catch (err) {
         this.errord.description = "Wrong token";
         this.alerta = true;

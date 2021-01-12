@@ -53,14 +53,14 @@
       <br />
       <v-divider></v-divider>
       <v-list height="5">
-        <v-list-item to="/dashboard">
+       <!-- <v-list-item to="/dashboard">
           <v-list-item-icon>
             <v-icon v-text="'mdi-home'"></v-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title v-text="'Dashboard'"></v-list-item-title>
           </v-list-item-content>
-        </v-list-item>
+        </v-list-item>-->
         <v-list-item
           to="/insinght"
           v-if="

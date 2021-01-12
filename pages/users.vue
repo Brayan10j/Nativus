@@ -183,6 +183,7 @@ export default {
     },
     async editUser() {
       let id = this.editedItem._id;
+      this.editedItem.type != "" ? this.editedItem.rol = "SUPERUSER" :""
       this.editedItem.rol == "SUPERUSER"
         ? (this.editedItem.isSuperUser = true)
         : false;
