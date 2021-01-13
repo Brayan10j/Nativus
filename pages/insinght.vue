@@ -538,8 +538,7 @@ export default {
           break;
         case "tab-5":
           this.formAdd.category = "Store";
-          return [];
-          this.posts == undefined
+          return this.posts == undefined
             ? []
             : this.posts.filter((post) => post.category == "Store");
           break;
