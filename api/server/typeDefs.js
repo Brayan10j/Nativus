@@ -9,6 +9,18 @@ const typeDefs = gql`
     message: String
   }
 
+  type dataLicense{
+    name: String
+    dateStart: String
+    dateFinish: String
+  }
+
+  input inputdataLicense{
+    name: String
+    dateStart: String
+    dateFinish: String
+  }
+
   type Category{
     name: String
   }
@@ -54,7 +66,7 @@ const typeDefs = gql`
     password: String
     codReferal: String
     registrationCode: String
-    licenses: [String]
+    licenses: [dataLicense]
     rol: String
     type: String
     photo: String
@@ -76,7 +88,7 @@ const typeDefs = gql`
     password: String
     codReferal: String
     registrationCode: String
-    licenses: [String]
+    licenses: [inputdataLicense]
     rol: String
     type: String
     photo: String

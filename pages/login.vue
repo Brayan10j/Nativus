@@ -129,7 +129,7 @@ export default {
       isIOS: false,
       deferredPrompt: null,
       dialogIOS: false,
-      banner: true,
+      banner: false,
       buttonInstall: null,
       wallPaper: "",
       alerta: false,

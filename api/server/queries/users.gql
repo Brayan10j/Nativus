@@ -6,7 +6,11 @@ query{
     password
     codReferal
     registrationCode
-    licenses
+    licenses{
+      name
+      dateStart
+      dateFinish
+    }
     rol
     type
     photo

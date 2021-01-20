@@ -393,23 +393,6 @@ export default {
       fetchPolicy: "cache-and-network",
     },
   },
-  async beforeMount() {
-    let email = localStorage.getItem("email");
-    if(email==null){
-      this.$router.push("/login");
-    }else{
-      await this.$apollo
-      .query({
-        query: require("../api/server/queries/user.gql"),
-        variables: { email: email },
-      })
-      .then(async (data) => {
-        this.$store.commit("sendUserInfo", data.data.user); // quitarlo
-        this.email = data.data.user.email;
-      });
-    }
-
-  },
   methods: {
     ...mapMutations(["sendUserInfo", "sendBalance"]),
     async logOut() {

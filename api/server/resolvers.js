@@ -107,7 +107,16 @@ const resolvers = {
       if (license.price > user.balance) {
         throw "Balance insuficient";
       }
-      let newLicenses = user.licenses.concat([license.name]);
+      let date = new Date();
+      let dateStart = date.toISOString().substr(0, 10);
+      date.setMonth(date.getMonth() + parseInt(license.duration));
+      let dateFinish = date.toISOString().substr(0, 10);
+      let dataLicence = {
+        name: license.name,
+        dateStart: dateStart,
+        dateFinish: dateFinish
+      };
+      let newLicenses = user.licenses.concat([dataLicence]);
       let newBalance = user.balance - license.price;
       license.permission.filter(data =>
         user.permissions.includes(data) ? data : user.permissions.push(data)

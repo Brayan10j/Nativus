@@ -12,13 +12,17 @@ mutation(
     password
     codReferal
     registrationCode
-    licenses
+    licenses{
+      name
+      dateStart
+      dateFinish
+    }
     rol
     photo
     permissions
     balance
-    cycrons
-    cycronsGen
+    crypto
+    cryptoGen
     referals
     isAdmin
     isSuperUser

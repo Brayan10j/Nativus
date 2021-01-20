@@ -1,85 +1,103 @@
 <template>
-  <v-row class="mx-0" width="850">
-    <v-col v-for="(item, index) in licenses" :key="index" class="text-center" style="max-width: 350px;">
-      <v-card
-        class="carta mx-auto rounded-xl"
-        elevation="16"
-        width="280"
-        height="420"
-      >
-        <v-card-title class="justify-center my-5"
-          ><h1>{{ item.name }}</h1></v-card-title
-        >
-        <v-card-text class="py-0"
-          ><div class="before">$ {{ item.price }}</div>
-          <div class="price"><span>$</span>{{ item.price }}</div></v-card-text
-        >
-        <v-card-text class="plan">{{ item.duration }}</v-card-text>
-        <v-list dense height="100" color="rgba(0, 0, 0, 0)">
-          <v-list-item-group>
-            <v-list-item
-              class="d-inline-flex"
-              v-for="(item, i) in item.permission"
-              :key="i"
-            >
-              <v-chip class="details elevation-10" text-color="white">
-                <v-avatar left>
-                  <v-icon>mdi-checkbox-marked-circle</v-icon>
-                </v-avatar>
-                <v-list-item-title v-text="item"></v-list-item-title
-              ></v-chip>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>        
-        <v-card-actions>          
-          <v-btn            
-            class="buy-button rounded-br-xl"
-            color="info"
-            elevation="9"
-            @click="buyLicense(item)"
-            ><h3>Activate</h3></v-btn
-          >     
+  <div>
+    <v-data-table
+      v-if="$store.state.userInfo.licenses.length > 0"
+      dense
+      :headers="headers"
+      :items="items"
+      item-key="name"
+      class="elevation-1"
+      disable-pagination
+      hide-default-footer
+    ></v-data-table>
 
-        </v-card-actions>
-        <v-alert
-          :class="$store.state.userInfo.licenses.includes(item.name)? 'buy-butto':''"
-          :value="alert"
-          class="mb-0"
-          height="62" 
-          color="green darken-3"
-          type="success"
-            style="visibility: hidden;"
-        >Product already owned</v-alert>
-      </v-card>
-      <v-overlay :absolute="absolute" :value="alerta" :opacity="opacity">
-        <v-alert
-          :value="alerta"
-          color="red darken-2"
-          type="error"
-          border="top"
-          transition="scale-transition"
-          >{{errord.description}}
-          <v-btn
-            color="white"
-            elevation="3"
-            class="ml-3"
-            right
-            icon
-            small
-            @click="alerta = !alerta"
-            ><v-icon dark> mdi-close </v-icon></v-btn
-          ></v-alert
+    <v-row class="mx-0" width="850">
+      <v-col
+        v-for="(item, index) in licenses"
+        :key="index"
+        class="text-center"
+        style="max-width: 350px"
+      >
+        <v-card
+          class="carta mx-auto rounded-xl"
+          elevation="16"
+          width="280"
+          height="420"
         >
-      </v-overlay>
-    </v-col>
-  </v-row>
+          <v-card-title class="justify-center my-5"
+            ><h1>{{ item.name }}</h1></v-card-title
+          >
+          <v-card-text class="py-0"
+            ><div class="before">$ {{ item.price }}</div>
+            <div class="price"><span>$</span>{{ item.price }}</div></v-card-text
+          >
+          <v-card-text class="plan">{{ item.duration }}</v-card-text>
+          <v-list dense height="100" color="rgba(0, 0, 0, 0)">
+            <v-list-item-group>
+              <v-list-item
+                class="d-inline-flex"
+                v-for="(item, i) in item.permission"
+                :key="i"
+              >
+                <v-chip class="details elevation-10" text-color="white">
+                  <v-avatar left>
+                    <v-icon>mdi-checkbox-marked-circle</v-icon>
+                  </v-avatar>
+                  <v-list-item-title v-text="item"></v-list-item-title
+                ></v-chip>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+          <v-card-actions>
+            <v-btn
+              class="buy-button rounded-br-xl"
+              color="info"
+              elevation="9"
+              @click="buyLicense(item)"
+              ><h3>Activate</h3></v-btn
+            >
+          </v-card-actions>
+          <v-alert
+            :class="userLicenses.includes(item.name)? 'buy-butto':''"
+            :value="alert"
+            class="mb-0"
+            height="62"
+            color="green darken-3"
+            type="success"
+            style="visibility: hidden"
+            >Product already owned</v-alert
+          >
+        </v-card>
+        <v-overlay :absolute="absolute" :value="alerta" :opacity="opacity">
+          <v-alert
+            :value="alerta"
+            color="red darken-2"
+            type="error"
+            border="top"
+            transition="scale-transition"
+            >{{ errord.description }}
+            <v-btn
+              color="white"
+              elevation="3"
+              class="ml-3"
+              right
+              icon
+              small
+              @click="alerta = !alerta"
+              ><v-icon dark> mdi-close </v-icon></v-btn
+            ></v-alert
+          >
+        </v-overlay>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
 import { mapMutations } from "vuex";
 export default {
   data() {
-    return {      
+    return {
       alert: true,
       alerta: false,
       absolute: true,
@@ -90,9 +108,21 @@ export default {
         credits: "",
         date: new Date().toISOString().substr(0, 10),
       },
-      errord:{
-        description: "error"
-      }
+      errord: {
+        description: "error",
+      },
+      headers: [
+        {
+          text: "License",
+          align: "start",
+          sortable: false,
+          value: "name",
+        },
+        { text: "Start Date", value: "dateStart" },
+        { text: "Finish Date", value: "dateFinish" },
+      ],
+      items: this.$store.state.userInfo.licenses,
+      userLicenses: []
     };
   },
   apollo: {
@@ -102,40 +132,33 @@ export default {
       //pollInterval: 7000, //puede cambiarse esto a una subscriptionMore
     },
   },
-  computed: {
-    filterLicences: function () {
-      if (this.licenses == undefined) {
-        return [];
-      } else {
-        var lic = this.$store.state.userInfo.licenses;
-        return this.licenses.filter(function (item) {
-          return lic.includes(item.name) ? false : true;
-        });
-      }
-    },
+  mounted() {
+    this.userLicenses = this.$store.state.userInfo.licenses.map(function (l) {
+      return l.name;
+    });
   },
   methods: {
     ...mapMutations(["sendUserInfo", "sendBalance"]),
     async buyLicense(license) {
-        try {
-          await this.$apollo
-            .mutate({
-              mutation: require("../api/server/mutations/buyLicense.gql"),
-              variables: {
-                _idUser: this.$store.state.userInfo._id,
-                _idLicense: license._id,
-              },
-            })
-            .then(async ({ data }) => {
-              console.log(data);
-              this.sendUserInfo(data.buyLicense);
-            });
-          this.$router.push("/insinght");
-        } catch (error) {
-          //alert(error);
-          this.errord.description="Insufficient balance";
-          this.alerta=true;
-        }
+      try {
+        await this.$apollo
+          .mutate({
+            mutation: require("../api/server/mutations/buyLicense.gql"),
+            variables: {
+              _idUser: this.$store.state.userInfo._id,
+              _idLicense: license._id,
+            },
+          })
+          .then(async ({ data }) => {
+            console.log(data);
+            this.sendUserInfo(data.buyLicense);
+          });
+        this.$router.push("/insinght");
+      } catch (error) {
+        //alert(error);
+        this.errord.description = "Insufficient balance";
+        this.alerta = true;
+      }
     },
   },
 };

@@ -54,9 +54,8 @@ export default {
   ],
   i18n: {
     detectBrowserLanguage: {
-      useCookie: false,
-      //cookieKey: 'i18n_redirected',
-      //onlyOnRoot: true,  // recommended
+      useCookie: true,
+      alwaysRedirect: true
     }
   },
   apollo: {

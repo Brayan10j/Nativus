@@ -74,6 +74,22 @@
           </v-dialog>
         </v-toolbar>
       </template>
+      <template v-slot:[`item.licenses`]="{ item }">
+        <v-btn small min-width="20px" width="20 px" class="ma-1" @click="dialogLic = true">
+          {{ item.licenses.length }}
+        </v-btn>
+        <v-dialog v-model="dialogLic" max-width="500px">
+          <v-data-table
+            dense
+            :headers="headersLic"
+            :items="item.licenses"
+            item-key="name"
+            class="elevation-1"
+            disable-pagination
+            hide-default-footer
+          ></v-data-table>
+        </v-dialog>
+      </template>
       <template v-slot:[`item.actions`]="{ item }">
         <v-btn
           @click="editItem(item)"
@@ -82,8 +98,8 @@
           width="20 px"
           class="ma-1"
         >
-          <v-icon color="blue" small> mdi-pencil </v-icon>
-        </v-btn>
+          <v-icon color="blue" small> mdi-pencil </v-icon> </v-btn
+        >
       </template>
     </v-data-table>
   </div>
@@ -94,6 +110,7 @@
 import { mapMutations } from "vuex";
 export default {
   data: () => ({
+    dialogLic: false,
     permissions: [
       "News",
       "Courses",
@@ -103,10 +120,7 @@ export default {
       "Investments",
       "The Brain",
     ],
-    types: [
-      "FOUNDER",
-      "TEAMPILGRIM"
-    ],
+    types: ["FOUNDER", "TEAMPILGRIM"],
     dialogeditUser: false,
     dialogDelete: false,
     headers: [
@@ -119,7 +133,7 @@ export default {
       },
       { text: "Type", value: "type", class: "text-lg-subtitle-1" },
       { text: "Rol", value: "rol", class: "text-lg-subtitle-1" },
-      { text: "License", value: "licenses", class: "text-lg-subtitle-1" },
+      { text: "Licenses", value: "licenses", class: "text-lg-subtitle-1" },
       { text: "Verify", value: "verify", class: "text-lg-subtitle-1" },
       { text: "Created", value: "dateCreated", class: "text-lg-subtitle-1" },
       { text: "Active", value: "active", class: "text-lg-subtitle-1" },
@@ -130,6 +144,16 @@ export default {
         class: "text-lg-subtitle-1",
       },
     ],
+    headersLic: [
+        {
+          text: "License",
+          align: "start",
+          sortable: false,
+          value: "name",
+        },
+        { text: "Start Date", value: "dateStart" },
+        { text: "Finish Date", value: "dateFinish" },
+      ],
     select: [{ text: "SUPERUSER" }, { text: "USER" }],
     editedIndex: -1,
     nameLicenses: [],
@@ -183,7 +207,7 @@ export default {
     },
     async editUser() {
       let id = this.editedItem._id;
-      this.editedItem.type != "" ? this.editedItem.rol = "SUPERUSER" :""
+      this.editedItem.type != "" ? (this.editedItem.rol = "SUPERUSER") : "";
       this.editedItem.rol == "SUPERUSER"
         ? (this.editedItem.isSuperUser = true)
         : false;
