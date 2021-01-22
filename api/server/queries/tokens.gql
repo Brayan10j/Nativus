@@ -4,5 +4,6 @@ query{
     code
     value
     active
+    type
   }
 }

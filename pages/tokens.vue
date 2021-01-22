@@ -51,6 +51,7 @@ export default {
       },
       { text: "Value", value: "value", class: "text-lg-subtitle-1" },
       { text: "Active", value: "active", class: "text-lg-subtitle-1" },
+      { text: "Type", value: "type", class: "text-lg-subtitle-1" },
     ],
   }),
   apollo:{
@@ -61,7 +62,12 @@ export default {
   },
   methods: {
     exportExcel: function () {
-      let data = XLSX.utils.json_to_sheet(this.tokens)
+       let exportData = this.tokens.map(function (t) {
+        delete t._id;
+        delete t.__typename;
+        return t
+      })
+      let data = XLSX.utils.json_to_sheet(exportData)
       const workbook = XLSX.utils.book_new()
       const filename = 'Tokens'
       XLSX.utils.book_append_sheet(workbook, data, filename)

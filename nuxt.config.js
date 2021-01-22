@@ -51,7 +51,12 @@ export default {
     "@nuxtjs/apollo",
     "@nuxtjs/firebase",
     'nuxt-i18n',
+    '@nuxtjs/toast',
   ],
+  toast: {
+    duration: 1000,
+
+},
   i18n: {
     detectBrowserLanguage: {
       useCookie: true,

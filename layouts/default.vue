@@ -30,7 +30,7 @@
         <v-btn color="info" elevation="9" @click="balance = !balance">
           <v-icon left> mdi-cash-multiple </v-icon>
           Wood Coins :
-          {{ user == undefined ? 0 : user.balance }}
+          {{ $store.state.userInfo.balance }}
         </v-btn>
       </v-row>
       <v-sheet
@@ -381,18 +381,6 @@ export default {
       right: true,
     };
   },
-  apollo: {
-    user: {
-      query: require("../api/server/queries/user.gql"),
-      variables() {
-        // Use vue reactive properties here
-        return {
-          email: this.email,
-        };
-      },
-      fetchPolicy: "cache-and-network",
-    },
-  },
   methods: {
     ...mapMutations(["sendUserInfo", "sendBalance"]),
     async logOut() {
@@ -416,11 +404,12 @@ export default {
           })
           .then(async ({ data }) => {
             console.log(data);
-            await this.$apollo.queries.user.refresh();
             this.sendUserInfo(data.addBalance);
+            this.$toast.success("Balance added successfully.");
+            this.balance = false;
           });
       } catch (error) {
-        //alert(error.message);
+        alert(error.message);
         this.errord.description = "Wrong token";
         this.alerta = true;
       }

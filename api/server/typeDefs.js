@@ -30,12 +30,14 @@ const typeDefs = gql`
     code: String
     value: Int
     active: Boolean
+    type: String
   }
 
   input inputToken {
     code: String
     value: Int
     active: Boolean
+    type: String
   }
 
   type License {

@@ -17,6 +17,7 @@
     "@nuxtjs/axios": "^5.12.4",
     "@nuxtjs/firebase": "^6.1.1",
     "@nuxtjs/pwa": "^3.3.2",
+    "@nuxtjs/toast": "^3.3.1",
     "apollo-server-express": "^2.19.0",
     "coingecko-api": "^1.0.10",
     "core-js": "^3.6.5",
