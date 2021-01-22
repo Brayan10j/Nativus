@@ -26,7 +26,8 @@
     "mongoose": "^5.11.8",
     "nodemailer": "^6.4.17",
     "nuxt": "^2.14.12",
-    "nuxt-i18n": "^6.17.0"
+    "nuxt-i18n": "^6.17.0",
+    "xlsx": "^0.16.9"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.2",

@@ -1,5 +1,29 @@
 <template>
   <div>
+    <div>
+      <v-list>
+        <v-subheader>CATEGORIES</v-subheader>
+        <v-list-item-group
+          v-for="(item, index) in $store.state.categories"
+          :key="index + 1"
+          multiple
+        >
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title>{{item}}</v-list-item-title>
+            </v-list-item-content>
+
+            <v-list-item-action>
+              <v-btn small min-width="20px" width="20 px" class="ma-1">
+                <v-icon color="red" small> mdi-delete </v-icon>
+              </v-btn>
+            </v-list-item-action>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </div>
+    <div>
+      <!--
     <v-card elevation="24"  class="mx-auto pt-5 mt-1">
       <v-carousel
         cycle
@@ -26,7 +50,7 @@
             </v-row>
           </v-sheet>
         </v-carousel-item>
-        <!--<v-carousel-item>
+        <v-carousel-item>
           <v-sheet
             height="100%"
             class="d-flex flex-column justify-space-between align-center"
@@ -71,9 +95,10 @@
               ></div>
             </v-row>
           </v-sheet>
-        </v-carousel-item>-->
+        </v-carousel-item>
       </v-carousel>
     </v-card>
+    --></div>
   </div>
 </template>
 

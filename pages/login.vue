@@ -211,7 +211,7 @@ export default {
             this.sendUserInfo(data.data.userID);
             await localStorage.setItem("email", data.data.userID.email);
             this.overlay = false;
-            this.$router.push("/insinght");
+            this.$router.push("/dashboard");
           });
       } catch (err) {
         this.errord.description = "Wrong token";

@@ -18,10 +18,26 @@
       disable-pagination
       hide-default-footer
     ></v-data-table>
+    <v-btn
+      v-if="$store.state.userInfo.isAdmin"
+      class="mx-2"
+      fab
+      dark
+      color="indigo"
+      fixed
+      right
+      bottom
+      @click="exportExcel"
+    >
+      <v-icon dark> mdi-download </v-icon>
+    </v-btn>
   </div>
 </template>
 
 <script>
+
+import XLSX from "xlsx";
+
 export default {
   data: () => ({
     content: "",
@@ -44,6 +60,13 @@ export default {
     }
   },
   methods: {
+    exportExcel: function () {
+      let data = XLSX.utils.json_to_sheet(this.tokens)
+      const workbook = XLSX.utils.book_new()
+      const filename = 'Tokens'
+      XLSX.utils.book_append_sheet(workbook, data, filename)
+      XLSX.writeFile(workbook, `${filename}.xlsx`)
+    },
     onFileChange: async function (e) {
       console.log(e);
       const file = e;
@@ -52,7 +75,7 @@ export default {
         var csv = reader.result;
         var lines = csv.split("\n");
         var result = [];
-        var headers = ["code", "value"];
+        var headers = ["code", "value", "type"];
         for (var i = 0; i < lines.length; i++) {
           var obj = {};
           var currentline = lines[i].split(",");

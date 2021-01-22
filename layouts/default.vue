@@ -146,7 +146,7 @@
         </v-list-item>
         <v-list-item
           to="/tokens"
-          v-if="user == undefined ? false : user.isAdmin"
+          v-if="$store.state.userInfo.isAdmin"
         >
           <v-list-item-icon>
             <v-icon v-text="'mdi-dock-window'"></v-icon>
