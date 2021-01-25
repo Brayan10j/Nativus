@@ -152,10 +152,12 @@ export default {
       window.addEventListener("beforeinstallprompt", (e) => {
         // Stash the event so it can be triggered later.
         this.deferredPrompt = e;
+        console.log("defer");
         // Update UI notify the user they can install the PWA
         this.banner = true;
       });
       window.addEventListener("appinstalled", () => {
+        console.log("appp installed");
         this.banner = false;
       });
       // Detects if device is on iOS

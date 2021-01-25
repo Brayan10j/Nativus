@@ -1,0 +1,10 @@
+mutation(
+  $data: inputCategory
+) {
+  addCategory(
+    data: $data
+  ) {
+    _id
+    name
+  }
+}

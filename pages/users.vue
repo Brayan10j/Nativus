@@ -107,7 +107,7 @@
 
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations } from "vuex";  // se puede hacer sin llamarlo .commit
 export default {
   data: () => ({
     dialogLic: false,
@@ -158,13 +158,6 @@ export default {
     editedIndex: -1,
     nameLicenses: [],
     editedItem: {},
-    defaultItem: {
-      name: "",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
-    },
   }),
   apollo: {
     users: {

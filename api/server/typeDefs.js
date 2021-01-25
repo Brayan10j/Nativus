@@ -22,6 +22,11 @@ const typeDefs = gql`
   }
 
   type Category{
+    _id: ID
+    name: String
+  }
+
+  input inputCategory{
     name: String
   }
 
@@ -160,6 +165,14 @@ const typeDefs = gql`
     token(code: String): Token
   }
   type Mutation {
+
+    addCategory(
+      data: inputCategory
+    ):[Category]
+
+    deleteCategory(
+      _id: ID
+    ): [Category]
 
     sendEmail(
       name: String

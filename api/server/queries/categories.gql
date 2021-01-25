@@ -1,5 +1,6 @@
 query{
     categories{
+      _id
       name
     }
   }

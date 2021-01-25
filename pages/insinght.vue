@@ -1,22 +1,27 @@
 <template>
   <div>
+    {{ model }}
     <v-tabs v-model="model" centered color="grey darken-1">
       <v-tab
-        v-for="(item, index) in $store.state.categories"
+        v-for="(itemTab, index) in $store.state.categories"
         :key="index + 1"
         :href="`#tab-${index + 1}`"
       >
-        {{ item }}
+        {{ itemTab.name }}
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="model" class="my-2">
-      <v-tab-item v-for="(item, index) in $store.state.categories"
-        :key="index + 1" :value="`tab-${index + 1}`" class="px-2">
-        <v-row v-if="isAccess">
+      <v-tab-item
+        v-for="(itemTab, index) in $store.state.categories"
+        :key="index + 1"
+        :value="`tab-${index + 1 }`"
+        class="px-2"
+      >
+        <v-row v-if="isAccess(itemTab.name)">
           <v-col
             cols="12"
             lg="3"
-            v-for="(item, index) in filerCategory"
+            v-for="(item, index) in posts"
             :key="index"
           >
             <v-card
@@ -52,9 +57,6 @@
                 </v-card-actions>
               </v-card-subtitle>
               <v-card-title>{{ item.tittle }}</v-card-title>
-              <!--v-card-text class="text--primary">
-                  <div>{{ item.shortDesc }}</div>
-                </v-card-text-->
             </v-card>
           </v-col>
         </v-row>
@@ -201,10 +203,10 @@
               <v-toolbar dark color="grey darken-3">
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
-                  <v-btn dark text @click="dialogDesc=false"> Close </v-btn>
+                  <v-btn dark text @click="dialogDesc = false"> Close </v-btn>
                 </v-toolbar-items>
               </v-toolbar>
-              <client-only >
+              <client-only>
                 <!-- this component will only be rendered on client-side -->
                 <rich-editor dark v-model="formAdd.description" />
               </client-only>
@@ -499,6 +501,29 @@ export default {
         this.editedIndex = -1;
       });
     },
+    isAccess(name) {
+      var access =
+        this.$store.state.userInfo == undefined
+          ? false
+          : this.$store.state.userInfo.isAdmin ||
+            this.$store.state.userInfo.isSuperUser;
+      if (access) {
+        return true;
+      } else {
+        if (this.$store.state.userInfo == undefined) {
+          return false;
+        } else {
+          return this.$store.state.userInfo.permissions.includes(name);
+        }
+      }
+    },
+    filerCategory(name) {
+          this.formAdd.category = name;
+          return this.posts == undefined
+            ? []
+            : this.posts.filter((post) => post.category == name);
+    },
+
 
     async save() {
       if (this.editedIndex > -1) {
@@ -507,82 +532,6 @@ export default {
         await this.addPost();
       }
       this.close();
-    },
-  },
-  computed: {
-    filerCategory: function () {
-      switch (this.model) {
-        case "tab-1":
-          this.formAdd.category = "News";
-          return this.posts == undefined
-            ? []
-            : this.posts.filter((post) => post.category == "News");
-          break;
-        case "tab-2":
-          this.formAdd.category = "Culture";
-          return this.posts == undefined
-            ? []
-            : this.posts.filter((post) => post.category == "Culture");
-          break;
-        case "tab-3":
-          this.formAdd.category = "Webinars";
-          return this.posts == undefined
-            ? []
-            : this.posts.filter((post) => post.category == "Webinars");
-          break;
-        case "tab-4":
-          this.formAdd.category = "Events";
-          return this.posts == undefined
-            ? []
-            : this.posts.filter((post) => post.category == "Events");
-          break;
-        case "tab-5":
-          this.formAdd.category = "Store";
-          return this.posts == undefined
-            ? []
-            : this.posts.filter((post) => post.category == "Store");
-          break;
-        default:
-          return [];
-          break;
-      }
-    },
-    isAccess: function () {
-      var access =
-        this.$store.state.userInfo == undefined
-          ? false
-          : (this.$store.state.userInfo.isAdmin ||
-            this.$store.state.userInfo.isSuperUser);
-      if (access) {
-        return true;
-      } else {
-        if (this.$store.state.userInfo == undefined) {
-          return false;
-        } else {
-          switch (this.model) {
-            case "tab-1":
-              return this.$store.state.userInfo.permissions.includes("News");
-              break;
-            case "tab-2":
-              return this.$store.state.userInfo.permissions.includes("Culture");
-              break;
-            case "tab-3":
-              return this.$store.state.userInfo.permissions.includes(
-                "Webinars"
-              );
-              break;
-            case "tab-4":
-              return this.$store.state.userInfo.permissions.includes("Events");
-              break;
-            case "tab-5":
-              return this.$store.state.userInfo.permissions.includes("Store");
-              break;
-            default:
-              return false;
-              break;
-          }
-        }
-      }
     },
   },
 };

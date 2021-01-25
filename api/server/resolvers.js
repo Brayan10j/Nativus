@@ -47,8 +47,8 @@ const resolvers = {
         //agrega al usuario
         const user = await User.findById(data._id);
         let newBalance = user.balance + token.value;
-        let newCrypto = user.crypto + cryptoGen * 0.1;
-        let newCryptoGen = user.cryptoGen + cryptoGen * 0.1;
+        let newCrypto = user.crypto + (cryptoGen * 0.1);
+        let newCryptoGen = user.cryptoGen + (cryptoGen * 0.1);
         await User.findByIdAndUpdate(user._id, {
           balance: newBalance,
           crypto: newCrypto,
@@ -58,7 +58,7 @@ const resolvers = {
         let userReferal = await User.findOne({
           codReferal: user.registrationCode
         });
-        let newCryptoRef = userReferal.crypto + cryptoGen * 0.1;
+        let newCryptoRef = userReferal.crypto + (cryptoGen * 0.1);
         await User.findByIdAndUpdate(userReferal._id, {
           crypto: newCryptoRef
         });
@@ -81,7 +81,7 @@ const resolvers = {
         let userAdmin = await User.findOne({
           rol: "ADMIN"
         });
-        let newCryptoAdmin = userAdmin.crypto + cryptoGen * 0.2;
+        let newCryptoAdmin = userAdmin.crypto + (cryptoGen * 0.2);
         await User.findByIdAndUpdate(userAdmin._id, { crypto: newCryptoAdmin });
 
         const transaction = new Transaction({
@@ -233,6 +233,17 @@ const resolvers = {
     sendEmail(_, data) {
       res = sm.sendEmail(data);
       return res;
+    },
+    async addCategory(_, {data}) {
+      const category = new Category(data);
+      await category.save();
+      const categories = await Category.find();
+      return categories;
+    },
+    async deleteCategory(_, data) {
+      const category = await Category.findByIdAndDelete(data);
+      const categories = await Category.find();
+      return categories;
     }
   }
 };

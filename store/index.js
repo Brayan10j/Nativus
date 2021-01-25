@@ -78,8 +78,7 @@ export const actions = {
         query: require("../api/server/queries/categories.gql")
       })
       .then(async (data) => {
-        //commit("sendCategories", data.data.categories);
-        //console.log(data.data.categories);
+        commit("sendCategories", data.data.categories);
       });
       await dispatch('onAuthStateChangedAction', {
         authUser,
