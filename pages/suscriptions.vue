@@ -156,7 +156,7 @@ export default {
         this.$router.push("/insinght");
       } catch (error) {
         //alert(error);
-        this.errord.description = "Insufficient balance";
+        this.errord.description = "Non hai abbstanza Wood Coins, Ricarica!";
         this.alerta = true;
       }
     },

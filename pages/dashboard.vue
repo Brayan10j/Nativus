@@ -5,12 +5,25 @@
         <v-toolbar-title>CATEGORIES</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
-        <v-btn color="success" dark class="mb-2" @click="dialogCategory = true">
-          Add
+        <v-btn
+          @click="dialogCategory = true"
+          small
+          min-width="20px"
+          width="20 px"
+          class="ma-1"
+        >
+          <v-icon color="success" small> mdi-plus-circle-outline </v-icon>
         </v-btn>
-        <v-btn color="error" dark class="mb-2" @click="dialogDelete = true">
-          Delete
+        <v-btn
+          @click="dialogDelete = true"
+          small
+          min-width="20px"
+          width="20 px"
+          class="ma-1"
+        >
+          <v-icon color="red" small> mdi-delete </v-icon>
         </v-btn>
+
         <v-dialog v-model="dialogCategory" max-width="300px">
           <v-card>
             <v-card-title class="text-lg-h6">
@@ -157,7 +170,6 @@
 </template>
 
 <script>
-
 import { mapMutations } from "vuex";
 export default {
   data: () => ({
@@ -186,7 +198,7 @@ export default {
           mutation: require("../api/server/mutations/deleteCategory.gql"),
           variables: { _id: this.categoryID },
         })
-        .then(async ({data}) => {
+        .then(async ({ data }) => {
           this.dialogDelete = false;
           this.sendCategories(data.deleteCategory);
         });

@@ -55,7 +55,7 @@
       <v-list height="5">
        <v-list-item to="/dashboard" v-if="$store.state.userInfo.isAdmin">
           <v-list-item-icon>
-            <v-icon v-text="'mdi-home'"></v-icon>
+            <v-icon v-text="'mdi-view-dashboard'"></v-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title v-text="'Dashboard'"></v-list-item-title>
@@ -73,10 +73,10 @@
           "
         >
           <v-list-item-icon>
-            <v-icon v-text="'mdi-newspaper'"></v-icon>
+            <v-icon v-text="'mdi-home'"></v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title v-text="'Insinght'"></v-list-item-title>
+            <v-list-item-title v-text="'HOME'"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <!--<v-list-item
@@ -110,7 +110,7 @@
             <v-icon v-text="'mdi-swap-horizontal-bold'"></v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title v-text="'Transaccions'"></v-list-item-title>
+            <v-list-item-title v-text="'Transazasioni'"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item
@@ -125,7 +125,7 @@
             <v-icon v-text="'mdi-license'"></v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title v-text="'Licenses'"></v-list-item-title>
+            <v-list-item-title v-text="'Licenze'"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -141,7 +141,7 @@
             <v-icon v-text="'mdi-account-group'"></v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title v-text="'Users'"></v-list-item-title>
+            <v-list-item-title v-text="'Utenti'"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item
@@ -168,7 +168,7 @@
             <v-icon v-text="'mdi-playlist-check'"></v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title v-text="'Suscriptions'"></v-list-item-title>
+            <v-list-item-title v-text="'License'"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -197,7 +197,7 @@
         class="px-1 rounded-circle"
         @click="contact = !contact"
       >
-        <v-icon color="gray">mdi-help-circle-outline</v-icon>
+        <v-icon color="gray">mdi-email</v-icon>
       </v-btn>
     </v-app-bar>
     <v-dialog v-model="contact" persistent max-width="600px">

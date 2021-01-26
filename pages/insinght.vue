@@ -1,11 +1,10 @@
 <template>
   <div>
-    {{ model }}
     <v-tabs v-model="model" centered color="grey darken-1">
       <v-tab
         v-for="(itemTab, index) in $store.state.categories"
-        :key="index + 1"
-        :href="`#tab-${index + 1}`"
+        :key="index"
+
       >
         {{ itemTab.name }}
       </v-tab>
@@ -13,15 +12,14 @@
     <v-tabs-items v-model="model" class="my-2">
       <v-tab-item
         v-for="(itemTab, index) in $store.state.categories"
-        :key="index + 1"
-        :value="`tab-${index + 1 }`"
+        :key="index"
         class="px-2"
       >
         <v-row v-if="isAccess(itemTab.name)">
           <v-col
             cols="12"
             lg="3"
-            v-for="(item, index) in posts"
+            v-for="(item, index) in filter"
             :key="index"
           >
             <v-card
@@ -101,7 +99,7 @@
                 <v-col cols="12" sm="6" md="4">
                   <v-select
                     v-model="formAdd.category"
-                    :items="['News', 'Culture', 'Events', 'Webinars', 'Store']"
+                    :items="$store.state.categories.map((c) => c.name)"
                     label="Category"
                     required
                   ></v-select>
@@ -299,6 +297,7 @@ import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
+      categoryName: "",
       overlay: false,
       dialogDesc: false,
       snackbar: false,
@@ -502,6 +501,7 @@ export default {
       });
     },
     isAccess(name) {
+      this.categoryName = name;
       var access =
         this.$store.state.userInfo == undefined
           ? false
@@ -518,12 +518,11 @@ export default {
       }
     },
     filerCategory(name) {
-          this.formAdd.category = name;
-          return this.posts == undefined
-            ? []
-            : this.posts.filter((post) => post.category == name);
+      this.formAdd.category = name;
+      return this.posts == undefined
+        ? []
+        : this.posts.filter((post) => post.category == name);
     },
-
 
     async save() {
       if (this.editedIndex > -1) {
@@ -532,6 +531,17 @@ export default {
         await this.addPost();
       }
       this.close();
+    },
+  },
+  computed: {
+    filter: function () {
+
+      let categories = this.$store.state.categories.map((c) => c.name);
+      let name = categories[this.model];
+      this.formAdd.category = name;
+      return this.posts == undefined
+        ? []
+        : this.posts.filter((post) => post.category == name);
     },
   },
 };

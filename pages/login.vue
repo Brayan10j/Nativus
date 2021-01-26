@@ -4,7 +4,7 @@
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8" md="4">
           <v-dialog v-model="dialogIOS" persistent max-width="290">
-            <v-card>
+            <v-card >
               <v-card-title class="headline justify-center">
                 <img src="/icon.png" height="72" width="72" alt="Install PWA" />
                 Pilgrim
@@ -41,23 +41,12 @@
               </v-btn>
             </template>
           </v-snackbar>
-          <!--<v-img
-            class="mx-auto my-15"
-            src="/images/logo.png"
-            max-width="270"
-          ></v-img>-->
-          <v-card class="elevation-12 mx-auto" width="400">
-            <v-toolbar class="overflow-hidden" flat color="#4c4c53" dark>
-              <template v-slot:img="{ props }">
-                <v-img
-                  v-bind="props"
-                  gradient="to top right, rgba(3,32,24,.1), rgba(39,42,57,.7)"
-                ></v-img>
-              </template>
+          <v-card class="elevation-12 mx-auto" width="400" color="#ffffff20">
+            <v-toolbar class="overflow-hidden" flat color="#4c4c53">
               <v-toolbar-title>Login</v-toolbar-title>
             </v-toolbar>
             <v-card-text>
-              <v-form>
+
                 <v-overlay :value="overlay">
                   <v-progress-circular
                     indeterminate
@@ -75,7 +64,7 @@
                   type="text"
                   v-model="token"
                 ></v-text-field>
-              </v-form>
+
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -86,13 +75,13 @@
                 color="#4c4c53"
                 @click="userLogin2"
                 inset
-                >Log in</v-btn
+                >Login</v-btn
               >
             </v-card-actions>
           </v-card>
           <v-row align="center" justify="center">
             Don't have an account?
-            <v-btn text color="#787b7f" to="/singUp"> SIGN UP </v-btn></v-row
+            <v-btn text color="blue" to="/singUp"> SIGN UP </v-btn></v-row
           >
           <v-overlay :absolute="absolute" :value="alerta" :opacity="opacity">
             <v-alert
