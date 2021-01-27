@@ -51,7 +51,7 @@
                   <v-col cols="12" sm="6" md="6">
                     <v-combobox
                       v-model="editedItem.permission"
-                      :items="perm"
+                      :items="$store.state.categories.map((c) => c.name)"
                       label="Permissions"
                       multiple
                       chips
@@ -142,15 +142,6 @@ export default {
       { text: "10 Months" },
       { text: "11 Months" },
       { text: "12 Months" },
-    ],
-    perm: [
-      "News",
-      "Courses",
-      "Investments",
-      "Events",
-      "Webinars",
-      "Markert Updates",
-      "The brain",
     ],
     editedIndex: -1,
     editedItem: {
