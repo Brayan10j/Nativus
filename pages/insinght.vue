@@ -1,11 +1,7 @@
 <template>
   <div>
     <v-tabs v-model="model" centered color="grey darken-1">
-      <v-tab
-        v-for="(itemTab, index) in $store.state.categories"
-        :key="index"
-
-      >
+      <v-tab v-for="(itemTab, index) in $store.state.categories" :key="index">
         {{ itemTab.name }}
       </v-tab>
     </v-tabs>
@@ -16,12 +12,7 @@
         class="px-2"
       >
         <v-row v-if="isAccess(itemTab.name)">
-          <v-col
-            cols="12"
-            lg="3"
-            v-for="(item, index) in filter"
-            :key="index"
-          >
+          <v-col cols="12" lg="3" v-for="(item, index) in filter" :key="index">
             <v-card
               height="350"
               class="mx-auto"
@@ -52,6 +43,9 @@
                   <v-icon color="red" @click.stop="deleteItem(item)">
                     mdi-delete
                   </v-icon>
+                </v-card-actions>
+                <v-card-actions class="d-flex justify-end mt-n8 mb-n2" v-else>
+                  <v-icon color="red" @click.stop=""> mdi-heart </v-icon>
                 </v-card-actions>
               </v-card-subtitle>
               <v-card-title>{{ item.tittle }}</v-card-title>
@@ -502,28 +496,11 @@ export default {
     },
     isAccess(name) {
       this.categoryName = name;
-      var access =
-        this.$store.state.userInfo == undefined
-          ? false
-          : this.$store.state.userInfo.isAdmin ||
-            this.$store.state.userInfo.isSuperUser;
-      if (access) {
-        return true;
-      } else {
-        if (this.$store.state.userInfo == undefined) {
-          return false;
-        } else {
-          return this.$store.state.userInfo.permissions.includes(name);
-        }
-      }
+      return this.$store.state.userInfo.isAdmin ||
+        this.$store.state.userInfo.isSuperUser
+        ? true
+        : this.$store.state.userInfo.permissions.includes(name);
     },
-    filerCategory(name) {
-      this.formAdd.category = name;
-      return this.posts == undefined
-        ? []
-        : this.posts.filter((post) => post.category == name);
-    },
-
     async save() {
       if (this.editedIndex > -1) {
         await this.editPost();
@@ -535,11 +512,10 @@ export default {
   },
   computed: {
     filter: function () {
-
       let categories = this.$store.state.categories.map((c) => c.name);
       let name = categories[this.model];
       this.formAdd.category = name;
-      return this.posts == undefined
+      return this.posts == undefined // llamaralo desde el init en el store
         ? []
         : this.posts.filter((post) => post.category == name);
     },

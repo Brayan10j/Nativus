@@ -41,7 +41,7 @@
                     <v-col cols="12" sm="6" md="6">
                       <v-select
                         multiple
-                        :items="permissions"
+                        :items="$store.state.categories.map((c) => c.name)"
                         v-model="editedItem.permissions"
                         label="Permissions"
                         item-value="text"
@@ -75,14 +75,14 @@
         </v-toolbar>
       </template>
       <template v-slot:[`item.licenses`]="{ item }">
-        <v-btn small min-width="20px" width="20 px" class="ma-1" @click="dialogLic = true">
+        <v-btn small min-width="20px" width="20 px" class="ma-1" @click="showLicenses(item)">
           {{ item.licenses.length }}
         </v-btn>
         <v-dialog v-model="dialogLic" max-width="500px">
           <v-data-table
             dense
             :headers="headersLic"
-            :items="item.licenses"
+            :items="editedItem.licenses"
             item-key="name"
             class="elevation-1"
             disable-pagination
@@ -111,15 +111,6 @@ import { mapMutations } from "vuex";  // se puede hacer sin llamarlo .commit
 export default {
   data: () => ({
     dialogLic: false,
-    permissions: [
-      "News",
-      "Courses",
-      "Market Updates",
-      "Webinars",
-      "Events",
-      "Investments",
-      "The Brain",
-    ],
     types: ["FOUNDER", "TEAMPILGRIM"],
     dialogeditUser: false,
     dialogDelete: false,
@@ -192,7 +183,11 @@ export default {
   },
   methods: {
     ...mapMutations(["sendUserInfo"]),
-
+    showLicenses(item){
+      this.editedIndex = this.users.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogLic = true;
+    },
     editItem(item) {
       this.editedIndex = this.users.indexOf(item);
       this.editedItem = Object.assign({}, item);
@@ -206,6 +201,10 @@ export default {
         : false;
       delete this.editedItem._id;
       delete this.editedItem.__typename;
+      this.editedItem.licenses.forEach(l => {
+        delete l.__typename;
+      });
+
       await this.$apollo
         .mutate({
           mutation: require("../api/server/mutations/users/editUser.gql"),

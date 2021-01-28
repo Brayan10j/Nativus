@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div v-if="$store.state.userInfo.isAdmin">
       <v-toolbar flat>
         <v-toolbar-title>CATEGORIES</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
