@@ -409,9 +409,8 @@ export default {
             this.balance = false;
           });
       } catch (error) {
-        alert(error.message);
-        this.errord.description = "Wrong token";
-        this.alerta = true;
+        this.$toast.error("Wrong token");
+        this.balance = false;
       }
     },
     async sendEmail() {

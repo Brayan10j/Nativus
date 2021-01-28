@@ -35,10 +35,9 @@ const resolvers = {
   },
   Mutation: {
     async addBalance(_, data) {
-      try {
         let token = await Token.findOne({ code: data.code });
         if (token == null) {
-          throw "Token no found";
+          throw "Token no found"; // retornar el user
         }
         if (token.active == true) {
           throw "Token active";
@@ -64,16 +63,17 @@ const resolvers = {
         });
 
         //agrega a los founders
-        const founderUsers = User.find({ type: "FOUNDER" });
-        const cantFounders = (cryptoGen * 0.4) / (await founderUsers).length;
-        founderUsers.map(async function(x) {
+        const founderUsers = await User.find({ type: "FOUNDER" });
+
+        const cantFounders = (cryptoGen * 0.4) / founderUsers.length;
+        founderUsers.forEach(async function(x) {
           let newCrypto = x.crypto + cantFounders;
           await User.findByIdAndUpdate(x._id, { crypto: newCrypto });
         });
         //agrega a los team
-        const teamUsers = User.find({ type: "TEAM" });
-        const cantTeam = (cryptoGen * 0.2) / (await teamUsers).length;
-        teamUsers.map(async function(x) {
+        const teamUsers = await User.find({ type: "TEAMPILGRIM" });
+        const cantTeam = (cryptoGen * 0.2) / teamUsers.length;
+        teamUsers.forEach(async function(x) {
           let newCrypto = x.crypto + cantTeam;
           await User.findByIdAndUpdate(x._id, { crypto: newCrypto });
         });
@@ -97,9 +97,6 @@ const resolvers = {
         await Token.findByIdAndUpdate(token._id, { active: true });
         const res = await User.findById(user._id);
         return res;
-      } catch (error) {
-        console.log(error);
-      }
     },
     async buyLicense(_, data) {
       const user = await User.findById(data._idUser);
