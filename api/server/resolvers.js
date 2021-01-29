@@ -241,7 +241,12 @@ const resolvers = {
       const category = await Category.findByIdAndDelete(data);
       const categories = await Category.find();
       return categories;
-    }
+    },
+    async editCategory(_, { _id, data }) {
+      const category = await Category.findByIdAndUpdate(_id, data);
+      const categories = await Category.find();
+      return categories;
+    },
   }
 };
 

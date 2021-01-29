@@ -1,0 +1,12 @@
+mutation(
+  $_id: ID
+  $data: inputCategory
+) {
+  editCategory(
+    _id: $_id
+    data: $data
+  ){
+    _id
+    name
+  }
+}

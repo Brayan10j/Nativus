@@ -174,6 +174,11 @@ const typeDefs = gql`
       _id: ID
     ): [Category]
 
+    editCategory(
+      _id: ID
+      data: inputCategory
+    ): [Category]
+
     sendEmail(
       name: String
       subject: String
