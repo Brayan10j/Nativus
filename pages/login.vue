@@ -141,7 +141,7 @@ export default {
       window.addEventListener("beforeinstallprompt", (e) => {
         // Stash the event so it can be triggered later.
         this.deferredPrompt = e;
-
+        console.log(this.deferredPrompt);
         // Update UI notify the user they can install the PWA
         this.banner = true;
       });
@@ -167,10 +167,9 @@ export default {
   },
   methods: {
     install() {
-      this.banner = false;
-
       if (this.isIOS) {
         this.dialogIOS = true;
+        this.banner = false;
       } else {
         this.banner = false;
         // Show the install prompt

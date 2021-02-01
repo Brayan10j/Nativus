@@ -11,6 +11,7 @@
     "heroku-postbuild": "npm run build"
   },
   "dependencies": {
+    "@blowstack/ckeditor-nuxt": "^0.5.1",
     "@ckeditor/ckeditor5-build-classic": "^23.1.0",
     "@ckeditor/ckeditor5-vue": "^1.0.3",
     "@nuxtjs/apollo": "^4.0.1-rc.5",

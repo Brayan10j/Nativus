@@ -81,8 +81,7 @@
         >
           <v-img
             height="100%"
-            src="https://cdn.vuetifyjs.com/images/cards/server-room.jpg"
-            gradient="to top right, rgba(30,30,30,.7), rgba(30,30,30,.8)"
+            gradient="to top right, rgba(0,0,0), rgba(255,255,255)"
           >
             <v-app-bar flat color="rgba(0, 0, 0, 0)">
               <v-spacer></v-spacer>

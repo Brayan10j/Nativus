@@ -11,7 +11,7 @@
         :key="index"
         class="px-2"
       >
-        <v-row v-if="isAccess(itemTab.name)">
+        <v-row v-if="isAccess">
           <v-col cols="12" lg="3" v-for="(item, index) in filter" :key="index">
             <v-card
               height="350"
@@ -51,6 +51,11 @@
               <v-card-title>{{ item.tittle }}</v-card-title>
             </v-card>
           </v-col>
+        </v-row>
+
+
+        <v-row v-if="!isAccess">
+          <h1>Compra Wood Coins</h1>
         </v-row>
       </v-tab-item>
     </v-tabs-items>
@@ -230,7 +235,7 @@
       hide-overlay
       transition="dialog-bottom-transition"
     >
-      <v-card>
+      <v-card >
         <v-toolbar dark color="grey darken-3">
           <v-toolbar-title>{{ formAdd.category }}</v-toolbar-title>
           <v-spacer></v-spacer>
@@ -238,7 +243,7 @@
             <v-btn dark text @click="close"> Close </v-btn>
           </v-toolbar-items>
         </v-toolbar>
-        <v-list class="mx-auto" max-width="900px" three-line subheader>
+
           <v-card-title class="text-center justify-center py-6">
             <h3 class="font-weight-bold display-3">
               {{ formAdd.tittle }}
@@ -271,7 +276,7 @@
               <a :href="formAdd.files[0]" target="_blank" download>HERE</a>
             </v-alert>
           </v-card-text>
-        </v-list>
+
       </v-card>
     </v-dialog>
     <v-snackbar v-model="snackbar" :timeout="timeout" color="success">
@@ -494,13 +499,6 @@ export default {
         this.editedIndex = -1;
       });
     },
-    isAccess(name) {
-      this.categoryName = name;
-      return this.$store.state.userInfo.isAdmin ||
-        this.$store.state.userInfo.isSuperUser
-        ? true
-        : this.$store.state.userInfo.permissions.includes(name);
-    },
     async save() {
       if (this.editedIndex > -1) {
         await this.editPost();
@@ -518,6 +516,14 @@ export default {
       return this.posts == undefined // llamaralo desde el init en el store
         ? []
         : this.posts.filter((post) => post.category == name);
+    },
+    isAccess: function () {
+      let categories = this.$store.state.categories.map((c) => c.name);
+      let name = categories[this.model];
+      return this.$store.state.userInfo.isAdmin ||
+        this.$store.state.userInfo.isSuperUser
+        ? true
+        : this.$store.state.userInfo.permissions.includes(name);
     },
   },
 };

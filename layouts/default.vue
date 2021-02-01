@@ -5,9 +5,14 @@
         <v-list-item class="mx-auto">
           <v-list-item-content>
             <v-list-item-avatar>
-              <v-img max-width="40" :src="$store.state.userInfo == undefined
-                  ? ''
-                  :$store.state.userInfo.photo"></v-img>
+              <v-img
+                max-width="40"
+                :src="
+                  $store.state.userInfo == undefined
+                    ? ''
+                    : $store.state.userInfo.photo
+                "
+              ></v-img>
             </v-list-item-avatar>
           </v-list-item-content>
         </v-list-item>
@@ -53,7 +58,7 @@
       <br />
       <v-divider></v-divider>
       <v-list height="5">
-       <v-list-item to="/dashboard" v-if="$store.state.userInfo.isAdmin">
+        <v-list-item to="/dashboard" v-if="$store.state.userInfo.isAdmin">
           <v-list-item-icon>
             <v-icon v-text="'mdi-view-dashboard'"></v-icon>
           </v-list-item-icon>
@@ -66,8 +71,8 @@
           v-if="
             $store.state.userInfo == undefined
               ? false
-              : ($store.state.userInfo.isAdmin ||
-                $store.state.userInfo.isSuperUser)
+              : $store.state.userInfo.isAdmin ||
+                $store.state.userInfo.isSuperUser
               ? true
               : $store.state.userInfo.permissions.length > 0
           "
@@ -144,10 +149,7 @@
             <v-list-item-title v-text="'Utenti'"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item
-          to="/tokens"
-          v-if="$store.state.userInfo.isAdmin"
-        >
+        <v-list-item to="/tokens" v-if="$store.state.userInfo.isAdmin">
           <v-list-item-icon>
             <v-icon v-text="'mdi-dock-window'"></v-icon>
           </v-list-item-icon>
@@ -178,6 +180,19 @@
             <v-icon right> mdi-export </v-icon>
           </v-btn>
         </v-row>
+        <v-row class="mt-4" align="center" justify="space-around">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <span v-bind="attrs" v-on="on">{{
+                $store.state.userInfo.codReferal
+              }}</span>
+            </template>
+            <span>Token d'invite</span>
+          </v-tooltip>
+        </v-row>
+        <v-row class="mt-4" align="center" justify="space-around">
+          <v-span> </v-span>
+        </v-row>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
@@ -191,14 +206,19 @@
         ></v-img>-->
       </v-toolbar-title>
       <v-spacer />
-      <v-btn
-        color="info"
-        min-width="36"
-        class="px-1 rounded-circle"
-        @click="contact = !contact"
-      >
-        <v-icon color="gray">mdi-email</v-icon>
-      </v-btn>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            color="info"
+            min-width="36"
+            class="px-1 rounded-circle"
+            @click="contact = !contact"
+          >
+            <v-icon color="gray" v-bind="attrs" v-on="on">mdi-email</v-icon>
+          </v-btn>
+        </template>
+        <span>Supporto</span>
+      </v-tooltip>
     </v-app-bar>
     <v-dialog v-model="contact" persistent max-width="600px">
       <v-overlay :value="overlay">
@@ -447,5 +467,9 @@ export default {
 <style>
 ::-webkit-scrollbar {
   display: none;
+}
+
+#app {
+  background-image: url("/images/wallPapers/fondo.PNG");
 }
 </style>

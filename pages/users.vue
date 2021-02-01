@@ -111,7 +111,7 @@ import { mapMutations } from "vuex";  // se puede hacer sin llamarlo .commit
 export default {
   data: () => ({
     dialogLic: false,
-    types: ["FOUNDER", "TEAMPILGRIM"],
+    types: ["FOUNDER", "TEAMPILGRIM", ""],
     dialogeditUser: false,
     dialogDelete: false,
     headers: [
