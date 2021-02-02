@@ -90,6 +90,23 @@
         </v-overlay>
       </v-col>
     </v-row>
+    <v-snackbar
+    :timeout="-1"
+    :value="true"
+    >
+      Ricordati di ricaricare Wood Coins per poter acquistare le licenze
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="blue"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 

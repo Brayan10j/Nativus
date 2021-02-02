@@ -4,7 +4,7 @@
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8" md="4">
           <v-dialog v-model="dialogIOS" persistent max-width="290">
-            <v-card >
+            <v-card>
               <v-card-title class="headline justify-center">
                 <img src="/icon.png" height="72" width="72" alt="Install PWA" />
                 Pilgrim
@@ -44,27 +44,35 @@
           <v-card class="elevation-12 mx-auto" width="400" color="#ffffff20">
             <v-toolbar class="overflow-hidden" flat color="#4c4c53">
               <v-toolbar-title>Login</v-toolbar-title>
+              <v-spacer></v-spacer>
+
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon color="white" v-bind="attrs" v-on="on"
+                    >mdi-information</v-icon
+                  >
+                </template>
+                <span> Conserva il tuo token d'accesso in un posto sicuro</span>
+              </v-tooltip>
             </v-toolbar>
             <v-card-text>
-
-                <v-overlay :value="overlay">
-                  <v-progress-circular
-                    indeterminate
-                    size="64"
-                  ></v-progress-circular>
-                </v-overlay>
-                <v-text-field
-                  dense
-                  filled
-                  outlined
-                  label="Token"
-                  name="login"
-                  color="#4c4c53"
-                  prepend-icon="mdi-key"
-                  type="text"
-                  v-model="token"
-                ></v-text-field>
-
+              <v-overlay :value="overlay">
+                <v-progress-circular
+                  indeterminate
+                  size="64"
+                ></v-progress-circular>
+              </v-overlay>
+              <v-text-field
+                dense
+                filled
+                outlined
+                label="Token"
+                name="login"
+                color="#4c4c53"
+                prepend-icon="mdi-key"
+                type="text"
+                v-model="token"
+              ></v-text-field>
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -80,8 +88,8 @@
             </v-card-actions>
           </v-card>
           <v-row align="center" justify="center">
-            Don't have an account?
-            <v-btn text color="blue" to="/singUp"> SIGN UP </v-btn></v-row
+            Hai un referal token ? ACCEDI e registri
+            <v-btn text color="blue" to="/singUp"> ACCEDI</v-btn></v-row
           >
           <v-overlay :absolute="absolute" :value="alerta" :opacity="opacity">
             <v-alert
@@ -146,7 +154,6 @@ export default {
         this.banner = true;
       });
       window.addEventListener("appinstalled", () => {
-
         this.banner = false;
       });
       // Detects if device is on iOS

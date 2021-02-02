@@ -31,29 +31,52 @@
       </v-list>
       <v-divider></v-divider>
       <br />
-      <v-row align="center" justify="space-around" rounded>
-        <v-btn color="info" elevation="9" @click="balance = !balance">
-          <v-icon left> mdi-cash-multiple </v-icon>
-          Wood Coins :
-          {{ $store.state.userInfo.balance }}
-        </v-btn>
-      </v-row>
-      <v-sheet
-        color="teal darken-1"
-        elevation="6"
-        height="60"
-        width="150"
-        class="mt-n7 subtitle-2 d-flex align-end mx-auto"
-        rounded="xl"
-        ><p class="mx-auto mb-0 text-subtitle-1 font-weight-black">
-          Pilgrim Coins :
-          {{
-            $store.state.userInfo == undefined
-              ? 0
-              : $store.state.userInfo.crypto
-          }}
-        </p></v-sheet
-      >
+
+      <v-tooltip right>
+        <template v-slot:activator="{ on, attrs }">
+          <v-row align="center" justify="space-around" rounded>
+            <v-btn
+              color="info"
+              elevation="9"
+              @click="balance = !balance"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon left> mdi-cash-multiple </v-icon>
+              Wood Coins :
+              {{ $store.state.userInfo.balance }}
+            </v-btn>
+          </v-row>
+        </template>
+        <span>
+          Inserisci qui il token che ti viene dato dopo l'acquisto dei wood coin
+          ricorda che un 20% dei tuoi coin verra automaticamente transformato in
+          pilgrim coins</span
+        >
+      </v-tooltip>
+      <v-tooltip right>
+        <template v-slot:activator="{ on, attrs }">
+          <v-sheet
+            color="teal darken-1"
+            elevation="6"
+            height="60"
+            width="150"
+            class="mt-n7 subtitle-2 d-flex align-end mx-auto"
+            rounded="xl"
+            v-bind="attrs"
+            v-on="on"
+            ><p class="mx-auto mb-0 text-subtitle-1 font-weight-black">
+              Pilgrim Coins :
+              {{ $store.state.userInfo.crypto }}
+            </p></v-sheet
+          >
+        </template>
+        <span>
+          I pilgrim coins fanno aumentare l'eco istema del tuo portafoglio,
+          invitando token ad amici riceverai coins che utilizzerai per
+          acquistare eventi o servizi sull'intera piattaforma</span
+        >
+      </v-tooltip>
 
       <br />
       <v-divider></v-divider>
@@ -190,9 +213,6 @@
             <span>Token d'invite</span>
           </v-tooltip>
         </v-row>
-        <v-row class="mt-4" align="center" justify="space-around">
-          <v-span> </v-span>
-        </v-row>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
@@ -327,7 +347,7 @@
       </v-card>
     </v-dialog>
     <v-main>
-      <v-container fluid>
+      <v-container fluid class="fondo">
         <nuxt />
       </v-container>
     </v-main>
@@ -469,7 +489,7 @@ export default {
   display: none;
 }
 
-#app {
+.fondo {
   background-image: url("/images/wallPapers/fondo.PNG");
 }
 </style>

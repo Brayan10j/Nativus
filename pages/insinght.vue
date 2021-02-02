@@ -48,15 +48,23 @@
                   <v-icon color="red" @click.stop=""> mdi-heart </v-icon>
                 </v-card-actions>
               </v-card-subtitle>
-              <v-card-title>{{ item.tittle }}</v-card-title>
+              <v-card-title class="ajustador">{{ item.tittle }}</v-card-title>
             </v-card>
           </v-col>
         </v-row>
 
-
-        <v-row v-if="!isAccess">
-          <h1>Compra Wood Coins</h1>
-        </v-row>
+        <v-col v-if="!isAccess" align-self="center">
+          <v-row>
+            <v-img
+              class="mx-auto my-10"
+              src="/icon.png"
+              max-width="370"
+            ></v-img>
+          </v-row>
+          <v-row align="center" align-content="center">
+            <h1 class="mx-auto my-10">Buy Wood Coins</h1>
+          </v-row>
+        </v-col>
       </v-tab-item>
     </v-tabs-items>
 
@@ -235,7 +243,7 @@
       hide-overlay
       transition="dialog-bottom-transition"
     >
-      <v-card >
+      <v-card color="white">
         <v-toolbar dark color="grey darken-3">
           <v-toolbar-title>{{ formAdd.category }}</v-toolbar-title>
           <v-spacer></v-spacer>
@@ -244,39 +252,41 @@
           </v-toolbar-items>
         </v-toolbar>
 
-          <v-card-title class="text-center justify-center py-6">
-            <h3 class="font-weight-bold display-3">
-              {{ formAdd.tittle }}
-            </h3>
-          </v-card-title>
-          <v-container class="mx-auto">
-            <v-row align="center" align-content="center">
-              <v-col cols="12" sm="12" md="12">
-                <v-img
-                  aspect-ratio="2"
-                  class="white--text align-end"
-                  height="50%"
-                  :src="formAdd.image"
-                >
-                </v-img>
-              </v-col>
-            </v-row>
-          </v-container>
-          <v-card-text class="text--primary">
-            <div v-html="formAdd.description"></div>
+        <v-card-title class="text-center justify-center py-6">
+          <h3
+            style="color: black"
+            class="font-weight-bold display-3 text-black"
+          >
+            {{ formAdd.tittle }}
+          </h3>
+        </v-card-title>
+        <v-container class="mx-auto">
+          <v-row align="center" align-content="center">
+            <v-col cols="12" sm="12" md="12">
+              <v-img
+                aspect-ratio="2"
+                class="white--text align-end"
+                height="50%"
+                :src="formAdd.image"
+              >
+              </v-img>
+            </v-col>
+          </v-row>
+        </v-container>
+        <v-card-text >
+          <div style="color: black" v-html="formAdd.description"></div>
 
-            <v-alert
-              v-if="formAdd.files[0]"
-              border="top"
-              colored-border
-              type="info"
-              elevation="2"
-            >
-              Download files
-              <a :href="formAdd.files[0]" target="_blank" download>HERE</a>
-            </v-alert>
-          </v-card-text>
-
+          <v-alert
+            v-if="formAdd.files[0]"
+            border="top"
+            colored-border
+            type="info"
+            elevation="2"
+          >
+            Download files
+            <a :href="formAdd.files[0]" target="_blank" download>HERE</a>
+          </v-alert>
+        </v-card-text>
       </v-card>
     </v-dialog>
     <v-snackbar v-model="snackbar" :timeout="timeout" color="success">
@@ -529,5 +539,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.ajustador {
+  word-break: normal;
+}
+#html  p {
+  color: black;
+}
 </style>
