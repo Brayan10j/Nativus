@@ -204,13 +204,12 @@
           </v-btn>
         </v-row>
         <v-row class="mt-4" align="center" justify="space-around">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <span v-bind="attrs" v-on="on">{{
-                $store.state.userInfo.codReferal
-              }}</span>
+          <v-tooltip bottom v-model="showToken">
+            <template v-slot:activator="{  attrs }">
+              <v-btn v-bind="attrs"
+               @click="copyText"> Token d'invite </v-btn>
             </template>
-            <span>Token d'invite</span>
+            <span >{{ $store.state.userInfo.codReferal }} Copied in ClipBoard</span>
           </v-tooltip>
         </v-row>
       </v-list>
@@ -226,6 +225,12 @@
         ></v-img>-->
       </v-toolbar-title>
       <v-spacer />
+      <v-img
+          max-height="50"
+          max-width="80"
+          contain
+          src="/images/Moneta11.png"
+        ></v-img>
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -372,6 +377,7 @@ export default {
   //middleware: "persistent",
   data() {
     return {
+      showToken: false,
       email: "",
       selectedItem: 1,
       code: "",
@@ -422,6 +428,10 @@ export default {
     };
   },
   methods: {
+    copyText() {
+      this.showToken = !this.showToken;
+      navigator.clipboard.writeText(this.$store.state.userInfo.codReferal);
+    },
     ...mapMutations(["sendUserInfo", "sendBalance"]),
     async logOut() {
       try {

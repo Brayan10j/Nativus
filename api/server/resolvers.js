@@ -238,7 +238,17 @@ const resolvers = {
       return categories;
     },
     async deleteCategory(_, data) {
-      const category = await Category.findByIdAndDelete(data);
+      const category = await Category.findById(data);
+      await Category.findByIdAndDelete(data);
+      // eliminar en licencias
+      const licenses = await License.find();
+      licenses.forEach(async function(l) {
+        if (l.permission.includes(category.name)){
+          var i = l.permission.indexOf( category.name);
+          l.permission.splice( i, 1 );
+          await License.findByIdAndUpdate(l._id, {permission: l.permission});
+        }
+      });
       const categories = await Category.find();
       return categories;
     },

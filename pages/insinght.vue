@@ -1,18 +1,18 @@
 <template>
   <div>
-    <v-tabs v-model="model" centered color="grey darken-1">
+    <v-tabs v-model="model" centered color="grey darken-4" background-color="#616161cc" >
       <v-tab v-for="(itemTab, index) in $store.state.categories" :key="index">
         {{ itemTab.name }}
       </v-tab>
     </v-tabs>
-    <v-tabs-items v-model="model" class="my-2">
+    <v-tabs-items v-model="model" class="my-2" style="background-color: transparent" >
       <v-tab-item
         v-for="(itemTab, index) in $store.state.categories"
         :key="index"
         class="px-2"
       >
         <v-row v-if="isAccess">
-          <v-col cols="12" lg="3" v-for="(item, index) in filter" :key="index">
+          <v-col v-for="(item, index) in filter" :key="index">
             <v-card
               height="350"
               class="mx-auto"

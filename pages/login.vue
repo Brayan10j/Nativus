@@ -88,8 +88,8 @@
             </v-card-actions>
           </v-card>
           <v-row align="center" justify="center">
-            Hai un referal token ? ACCEDI e registri
-            <v-btn text color="blue" to="/singUp"> ACCEDI</v-btn></v-row
+            Hai un referal token ?
+            <v-btn text color="blue" to="/singUp"> Registrati</v-btn></v-row
           >
           <v-overlay :absolute="absolute" :value="alerta" :opacity="opacity">
             <v-alert
