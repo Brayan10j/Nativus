@@ -1,6 +1,6 @@
 <template >
-  <v-app dark dense>
-    <v-navigation-drawer v-model="drawer" :clipped="clipped" fixed app>
+  <v-app >
+    <v-navigation-drawer v-model="drawer" :clipped="clipped" fixed app color="primary">
       <v-list class="mx-auto img-center">
         <v-list-item class="mx-auto">
           <v-list-item-content>
@@ -36,15 +36,15 @@
         <template v-slot:activator="{ on, attrs }">
           <v-row align="center" justify="space-around" rounded>
             <v-btn
-              color="info"
+              color="blue "
               elevation="9"
               @click="balance = !balance"
               v-bind="attrs"
               v-on="on"
             >
-              <v-icon left> mdi-cash-multiple </v-icon>
-              Wood Coins :
-              {{ $store.state.userInfo.balance }}
+              <v-icon color="black" left> mdi-cash-multiple </v-icon>
+              <span color="black">Wood Coins : {{ $store.state.userInfo.balance }} </span>
+
             </v-btn>
           </v-row>
         </template>
@@ -57,7 +57,7 @@
       <v-tooltip right>
         <template v-slot:activator="{ on, attrs }">
           <v-sheet
-            color="teal darken-1"
+            color="blue"
             elevation="6"
             height="60"
             width="150"
@@ -206,7 +206,7 @@
         <v-row class="mt-4" align="center" justify="space-around">
           <v-tooltip bottom v-model="showToken">
             <template v-slot:activator="{  attrs }">
-              <v-btn v-bind="attrs"
+              <v-btn v-bind="attrs " color="gray darken-4"
                @click="copyText"> Token d'invite </v-btn>
             </template>
             <span >{{ $store.state.userInfo.codReferal }} Copied in ClipBoard</span>
@@ -214,7 +214,7 @@
         </v-row>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app>
+    <v-app-bar :clipped-left="clipped" fixed app color="primary">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>
         <!--<v-img
@@ -226,20 +226,20 @@
       </v-toolbar-title>
       <v-spacer />
       <v-img
-          max-height="50"
-          max-width="80"
+          max-height="40"
+          max-width="70"
           contain
           src="/images/Moneta11.png"
         ></v-img>
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
-            color="info"
+            color="blue"
             min-width="36"
             class="px-1 rounded-circle"
             @click="contact = !contact"
           >
-            <v-icon color="gray" v-bind="attrs" v-on="on">mdi-email</v-icon>
+            <v-icon color="black" v-bind="attrs" v-on="on" >mdi-email</v-icon>
           </v-btn>
         </template>
         <span>Supporto</span>
@@ -356,7 +356,7 @@
         <nuxt />
       </v-container>
     </v-main>
-    <v-footer :absolute="!fixed" app>
+    <v-footer :absolute="!fixed" app color="primary">
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
     <v-snackbar v-model="snackbar" :timeout="timeout" color="success">
@@ -502,4 +502,5 @@ export default {
 .fondo {
   background-image: url("/images/wallPapers/fondo.PNG");
 }
+
 </style>

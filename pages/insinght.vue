@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-tabs v-model="model" centered color="grey darken-4" background-color="#616161cc" >
+    <v-tabs v-model="model" centered color="grey darken-4"  >
       <v-tab v-for="(itemTab, index) in $store.state.categories" :key="index">
         {{ itemTab.name }}
       </v-tab>

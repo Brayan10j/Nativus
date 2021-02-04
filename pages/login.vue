@@ -42,13 +42,13 @@
             </template>
           </v-snackbar>
           <v-card class="elevation-12 mx-auto" width="400" color="#ffffff20">
-            <v-toolbar class="overflow-hidden" flat color="#4c4c53">
+            <v-toolbar class="overflow-hidden" flat color="primary">
               <v-toolbar-title>Login</v-toolbar-title>
               <v-spacer></v-spacer>
 
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
-                  <v-icon color="white" v-bind="attrs" v-on="on"
+                  <v-icon color="black" v-bind="attrs" v-on="on"
                     >mdi-information</v-icon
                   >
                 </template>
@@ -68,7 +68,6 @@
                 outlined
                 label="Token"
                 name="login"
-                color="#4c4c53"
                 prepend-icon="mdi-key"
                 type="text"
                 v-model="token"
@@ -76,11 +75,11 @@
             </v-card-text>
             <v-card-actions>
               <v-btn
-                class="mx-auto mb-3 rounded-pill btn-text-transform"
+                class="mx-auto mb-3 rounded-pill btn-text-transform "
+                color="primary"
                 btn-text-transform
                 elevation="12"
                 min-width="250"
-                color="#4c4c53"
                 @click="userLogin2"
                 inset
                 >Login</v-btn
