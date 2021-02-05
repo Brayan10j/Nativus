@@ -16,6 +16,7 @@ const UserSchema = new Schema({
   cryptoGen: Number,
   permissions: Array,
   referals: Array,
+  favorites: Array,
   isAdmin: Boolean,
   isSuperUser: Boolean,
   dateCreated: String,

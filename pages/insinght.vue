@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-tabs v-model="model" centered color="grey darken-4"  >
+    <v-tabs v-model="model" centered background-color="#424242CC" >
       <v-tab v-for="(itemTab, index) in $store.state.categories" :key="index">
         {{ itemTab.name }}
       </v-tab>
@@ -355,6 +355,26 @@ export default {
     },
   },
   methods: {
+    async addFavorite(item){
+
+      this.editedItem.licenses.forEach(l => {
+        delete l.__typename;
+      });
+
+      let favorites = [item].concat((this.$store.state.userInfo.favorites == undefined ? [] : this.$store.state.userInfo.favorites) ) // para prevenir errores
+
+      await this.$apollo
+        .mutate({
+          mutation: require("../api/server/mutations/users/editUser.gql"),
+          variables: { _id: this.$store.state.userInfo._id, data: { favorites : favorites } },
+        })
+        .then(async (data) => {
+
+          console.log(data);
+        });
+
+
+    },
     //mutaciones de la store
     ...mapMutations({
       cambiarRol: "cambiarRol",

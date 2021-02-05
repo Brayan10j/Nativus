@@ -155,8 +155,7 @@ const resolvers = {
       return user;
     },
     async editUser(_, { _id, data }) {
-      const user = await User.findByIdAndUpdate(_id, data);
-      return user ? true : false;
+      return  await User.findByIdAndUpdate(_id, data);
     },
 
     async addTokens(_, data) {

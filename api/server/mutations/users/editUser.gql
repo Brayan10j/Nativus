@@ -1,9 +1,37 @@
-mutation(
-  $_id: ID
-  $data: inputUser
-) {
-  editUser(
-    _id: $_id
-    data: $data
-  )
+mutation($_id: ID, $data: inputUser) {
+  editUser(_id: $_id, data: $data) {
+    _id
+    name
+    email
+    password
+    codReferal
+    registrationCode
+    licenses {
+      name
+      dateStart
+      dateFinish
+    }
+    rol
+    type
+    photo
+    permissions
+    balance
+    crypto
+    cryptoGen
+    referals
+    favorites {
+      _id
+      tittle
+      shortDesc
+      description
+      category
+      image
+      author
+      date
+      files
+    }
+    isAdmin
+    isSuperUser
+    dateCreated
+  }
 }

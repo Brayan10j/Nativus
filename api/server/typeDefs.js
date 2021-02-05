@@ -82,6 +82,7 @@ const typeDefs = gql`
     cryptoGen: Int
     permissions: [String]
     referals: [String]
+    favorites: [Post]
     isAdmin: Boolean
     isSuperUser: Boolean
     dateCreated: String
@@ -256,7 +257,7 @@ const typeDefs = gql`
     editUser(
       _id: ID
       data: inputUser
-    ): Boolean
+    ): User
   }
   type Subscription {
     postModify: [Post]

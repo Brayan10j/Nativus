@@ -1,12 +1,12 @@
-query{
-  users{
+query {
+  users {
     _id
     name
     email
     password
     codReferal
     registrationCode
-    licenses{
+    licenses {
       name
       dateStart
       dateFinish
@@ -19,6 +19,17 @@ query{
     crypto
     cryptoGen
     referals
+    favorites {
+      _id
+      tittle
+      shortDesc
+      description
+      category
+      image
+      author
+      date
+      files
+    }
     isAdmin
     isSuperUser
     dateCreated
@@ -26,4 +37,3 @@ query{
     verify
   }
 }
-

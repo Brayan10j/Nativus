@@ -1,6 +1,6 @@
 <template >
   <v-app >
-    <v-navigation-drawer v-model="drawer" :clipped="clipped" fixed app color="primary">
+    <v-navigation-drawer v-model="drawer" :clipped="clipped" fixed app>
       <v-list class="mx-auto img-center">
         <v-list-item class="mx-auto">
           <v-list-item-content>
@@ -42,7 +42,7 @@
               v-bind="attrs"
               v-on="on"
             >
-              <v-icon color="black" left> mdi-cash-multiple </v-icon>
+              <v-icon  left> mdi-cash-multiple </v-icon>
               <span color="black">Wood Coins : {{ $store.state.userInfo.balance }} </span>
 
             </v-btn>
@@ -207,14 +207,14 @@
           <v-tooltip bottom v-model="showToken">
             <template v-slot:activator="{  attrs }">
               <v-btn v-bind="attrs " color="gray darken-4"
-               @click="copyText"> Token d'invite </v-btn>
+               @click="copyText"> Token d'invito </v-btn>
             </template>
             <span >{{ $store.state.userInfo.codReferal }} Copied in ClipBoard</span>
           </v-tooltip>
         </v-row>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app color="primary">
+    <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>
         <!--<v-img
@@ -239,7 +239,7 @@
             class="px-1 rounded-circle"
             @click="contact = !contact"
           >
-            <v-icon color="black" v-bind="attrs" v-on="on" >mdi-email</v-icon>
+            <v-icon v-bind="attrs" v-on="on" >mdi-email</v-icon>
           </v-btn>
         </template>
         <span>Supporto</span>
@@ -356,7 +356,7 @@
         <nuxt />
       </v-container>
     </v-main>
-    <v-footer :absolute="!fixed" app color="primary">
+    <v-footer :absolute="!fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
     <v-snackbar v-model="snackbar" :timeout="timeout" color="success">
