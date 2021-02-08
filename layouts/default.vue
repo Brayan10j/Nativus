@@ -109,6 +109,7 @@
         </v-list-item>
         <v-list-item
           to="/favorite"
+          v-if="!$store.state.userInfo.isAdmin"
         >
           <v-list-item-icon>
             <v-icon v-text="'mdi-heart'"></v-icon>
@@ -235,12 +236,6 @@
         ></v-img>-->
       </v-toolbar-title>
       <v-spacer />
-      <v-img
-          max-height="40"
-          max-width="70"
-          contain
-          src="/images/Moneta11.png"
-        ></v-img>
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
