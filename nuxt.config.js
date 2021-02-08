@@ -73,9 +73,9 @@ export default {
             return "https://platform.ahumpilgrim.org/graphql";
           }
         })(),
-        /*inMemoryCacheOptions: {
-          addTypename: false, -- para quitar el __typename
-        },*/
+        inMemoryCacheOptions: {
+          addTypename: false, // para quitar el __typename
+        },
       }
     }
   },

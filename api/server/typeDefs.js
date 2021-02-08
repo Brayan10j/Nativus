@@ -105,6 +105,7 @@ const typeDefs = gql`
     cryptoGen: Int
     permissions: [String]
     referals: [String]
+    favorites: [inputPost]
     isAdmin: Boolean
     isSuperUser: Boolean
     dateCreated: String

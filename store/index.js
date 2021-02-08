@@ -4,6 +4,12 @@ export const state = () => ({
   categories: ["News", "Culture", "Webinars", "Events", "Store"]
 });
 
+export const getters = {
+  getUser: (state) => {
+    return state.userInfo;
+  }
+}
+
 export const mutations = {
   sendUserInfo(state, data) {
     state.userInfo = data;

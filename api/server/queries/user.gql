@@ -19,6 +19,16 @@ query(
     type
     photo
     permissions
+    favorites {
+      tittle
+      shortDesc
+      description
+      category
+      image
+      author
+      date
+      files
+    }
     balance
     crypto
     cryptoGen

@@ -20,7 +20,6 @@ mutation($_id: ID, $data: inputUser) {
     cryptoGen
     referals
     favorites {
-      _id
       tittle
       shortDesc
       description

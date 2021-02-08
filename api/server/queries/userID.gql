@@ -20,7 +20,6 @@ query($_id: ID) {
     cryptoGen
     referals
     favorites {
-      _id
       tittle
       shortDesc
       description

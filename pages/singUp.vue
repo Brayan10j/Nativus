@@ -173,6 +173,7 @@ export default {
         cryptoGen: 0,
         permissions: [],
         referals: [],
+        favorites: [],
         isAdmin: false,
         isSuperUser: false,
         dateCreated: new Date().toISOString().substr(0, 10),

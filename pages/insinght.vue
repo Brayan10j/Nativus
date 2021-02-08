@@ -1,11 +1,16 @@
 <template>
   <div>
-    <v-tabs v-model="model" centered background-color="#424242CC" >
+    {{ $store.state.userInfo.favorites }}
+    <v-tabs v-model="model" centered background-color="#424242CC">
       <v-tab v-for="(itemTab, index) in $store.state.categories" :key="index">
         {{ itemTab.name }}
       </v-tab>
     </v-tabs>
-    <v-tabs-items v-model="model" class="my-2" style="background-color: transparent" >
+    <v-tabs-items
+      v-model="model"
+      class="my-2"
+      style="background-color: transparent"
+    >
       <v-tab-item
         v-for="(itemTab, index) in $store.state.categories"
         :key="index"
@@ -45,7 +50,12 @@
                   </v-icon>
                 </v-card-actions>
                 <v-card-actions class="d-flex justify-end mt-n8 mb-n2" v-else>
-                  <v-icon color="red" @click.stop=""> mdi-heart </v-icon>
+                  <v-icon
+                    :color="isFavorite(item) ? 'red' : '#ffffff80'"
+                    @click.stop="addFavorite(item)"
+                  >
+                    mdi-heart
+                  </v-icon>
                 </v-card-actions>
               </v-card-subtitle>
               <v-card-title class="ajustador">{{ item.tittle }}</v-card-title>
@@ -273,7 +283,7 @@
             </v-col>
           </v-row>
         </v-container>
-        <v-card-text >
+        <v-card-text>
           <div style="color: black" v-html="formAdd.description"></div>
 
           <v-alert
@@ -355,25 +365,41 @@ export default {
     },
   },
   methods: {
-    async addFavorite(item){
-
-      this.editedItem.licenses.forEach(l => {
-        delete l.__typename;
-      });
-
-      let favorites = [item].concat((this.$store.state.userInfo.favorites == undefined ? [] : this.$store.state.userInfo.favorites) ) // para prevenir errores
-
+    isFavorite(item) {
+      let favoritePost =
+        this.$store.state.userInfo.favorites == undefined
+          ? []
+          : this.$store.state.userInfo.favorites.map((c) => c.tittle);
+      return favoritePost.includes(item.tittle);
+    },
+    async addFavorite(item) {
+      var favorites;
+      delete item._id;
+      if (this.isFavorite(item)) {
+        let favoritePost = this.$store.state.userInfo.favorites.map((c) => c.tittle);
+        var i = favoritePost.indexOf(item.tittle);
+        let fp = JSON.parse(JSON.stringify(this.$store.getters["getUser"].favorites));
+        fp.splice(i, 1);
+        favorites = fp;
+      } else {
+        favorites = [item].concat(
+          this.$store.state.userInfo.favorites == undefined
+            ? []
+            : this.$store.state.userInfo.favorites
+        ); // para prevenir errores ( agregar favorites a todos los usuarios en la base de datos)
+      }
       await this.$apollo
         .mutate({
           mutation: require("../api/server/mutations/users/editUser.gql"),
-          variables: { _id: this.$store.state.userInfo._id, data: { favorites : favorites } },
+          variables: {
+            _id: this.$store.state.userInfo._id,
+            data: { favorites: favorites },
+          },
         })
-        .then(async (data) => {
-
+        .then(({ data }) => {
           console.log(data);
+          this.$store.commit("sendUserInfo", data.editUser);
         });
-
-
     },
     //mutaciones de la store
     ...mapMutations({
@@ -563,7 +589,7 @@ export default {
 .ajustador {
   word-break: normal;
 }
-#html  p {
+#html p {
   color: black;
 }
 </style>

@@ -107,6 +107,16 @@
             <v-list-item-title v-text="'HOME'"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item
+          to="/favorite"
+        >
+          <v-list-item-icon>
+            <v-icon v-text="'mdi-heart'"></v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title v-text="'I miei contenuti'"></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <!--<v-list-item
           to="/brain"
           v-if="
@@ -410,15 +420,6 @@ export default {
         email: "",
         message: "",
       },
-      perm: [
-        "News",
-        "Courses",
-        "Investments",
-        "Events",
-        "Webinars",
-        "Markert Updates",
-        "The brain",
-      ],
       clipped: true,
       drawer: true,
       fixed: true,
