@@ -71,7 +71,7 @@
             ></v-img>
           </v-row>
           <v-row align="center" align-content="center">
-            <h1 class="mx-auto my-10">Buy Wood Coins</h1>
+            <h1 class="mx-auto my-10 text--black" >Buy Wood Coins</h1>
           </v-row>
         </v-col>
       </v-tab-item>
