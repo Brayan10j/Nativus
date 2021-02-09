@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ $store.state.userInfo.favorites }}
     <v-tabs v-model="model" centered background-color="#424242CC">
       <v-tab v-for="(itemTab, index) in $store.state.categories" :key="index">
         {{ itemTab.name }}
@@ -253,7 +252,7 @@
       hide-overlay
       transition="dialog-bottom-transition"
     >
-      <v-card color="white">
+      <v-card>
         <v-toolbar dark color="grey darken-3">
           <v-toolbar-title>{{ formAdd.category }}</v-toolbar-title>
           <v-spacer></v-spacer>
@@ -263,9 +262,7 @@
         </v-toolbar>
 
         <v-card-title class="text-center justify-center py-6">
-          <h3
-            style="color: black"
-            class="font-weight-bold display-3 text-black"
+          <h3 class="font-weight-bold display-3 text-black"
           >
             {{ formAdd.tittle }}
           </h3>
@@ -284,7 +281,7 @@
           </v-row>
         </v-container>
         <v-card-text>
-          <div style="color: black" v-html="formAdd.description"></div>
+          <div v-html="formAdd.description"></div>
 
           <v-alert
             v-if="formAdd.files[0]"

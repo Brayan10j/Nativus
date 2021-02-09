@@ -75,7 +75,7 @@
             </v-card-text>
             <v-card-actions>
               <v-btn
-                class="mx-auto mb-3 rounded-pill btn-text-transform "
+                class="mx-auto mb-3 rounded-pill btn-text-transform"
                 color="#424242"
                 btn-text-transform
                 elevation="12"
@@ -89,6 +89,10 @@
           <v-row align="center" justify="center">
             Hai un referal token ?
             <v-btn text color="blue" to="/singUp"> Registrati</v-btn></v-row
+          >
+          <v-row align="center" justify="center">
+
+            <v-btn text color="blue" @click="dialogRecovery = true"> Recovery token</v-btn></v-row
           >
           <v-overlay :absolute="absolute" :value="alerta" :opacity="opacity">
             <v-alert
@@ -113,6 +117,33 @@
         </v-col>
       </v-row>
     </v-container>
+    <v-dialog v-model="dialogRecovery" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Recovery Token</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field
+                  required
+                  label="Insert your email"
+                  v-model="email"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="dialogRecovery= false">
+            Close
+          </v-btn>
+          <v-btn color="blue darken-1" text @click="recovery"> Send </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-layout>
 </template>
 
@@ -122,6 +153,7 @@ export default {
   layout: "empty",
   data() {
     return {
+      dialogRecovery: false,
       isIOS: false,
       deferredPrompt: null,
       dialogIOS: false,
@@ -134,10 +166,9 @@ export default {
       overlay: false,
       res: "",
       token: "",
-      login: {
-        email: "",
-        password: "",
-      },
+
+      email: "",
+
       errord: {
         description: "",
       },
@@ -191,6 +222,37 @@ export default {
       }
     },
     ...mapMutations(["sendUserInfo"]),
+    async recovery() {
+      try {
+        await this.$apollo
+          .query({
+            query: require("../api/server/queries/user.gql"),
+            variables: { email: this.email },
+          })
+          .then(async ({data}) => {
+            if (data.user == null){
+              throw "User no found"
+            }
+            await this.$apollo
+              .mutate({
+                mutation: require("../api/server/mutations/sendEmail.gql"),
+                variables: {
+                  name: data.user.name,
+                  subject: "recovery",
+                  email: data.user.email,
+                  message: data.user._id,
+                },
+              })
+              .then(async (data) => {
+                this.dialogRecovery = false;
+                this.$toast.success("check your email");
+              });
+          });
+      } catch (error) {
+        this.$toast.error("User no found");
+        this.dialogRecovery = false;
+      }
+    },
     async userLogin2() {
       try {
         this.overlay = true;

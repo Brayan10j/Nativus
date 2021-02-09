@@ -35,13 +35,31 @@ exports.sendEmail = async function (data) {
     to:  data.email
   };
 
-  try {
-    if(data.subject == "singUp"){
-      await transporter.sendMail(emailSingUp);
-    }else{
-      await transporter.sendMail(emailSupport);
-    }
+  const recoveryToken = {
+    subject: data.subject,
+    html: `
+      <h1>Hello <b>${data.name}</b> </h1>
+      <br>
+      <p>You requested to recover your token <p>
+      <br>
+      <p>Your token access is: <b>${data.message}</b></p>
+    `,
+    from: "info@ahumpilgrim.org",
+    to:  data.email
+  };
 
+  try {
+    switch (data.subject) {
+      case "singUp":
+        await transporter.sendMail(emailSingUp);
+        break;
+      case "recovery":
+        await transporter.sendMail(recoveryToken);
+        break;
+      default:
+        await transporter.sendMail(emailSupport);
+        break;
+    }
     return "Email sent";
   } catch (err) {
     return err;

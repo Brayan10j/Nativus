@@ -26,10 +26,5 @@ export default {
 
 <style>
 
-.fondo {
-  height: 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
+
 </style>
