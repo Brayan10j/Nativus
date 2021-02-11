@@ -120,7 +120,7 @@ const typeDefs = gql`
     category: String
     image: String
     author: String
-    shortDesc: String
+    price: Int
     date: String
     files: [String]
   }
@@ -131,7 +131,7 @@ const typeDefs = gql`
     category: String
     image: String
     author: String
-    shortDesc: String
+    price: Int
     date: String
     files: [String]
   }
@@ -219,7 +219,7 @@ const typeDefs = gql`
       category: String
       image: String
       author: String
-      shortDesc: String
+      price: Int
       date: String
       files: [String]
     ): Post

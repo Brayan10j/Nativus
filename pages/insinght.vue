@@ -49,12 +49,17 @@
                   </v-icon>
                 </v-card-actions>
                 <v-card-actions class="d-flex justify-end mt-n8 mb-n2" v-else>
-                  <v-icon
+                  <v-btn text color="success" v-if="(item.price /= 0)">
+                    <v-icon left> mdi-cash-multiple </v-icon>
+                    {{ item.price }}
+                  </v-btn>
+                  <v-btn
+                    icon
                     :color="isFavorite(item) ? 'red' : '#ffffff80'"
                     @click.stop="addFavorite(item)"
                   >
-                    mdi-heart
-                  </v-icon>
+                    <v-icon> mdi-heart </v-icon>
+                  </v-btn>
                 </v-card-actions>
               </v-card-subtitle>
               <v-card-title class="ajustador">{{ item.tittle }}</v-card-title>
@@ -71,7 +76,7 @@
             ></v-img>
           </v-row>
           <v-row align="center" align-content="center">
-            <h1 class="mx-auto my-10 text--black" >Buy Wood Coins</h1>
+            <h1 class="mx-auto my-10 text--black">Buy Wood Coins</h1>
           </v-row>
         </v-col>
       </v-tab-item>
@@ -122,10 +127,9 @@
                 </v-col>
                 <v-col cols="12" sm="6" md="6">
                   <v-text-field
-                    v-model="formAdd.shortDesc"
-                    label="Short Description"
-                    hint="Short description of the new"
-                    required
+                    v-model.number="formAdd.price"
+                    label="Price (optional)"
+                    prefix="$"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="4" md="4">
@@ -262,8 +266,7 @@
         </v-toolbar>
 
         <v-card-title class="text-center justify-center py-6">
-          <h3 class="font-weight-bold display-3 text-black"
-          >
+          <h3 class="font-weight-bold display-3 text-black">
             {{ formAdd.tittle }}
           </h3>
         </v-card-title>
@@ -338,7 +341,7 @@ export default {
         category: "",
         image: "/images/default.jpeg",
         author: "",
-        shortDesc: "",
+        price: 0,
         date: new Date().toISOString().substr(0, 10),
         files: [],
       },
@@ -348,7 +351,7 @@ export default {
         category: "",
         image: "/images/default.jpeg",
         author: "",
-        shortDesc: "",
+        price: 0,
         date: new Date().toISOString().substr(0, 10),
         files: [],
       },
@@ -373,9 +376,13 @@ export default {
       var favorites;
       delete item._id;
       if (this.isFavorite(item)) {
-        let favoritePost = this.$store.state.userInfo.favorites.map((c) => c.tittle);
+        let favoritePost = this.$store.state.userInfo.favorites.map(
+          (c) => c.tittle
+        );
         var i = favoritePost.indexOf(item.tittle);
-        let fp = JSON.parse(JSON.stringify(this.$store.getters["getUser"].favorites));
+        let fp = JSON.parse(
+          JSON.stringify(this.$store.getters["getUser"].favorites)
+        );
         fp.splice(i, 1);
         favorites = fp;
       } else {
@@ -398,10 +405,6 @@ export default {
           this.$store.commit("sendUserInfo", data.editUser);
         });
     },
-    //mutaciones de la store
-    ...mapMutations({
-      cambiarRol: "cambiarRol",
-    }),
     onImageSelected(file) {
       file ? (this.imageSeleted = file) : null;
     },

@@ -21,7 +21,7 @@ query($_id: ID) {
     referals
     favorites {
       tittle
-      shortDesc
+      price
       description
       category
       image

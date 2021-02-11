@@ -2,7 +2,7 @@ query{
   posts{
     _id
     tittle
-    shortDesc
+    price
     description
     category
     image

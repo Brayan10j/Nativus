@@ -7,7 +7,7 @@ const PostSchema = new Schema({
   category: String,
   image: String,
   author: String,
-  shortDesc: String,
+  price: Number,
   date: String,
   files: Array,
 });

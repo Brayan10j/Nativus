@@ -4,7 +4,7 @@ mutation(
   $category: String
   $image: String
   $author: String
-  $shortDesc: String
+  $price: Int
   $date: String
   $files:[String]
 ) {
@@ -14,7 +14,7 @@ mutation(
     category: $category
     image: $image
     author: $author
-    shortDesc: $shortDesc
+    price: $price
     date: $date
     files: $files
   ) {

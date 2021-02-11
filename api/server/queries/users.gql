@@ -21,7 +21,7 @@ query {
     referals
     favorites {
       tittle
-      shortDesc
+      price
       description
       category
       image

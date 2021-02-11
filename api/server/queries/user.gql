@@ -21,7 +21,7 @@ query(
     permissions
     favorites {
       tittle
-      shortDesc
+      price
       description
       category
       image

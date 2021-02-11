@@ -99,6 +99,7 @@ export default {
     config: {
       apiKey: "AIzaSyBdV29XYKmKlqPs1lOKb3qcGMIk9obxfYg",
       authDomain: "pilgrim-a07fc.firebaseapp.com",
+      databaseURL: "https://pilgrim-a07fc-default-rtdb.firebaseio.com",
       projectId: "pilgrim-a07fc",
       storageBucket: "pilgrim-a07fc.appspot.com",
       messagingSenderId: "50369241596",

@@ -7,8 +7,8 @@
           gradient="to top right, rgba(33,33,33,.7), rgba(11,11,11,.7)"
         ></v-img>
       </template>
-      <v-toolbar-title>User Profile</v-toolbar-title>
-    </v-toolbar>
+      <v-toolbar-title>User Profile</v-toolbar-title> </v-toolbar
+    >P
 
     <v-dialog v-model="editeProfile" persistent max-width="600px">
       <v-card width="800" class="mx-auto">
@@ -224,7 +224,9 @@
         >
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialogDelete = false">Cancel</v-btn>
+          <v-btn color="blue darken-1" text @click="dialogDelete = false"
+            >Cancel</v-btn
+          >
           <v-btn color="blue darken-1" text @click="alert('BORRRAR')">OK</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
@@ -234,13 +236,13 @@
 </template>
 
 <script>
-const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 export default {
   data() {
     return {
       editItem: {},
-      dialogDelete : false,
+      dialogDelete: false,
       active: [],
       open: [],
       imageSeleted: null,
@@ -251,29 +253,29 @@ export default {
           align: "start",
           sortable: false,
           value: "image",
-          class: "text-lg-subtitle-1",
+          class: "text-lg-subtitle-1"
         },
         { text: "Name", value: "name", class: "text-lg-subtitle-1" },
         { text: "Email", value: "email", class: "text-lg-subtitle-1" },
         {
           text: "Registration Date",
           value: "dateCreated",
-          class: "text-lg-subtitle-1",
+          class: "text-lg-subtitle-1"
         },
         {
           text: "Pilgrim Generated",
           value: "cryptoGen",
-          class: "text-lg-subtitle-1",
-        },
+          class: "text-lg-subtitle-1"
+        }
       ],
       events: [],
       input: null,
-      nonce: 0,
+      nonce: 0
     };
   },
   apollo: {
     transactions: {
-      query: require("../api/server/queries/transactions.gql"),
+      query: require("../api/server/queries/transactions.gql")
       /*variables() { return {
         user: this.$store.state.userInfo._id,
       }}
@@ -282,8 +284,8 @@ export default {
     },
     users: {
       query: require("../api/server/queries/users.gql"),
-      fetchPolicy: "cache-and-network",
-    },
+      fetchPolicy: "cache-and-network"
+    }
   },
 
   computed: {
@@ -309,7 +311,7 @@ export default {
 
       return this.users == undefined
         ? []
-        : this.users.filter((user) => user.registrationCode === code);
+        : this.users.filter(user => user.registrationCode === code);
     },
     filterTransactions() {
       const id =
@@ -319,12 +321,12 @@ export default {
 
       return this.transactions == undefined
         ? []
-        : this.transactions.filter((transaction) => transaction.user === id);
+        : this.transactions.filter(transaction => transaction.user === id);
     },
 
     timeline() {
       return this.events.slice().reverse();
-    },
+    }
   },
 
   methods: {
@@ -343,9 +345,9 @@ export default {
       await this.$apollo
         .mutate({
           mutation: require("../api/server/mutations/users/deleteUser.gql"),
-          variables: { _id: this.editItem._id },
+          variables: { _id: this.editItem._id }
         })
-        .then(async (data) => {
+        .then(async data => {
           console.log(data); // mensajes de respuesta
         });
       this.dialogDelete = false;
@@ -357,14 +359,14 @@ export default {
         );
         var fileTask = await storageRef
           .put(this.imageSeleted)
-          .then((snapshot) => {
-            return snapshot.ref.getDownloadURL().then((url) => {
+          .then(snapshot => {
+            return snapshot.ref.getDownloadURL().then(url => {
               this.editItem.photo = url;
               this.imageSeleted = null;
               return url;
             });
           })
-          .catch((error) => {
+          .catch(error => {
             console.error("Error uploading image", error);
           });
       }
@@ -374,24 +376,23 @@ export default {
       await this.$apollo
         .mutate({
           mutation: require("../api/server/mutations/users/editUser.gql"),
-          variables: { _id: id, data: this.editItem },
+          variables: { _id: id, data: this.editItem }
         })
-        .then(async (data) => {
+        .then(async data => {
           console.log(data);
         });
       await this.$apollo
         .query({
           query: require("../api/server/queries/user.gql"),
-          variables: { email: this.editItem.email },
+          variables: { email: this.editItem.email }
         })
-        .then(async (data) => {
+        .then(async data => {
           this.$store.commit("sendUserInfo", data.data.user);
         });
       this.editeProfile = false;
-    },
-  },
+    }
+  }
 };
 </script>
 
-<style>
-</style>
+<style></style>

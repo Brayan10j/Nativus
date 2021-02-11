@@ -6,7 +6,7 @@ importScripts(
 importScripts(
   'https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js'
 )
-firebase.initializeApp({"apiKey":"AIzaSyBdV29XYKmKlqPs1lOKb3qcGMIk9obxfYg","authDomain":"pilgrim-a07fc.firebaseapp.com","projectId":"pilgrim-a07fc","storageBucket":"pilgrim-a07fc.appspot.com","messagingSenderId":"50369241596","appId":"1:50369241596:web:0061117cd25de7b85ed279"})
+firebase.initializeApp({"apiKey":"AIzaSyBdV29XYKmKlqPs1lOKb3qcGMIk9obxfYg","authDomain":"pilgrim-a07fc.firebaseapp.com","databaseURL":"https:\u002F\u002Fpilgrim-a07fc-default-rtdb.firebaseio.com","projectId":"pilgrim-a07fc","storageBucket":"pilgrim-a07fc.appspot.com","messagingSenderId":"50369241596","appId":"1:50369241596:web:0061117cd25de7b85ed279"})
 
 /**
  * Returns a promise that resolves with an ID token if available.
