@@ -1,5 +1,5 @@
 <template>
-  <v-row >
+  <v-row>
     <v-col
       v-for="(item, index) in $store.state.userInfo.favorites == undefined
         ? []
@@ -27,7 +27,7 @@
       hide-overlay
       transition="dialog-bottom-transition"
     >
-      <v-card >
+      <v-card>
         <v-toolbar dark color="grey darken-3">
           <v-toolbar-title>{{ itemSelected.category }}</v-toolbar-title>
           <v-spacer></v-spacer>
@@ -37,9 +37,7 @@
         </v-toolbar>
 
         <v-card-title class="text-center justify-center py-6">
-          <h3
-            class="font-weight-bold display-3 text-black"
-          >
+          <h3 class="font-weight-bold display-3 text-black">
             {{ itemSelected.tittle }}
           </h3>
         </v-card-title>
@@ -57,7 +55,7 @@
           </v-row>
         </v-container>
         <v-card-text>
-          <div  v-html="itemSelected.description"></div>
+          <div v-html="itemSelected.description"></div>
 
           <v-alert
             v-if="itemSelected.files[0]"

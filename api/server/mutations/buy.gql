@@ -1,5 +1,5 @@
-mutation($_idUser: ID, $_idLicense: ID) {
-  buyLicense(_idUser: $_idUser, _idLicense: $_idLicense) {
+mutation($_idUser: ID, $_idProduct: ID) {
+  buyLicense(_idUser: $_idUser, _idProduct: $_idProduct) {
     _id
     name
     email

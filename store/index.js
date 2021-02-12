@@ -14,7 +14,7 @@ export const mutations = {
   sendUserInfo(state, data) {
     state.userInfo = data;
   },
-  sendBalance(state, data) {
+  UPDATE_BALANCE(state, data) {
     state.userInfo.balance = data;
   },
   sendCategories(state, data) {

@@ -32,11 +32,11 @@
       <v-divider></v-divider>
       <br />
 
-      <v-tooltip right>
+      <v-tooltip top max-width="200">
         <template v-slot:activator="{ on, attrs }">
           <v-row align="center" justify="space-around" rounded>
             <v-btn
-              color="blue "
+              color="primary"
               elevation="9"
               @click="balance = !balance"
               v-bind="attrs"
@@ -54,10 +54,10 @@
           pilgrim coins</span
         >
       </v-tooltip>
-      <v-tooltip right>
+      <v-tooltip top max-width="200">
         <template v-slot:activator="{ on, attrs }">
           <v-sheet
-            color="blue"
+            color="secondary"
             elevation="6"
             height="60"
             width="150"
@@ -239,7 +239,7 @@
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
-            color="blue"
+            color="primary"
             min-width="36"
             class="px-1 rounded-circle"
             @click="contact = !contact"
@@ -356,7 +356,7 @@
         </v-overlay>
       </v-card>
     </v-dialog>
-    <v-main :style="{ backgroundImage: `url(${wallPaper})` }" class="fondo">
+    <v-main class="fondo">
       <v-container fluid >
         <nuxt />
       </v-container>
@@ -503,6 +503,7 @@ export default {
 
 .fondo {
   height: 100%;
+  background-image: url('/images/background.jpeg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

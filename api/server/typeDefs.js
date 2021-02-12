@@ -207,6 +207,11 @@ const typeDefs = gql`
       _idLicense: ID
     ): User
 
+    buy(
+      _idUser: ID
+      _idProduct: ID
+    ): User
+
 
     addTransaction(
       data: inputTransaction

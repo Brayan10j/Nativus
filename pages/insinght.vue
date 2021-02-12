@@ -87,7 +87,7 @@
       class="mx-2"
       fab
       dark
-      color="indigo"
+      color="primary"
       fixed
       right
       bottom
@@ -365,6 +365,24 @@ export default {
     },
   },
   methods: {
+    async buy(item) {
+      try {
+        await this.$apollo
+          .mutate({
+            mutation: require("../api/server/mutations/buyLicense.gql"),
+            variables: {
+              _idUser: this.$store.state.userInfo._id,
+              _idProduct: item._id,
+            },
+          })
+          .then(async ({ data }) => {
+            console.log(data);
+          });
+        
+      } catch (error) {
+        this.tos
+      }
+    },
     isFavorite(item) {
       let favoritePost =
         this.$store.state.userInfo.favorites == undefined
