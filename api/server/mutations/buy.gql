@@ -1,35 +1,5 @@
 mutation($_idUser: ID, $_idProduct: ID) {
-  buyLicense(_idUser: $_idUser, _idProduct: $_idProduct) {
-    _id
-    name
-    email
-    password
-    codReferal
-    registrationCode
-    licenses {
-      name
-      dateStart
-      dateFinish
-    }
-    rol
-    photo
-    permissions
-    favorites {
-      tittle
-      price
-      description
-      category
-      image
-      author
-      date
-      files
-    }
+  buy(_idUser: $_idUser, _idProduct: $_idProduct) {
     balance
-    crypto
-    cryptoGen
-    referals
-    isAdmin
-    isSuperUser
-    dateCreated
   }
 }

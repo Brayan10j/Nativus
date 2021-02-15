@@ -146,7 +146,7 @@ export default {
     licenses: {
       query: require("../api/server/queries/licenses.gql"),
       fetchPolicy: "cache-and-network",
-      //pollInterval: 7000, //puede cambiarse esto a una subscriptionMore
+      pollInterval: 7000, //puede cambiarse esto a una subscriptionMore
     },
   },
   mounted() {

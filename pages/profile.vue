@@ -8,7 +8,7 @@
         ></v-img>
       </template>
       <v-toolbar-title>User Profile</v-toolbar-title> </v-toolbar
-    >P
+    >
 
     <v-dialog v-model="editeProfile" persistent max-width="600px">
       <v-card width="800" class="mx-auto">

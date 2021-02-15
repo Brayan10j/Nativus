@@ -32,6 +32,7 @@
               </v-img>
               <v-card-subtitle class="pb-0 mb-3">
                 {{ item.date }}
+                </v-card-subtitle>
                 <v-card-actions
                   class="d-flex justify-end mt-n8 mb-n2"
                   v-if="$store.state.userInfo.isAdmin"
@@ -49,9 +50,9 @@
                   </v-icon>
                 </v-card-actions>
                 <v-card-actions class="d-flex justify-end mt-n8 mb-n2" v-else>
-                  <v-btn text color="success" v-if="(item.price /= 0)">
-                    <v-icon left> mdi-cash-multiple </v-icon>
-                    {{ item.price }}
+                  <v-btn text small color="success" v-if="(item.price /= 0)" @click.stop="buy(item)">
+                    $ {{item.price}}
+                    
                   </v-btn>
                   <v-btn
                     icon
@@ -61,7 +62,7 @@
                     <v-icon> mdi-heart </v-icon>
                   </v-btn>
                 </v-card-actions>
-              </v-card-subtitle>
+              
               <v-card-title class="ajustador">{{ item.tittle }}</v-card-title>
             </v-card>
           </v-col>
@@ -285,7 +286,6 @@
         </v-container>
         <v-card-text>
           <div v-html="formAdd.description"></div>
-
           <v-alert
             v-if="formAdd.files[0]"
             border="top"
@@ -369,18 +369,18 @@ export default {
       try {
         await this.$apollo
           .mutate({
-            mutation: require("../api/server/mutations/buyLicense.gql"),
+            mutation: require("../api/server/mutations/buy.gql"),
             variables: {
               _idUser: this.$store.state.userInfo._id,
               _idProduct: item._id,
             },
           })
           .then(async ({ data }) => {
-            console.log(data);
+            this.$store.commit("UPDATE_BALANCE", data.buy.balance );
+            this.$toast.success("Purchase made");
           });
-        
       } catch (error) {
-        this.tos
+        alert(error);
       }
     },
     isFavorite(item) {

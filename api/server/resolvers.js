@@ -35,68 +35,93 @@ const resolvers = {
   },
   Mutation: {
     async addBalance(_, data) {
-        let token = await Token.findOne({ code: data.code });
-        if (token == null) {
-          throw "Token no found"; // retornar el user
-        }
-        if (token.active == true) {
-          throw "Token active";
-        }
-        const cryptoGen = token.value * 0.2;
-        //agrega al usuario
-        const user = await User.findById(data._id);
-        let newBalance = user.balance + token.value;
-        let newCrypto = user.crypto + (cryptoGen * 0.1);
-        let newCryptoGen = user.cryptoGen + (cryptoGen * 0.1);
-        await User.findByIdAndUpdate(user._id, {
-          balance: newBalance,
-          crypto: newCrypto,
-          cryptoGen: newCryptoGen
-        });
-        //agrega al referido
-        let userReferal = await User.findOne({
-          codReferal: user.registrationCode
-        });
-        let newCryptoRef = userReferal.crypto + (cryptoGen * 0.1);
-        await User.findByIdAndUpdate(userReferal._id, {
-          crypto: newCryptoRef
-        });
+      let token = await Token.findOne({ code: data.code });
+      if (token == null) {
+        throw "Token no found"; // retornar el user
+      }
+      if (token.active == true) {
+        throw "Token active";
+      }
+      const cryptoGen = token.value * 0.2;
+      //agrega al usuario
+      const user = await User.findById(data._id);
+      let newBalance = user.balance + token.value;
+      let newCrypto = user.crypto + cryptoGen * 0.1;
+      let newCryptoGen = user.cryptoGen + cryptoGen * 0.1;
+      await User.findByIdAndUpdate(user._id, {
+        balance: newBalance,
+        crypto: newCrypto,
+        cryptoGen: newCryptoGen
+      });
+      //agrega al referido
+      let userReferal = await User.findOne({
+        codReferal: user.registrationCode
+      });
+      let newCryptoRef = userReferal.crypto + cryptoGen * 0.1;
+      await User.findByIdAndUpdate(userReferal._id, {
+        crypto: newCryptoRef
+      });
 
-        //agrega a los founders
-        const founderUsers = await User.find({ type: "FOUNDER" });
+      //agrega a los founders
+      const founderUsers = await User.find({ type: "FOUNDER" });
 
-        const cantFounders = (cryptoGen * 0.4) / founderUsers.length;
-        founderUsers.forEach(async function(x) {
-          let newCrypto = x.crypto + cantFounders;
-          await User.findByIdAndUpdate(x._id, { crypto: newCrypto });
-        });
-        //agrega a los team
-        const teamUsers = await User.find({ type: "TEAMPILGRIM" });
-        const cantTeam = (cryptoGen * 0.2) / teamUsers.length;
-        teamUsers.forEach(async function(x) {
-          let newCrypto = x.crypto + cantTeam;
-          await User.findByIdAndUpdate(x._id, { crypto: newCrypto });
-        });
-        //agrega al fondo o reserva
-        let userAdmin = await User.findOne({
-          rol: "ADMIN"
-        });
-        let newCryptoAdmin = userAdmin.crypto + (cryptoGen * 0.2);
-        await User.findByIdAndUpdate(userAdmin._id, { crypto: newCryptoAdmin });
+      const cantFounders = (cryptoGen * 0.4) / founderUsers.length;
+      founderUsers.forEach(async function(x) {
+        let newCrypto = x.crypto + cantFounders;
+        await User.findByIdAndUpdate(x._id, { crypto: newCrypto });
+      });
+      //agrega a los team
+      const teamUsers = await User.find({ type: "TEAMPILGRIM" });
+      const cantTeam = (cryptoGen * 0.2) / teamUsers.length;
+      teamUsers.forEach(async function(x) {
+        let newCrypto = x.crypto + cantTeam;
+        await User.findByIdAndUpdate(x._id, { crypto: newCrypto });
+      });
+      //agrega al fondo o reserva
+      let userAdmin = await User.findOne({
+        rol: "ADMIN"
+      });
+      let newCryptoAdmin = userAdmin.crypto + cryptoGen * 0.2;
+      await User.findByIdAndUpdate(userAdmin._id, { crypto: newCryptoAdmin });
 
-        const transaction = new Transaction({
-          user: user._id,
-          description: "purcharse balance",
-          credits: token.value.toString(),
-          date:
-            new Date().toISOString().substr(0, 10) +
-            "  " +
-            new Date().toISOString().substr(11, 8)
-        });
-        await transaction.save();
-        await Token.findByIdAndUpdate(token._id, { active: true });
-        const res = await User.findById(user._id);
-        return res;
+      const transaction = new Transaction({
+        user: user._id,
+        description: "purcharse balance",
+        credits: token.value.toString(),
+        date:
+          new Date().toISOString().substr(0, 10) +
+          "  " +
+          new Date().toISOString().substr(11, 8)
+      });
+      await transaction.save();
+      await Token.findByIdAndUpdate(token._id, { active: true });
+      const res = await User.findById(user._id);
+      return res;
+    },
+    async buy(_, data) {
+      const user = await User.findById(data._idUser);
+      const post = await Post.findById(data._idProduct);
+      let newBalance = user.balance - post.price;
+      await User.findByIdAndUpdate(user._id, {
+        balance: newBalance
+      });
+      const transaction = new Transaction({
+        user: user._id,
+        description: "Buy " + post.tittle,
+        credits: post.price.toString(),
+        date:
+          new Date().toISOString().substr(0, 10) +
+          "  " +
+          new Date().toISOString().substr(11, 8)
+      });
+      await transaction.save();
+      sm.sendEmail({
+        name: user.name,
+        subject: "buy",
+        email: user.email,
+        message: post.tittle,
+      });
+      return await User.findById(user._id);;
     },
     async buyLicense(_, data) {
       const user = await User.findById(data._idUser);
@@ -156,7 +181,7 @@ const resolvers = {
     },
     async editUser(_, { _id, data }) {
       await User.findByIdAndUpdate(_id, data);
-      return await User.findById(_id) ;
+      return await User.findById(_id);
     },
 
     async addTokens(_, data) {
@@ -231,7 +256,7 @@ const resolvers = {
       res = sm.sendEmail(data);
       return res;
     },
-    async addCategory(_, {data}) {
+    async addCategory(_, { data }) {
       const category = new Category(data);
       await category.save();
       const categories = await Category.find();
@@ -243,10 +268,10 @@ const resolvers = {
       // eliminar en licencias
       const licenses = await License.find();
       licenses.forEach(async function(l) {
-        if (l.permission.includes(category.name)){
-          var i = l.permission.indexOf( category.name);
-          l.permission.splice( i, 1 );
-          await License.findByIdAndUpdate(l._id, {permission: l.permission});
+        if (l.permission.includes(category.name)) {
+          var i = l.permission.indexOf(category.name);
+          l.permission.splice(i, 1);
+          await License.findByIdAndUpdate(l._id, { permission: l.permission });
         }
       });
       const categories = await Category.find();
@@ -256,7 +281,7 @@ const resolvers = {
       const category = await Category.findByIdAndUpdate(_id, data);
       const categories = await Category.find();
       return categories;
-    },
+    }
   }
 };
 

@@ -1,8 +1,8 @@
 const nodemailer = require("nodemailer");
 
-exports.sendEmail = async function (data) {
+exports.sendEmail = async function(data) {
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    service: "gmail",
     auth: {
       user: "info@ahumpilgrim.org",
       pass: "RAsiLPp@89"
@@ -11,6 +11,34 @@ exports.sendEmail = async function (data) {
       rejectUnauthorized: false
     }
   });
+
+  const buy = {
+    subject: data.subject,
+    html: `
+      <table width="100%" cellspacing="0" cellpadding="0">
+          <tbody>
+              <tr>
+                  <td class="esd-block-image es-p25t es-p25b es-p35r es-p35l" align="center" style="font-size:0"><a target="_blank" href="https://viewstripo.email/"><img src="https://tlr.stripocdn.email/content/guids/CABINET_75694a6fc3c4633b3ee8e3c750851c02/images/67611522142640957.png" alt style="display: block;" width="120"></a></td>
+              </tr>
+              <tr>
+                  <td class="esd-block-text es-p10b" align="center">
+                      <h2>Thank You For Your Order!</h2>
+                  </td>
+              </tr>
+              <tr>
+                  <td class="esd-block-text es-p15t es-p20b" align="center">
+                      <p style="font-size: 16px; color: #777777;">Hello ${data.name} , you have bought the product or service with the following name :</p>
+                      <br>
+                      <b>${data.message}</b></p>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+
+    `,
+    from: "info@ahumpilgrim.org",
+    to: data.email
+  };
 
   const emailSupport = {
     subject: data.subject,
@@ -32,7 +60,7 @@ exports.sendEmail = async function (data) {
       <p>Your token access is: <b>${data.message}</b></p>
     `,
     from: "info@ahumpilgrim.org",
-    to:  data.email
+    to: data.email
   };
 
   const recoveryToken = {
@@ -45,7 +73,7 @@ exports.sendEmail = async function (data) {
       <p>Your token access is: <b>${data.message}</b></p>
     `,
     from: "info@ahumpilgrim.org",
-    to:  data.email
+    to: data.email
   };
 
   try {
@@ -56,6 +84,9 @@ exports.sendEmail = async function (data) {
       case "recovery":
         await transporter.sendMail(recoveryToken);
         break;
+      case "buy":
+        await transporter.sendMail(buy);
+        break;
       default:
         await transporter.sendMail(emailSupport);
         break;
@@ -64,4 +95,4 @@ exports.sendEmail = async function (data) {
   } catch (err) {
     return err;
   }
-}
+};
