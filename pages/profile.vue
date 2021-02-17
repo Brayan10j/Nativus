@@ -79,10 +79,6 @@
           tile
           elevation="12"
         >
-          <v-img
-            height="100%"
-            gradient="to top right, rgba(0,0,0), rgba(255,255,255)"
-          >
             <v-app-bar flat color="rgba(0, 0, 0, 0)">
               <v-spacer></v-spacer>
 
@@ -160,7 +156,6 @@
                 </v-row>
               </v-col>
             </v-row>
-          </v-img>
         </v-card>
       </v-tab-item>
       <v-tab-item>
@@ -227,7 +222,7 @@
           <v-btn color="blue darken-1" text @click="dialogDelete = false"
             >Cancel</v-btn
           >
-          <v-btn color="blue darken-1" text @click="alert('BORRRAR')">OK</v-btn>
+          <v-btn color="blue darken-1" text @click="alert('BORRAR')">OK</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -341,7 +336,7 @@ export default {
       this.editItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
-    async deletePost() {
+    async deleteUser() {
       await this.$apollo
         .mutate({
           mutation: require("../api/server/mutations/users/deleteUser.gql"),
@@ -378,16 +373,8 @@ export default {
           mutation: require("../api/server/mutations/users/editUser.gql"),
           variables: { _id: id, data: this.editItem }
         })
-        .then(async data => {
-          console.log(data);
-        });
-      await this.$apollo
-        .query({
-          query: require("../api/server/queries/user.gql"),
-          variables: { email: this.editItem.email }
-        })
-        .then(async data => {
-          this.$store.commit("sendUserInfo", data.data.user);
+        .then(async ({data}) => {
+          this.$store.commit("sendUserInfo", data.editUser);
         });
       this.editeProfile = false;
     }

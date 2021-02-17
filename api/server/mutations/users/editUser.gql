@@ -21,7 +21,7 @@ mutation($_id: ID, $data: inputUser) {
     referals
     favorites {
       tittle
-      shortDesc
+      price
       description
       category
       image

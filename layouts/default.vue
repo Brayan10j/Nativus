@@ -1,18 +1,11 @@
 <template >
-  <v-app >
+  <v-app>
     <v-navigation-drawer v-model="drawer" :clipped="clipped" fixed app>
       <v-list class="mx-auto img-center">
         <v-list-item class="mx-auto">
           <v-list-item-content>
-            <v-list-item-avatar>
-              <v-img
-                max-width="40"
-                :src="
-                  $store.state.userInfo == undefined
-                    ? ''
-                    : $store.state.userInfo.photo
-                "
-              ></v-img>
+            <v-list-item-avatar size="100">
+              <v-img max-width="100" :src="$store.state.userInfo.photo"></v-img>
             </v-list-item-avatar>
           </v-list-item-content>
         </v-list-item>
@@ -20,11 +13,7 @@
         <v-list-item link to="/profile">
           <v-list-item-content class="title text-center">
             <v-list-item-title>
-              {{
-                $store.state.userInfo == undefined
-                  ? ""
-                  : $store.state.userInfo.name
-              }}
+              {{ $store.state.userInfo.name }}
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -42,9 +31,11 @@
               v-bind="attrs"
               v-on="on"
             >
-              <v-icon  left> mdi-cash-multiple </v-icon>
-              <span color="black">Wood Coins : {{ $store.state.userInfo.balance }} </span>
-
+              <v-icon  color="black" left> mdi-cash-multiple </v-icon>
+              <span
+                style=" color: black "
+                >Wood Coins : {{ $store.state.userInfo.balance }}
+              </span>
             </v-btn>
           </v-row>
         </template>
@@ -65,7 +56,9 @@
             rounded="xl"
             v-bind="attrs"
             v-on="on"
-            ><p class="mx-auto mb-0 text-subtitle-1 font-weight-black">
+            ><p style=" color: black "
+              class="mx-auto mb-0 text-subtitle-1 font-weight-black"
+            >
               Pilgrim Coins :
               {{ $store.state.userInfo.crypto }}
             </p></v-sheet
@@ -107,10 +100,7 @@
             <v-list-item-title v-text="'HOME'"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item
-          to="/favorite"
-          v-if="!$store.state.userInfo.isAdmin"
-        >
+        <v-list-item to="/favorite" v-if="!$store.state.userInfo.isAdmin">
           <v-list-item-icon>
             <v-icon v-text="'mdi-heart'"></v-icon>
           </v-list-item-icon>
@@ -216,11 +206,14 @@
         </v-row>
         <v-row class="mt-4" align="center" justify="space-around">
           <v-tooltip bottom v-model="showToken">
-            <template v-slot:activator="{  attrs }">
-              <v-btn v-bind="attrs " color="gray darken-4"
-               @click="copyText"> Token d'invito </v-btn>
+            <template v-slot:activator="{ attrs }">
+              <v-btn v-bind="attrs" color="gray darken-4" @click="copyText">
+                Token d'invito
+              </v-btn>
             </template>
-            <span >{{ $store.state.userInfo.codReferal }} Copied in ClipBoard</span>
+            <span
+              >{{ $store.state.userInfo.codReferal }} Copied in ClipBoard</span
+            >
           </v-tooltip>
         </v-row>
       </v-list>
@@ -244,7 +237,7 @@
             class="px-1 rounded-circle"
             @click="contact = !contact"
           >
-            <v-icon v-bind="attrs" v-on="on" >mdi-email</v-icon>
+            <v-icon v-bind="attrs" v-on="on">mdi-email</v-icon>
           </v-btn>
         </template>
         <span>Supporto</span>
@@ -357,7 +350,7 @@
       </v-card>
     </v-dialog>
     <v-main class="fondo">
-      <v-container fluid >
+      <v-container fluid>
         <nuxt />
       </v-container>
     </v-main>
@@ -421,12 +414,12 @@ export default {
       contact: false,
       balance: false,
       right: true,
-      wallPaper: ""
+      wallPaper: "",
     };
   },
 
   mounted() {
-    var num = Math.floor((Math.random() * 4) +1);
+    var num = Math.floor(Math.random() * 4 + 1);
     this.wallPaper = `https://firebasestorage.googleapis.com/v0/b/pilgrim-a07fc.appspot.com/o/images%2Fwallpapers%2F${num}.jpg?alt=media&token=2c2df7ac-7ee0-48c4-8226-a9d338a6a482`;
   },
   methods: {
@@ -503,11 +496,10 @@ export default {
 
 .fondo {
   height: 100%;
-  background-image: url('/images/background.jpeg');
+  background-image: url("/images/background.jpeg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
 }
-
 </style>
