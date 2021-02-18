@@ -105,7 +105,7 @@
             <v-icon v-text="'mdi-heart'"></v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title v-text="'I miei contenuti'"></v-list-item-title>
+            <v-list-item-title v-text="'Date salvate'"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <!--<v-list-item

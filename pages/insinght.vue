@@ -227,7 +227,7 @@
               </v-toolbar>
               <client-only>
                 <!-- this component will only be rendered on client-side -->
-                <rich-editor dark v-model="formAdd.description" />
+                <ck-editor dark v-model="formAdd.description" />
               </client-only>
 
               <v-btn color="grey darken-3" @click="dialogDesc = false">
@@ -311,9 +311,9 @@
   </div>
 </template>
 <script>
-import { mapState, mapMutations } from "vuex";
-
+import CKEditor from '~/components/CKEditor.vue';
 export default {
+  components: {CKEditor},
   data() {
     return {
       categoryName: "",
@@ -419,7 +419,6 @@ export default {
           },
         })
         .then(({ data }) => {
-          console.log(data);
           this.$store.commit("sendUserInfo", data.editUser);
         });
     },
