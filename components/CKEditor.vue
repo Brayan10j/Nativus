@@ -42,8 +42,13 @@ export default {
       editor: ClassicEditor,
       editorConfig: {
         mediaEmbed: {
-          previewsInData: true
-        }
+          previewsInData: true,
+        },
+        ckfinder: {
+          options: {
+            resourceType: "Images",
+          },
+        },
       },
     };
   },

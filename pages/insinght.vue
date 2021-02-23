@@ -50,7 +50,7 @@
                   </v-icon>
                 </v-card-actions>
                 <v-card-actions class="d-flex justify-end mt-n8 mb-n2" v-else>
-                  <v-btn text small color="success" v-if="(item.price /= 0)" @click.stop="buy(item)">
+                  <v-btn text small color="success" v-if="item.price != 0"  @click.stop="buy(item)">
                     $ {{item.price}}
                     
                   </v-btn>
@@ -360,7 +360,6 @@ export default {
   apollo: {
     posts: {
       query: require("../api/server/queries/posts.gql"),
-      fetchPolicy: "cache-and-network",
       pollInterval: 7000, //puede cambiarse esto a una subscriptionMore
     },
   },
@@ -372,7 +371,7 @@ export default {
             mutation: require("../api/server/mutations/buy.gql"),
             variables: {
               _idUser: this.$store.state.userInfo._id,
-              _idProduct: item._id,
+              _idProduct: item._id
             },
           })
           .then(async ({ data }) => {
@@ -390,8 +389,10 @@ export default {
           : this.$store.state.userInfo.favorites.map((c) => c.tittle);
       return favoritePost.includes(item.tittle);
     },
-    async addFavorite(item) {
-      var favorites;
+    async addFavorite(itemIN) {
+      let item ;
+      item = Object.assign({}, itemIN)
+      let favorites;
       delete item._id;
       if (this.isFavorite(item)) {
         let favoritePost = this.$store.state.userInfo.favorites.map(
@@ -418,7 +419,7 @@ export default {
             data: { favorites: favorites },
           },
         })
-        .then(({ data }) => {
+        .then( ({ data }) => {
           this.$store.commit("sendUserInfo", data.editUser);
         });
     },
