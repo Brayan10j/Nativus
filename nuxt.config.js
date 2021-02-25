@@ -80,11 +80,9 @@ export default {
     }
   },
   pwa: {
-    // disable the modules you don't need
-
-    // if you omit a module key form configuration sensible defaults will be applied
-    // manifest: false,
-
+    meta: {
+      theme_color: "#ffffff"
+    },
     workbox: {
       importScripts: [
         // ...

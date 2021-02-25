@@ -22,17 +22,6 @@ export default {
   name: "RichEditor",
   props: {
     value: [String],
-    options: {
-      type: [Object],
-      fontColor: {
-        colors: [
-          {
-            color: "hsl(0, 0%, 0%)",
-            label: "Black",
-          },
-        ],
-      },
-    },
   },
   components: {
     ckeditor: CKEditor.component,

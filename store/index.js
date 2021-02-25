@@ -1,7 +1,7 @@
 export const state = () => ({
   user: {},
   authUser: {},
-  categories: ["News", "Culture", "Webinars", "Events", "Store"]
+  categories: []
 });
 
 export const getters = {
@@ -46,13 +46,7 @@ export const mutations = {
 export const actions = {
   async nuxtServerInit({ dispatch, commit }, ctx) {
     const client = ctx.app.apolloProvider.defaultClient
-    await client
-      .query({
-        query: require("../api/server/queries/categories.gql")
-      })
-      .then(async (data) => {
-        commit("sendCategories", data.data.categories);
-      });
+    
 
     if (this.$fireAuth === null) {
       throw 'nuxtServerInit Example not working - this.$fireAuth cannot be accessed.'
@@ -70,6 +64,14 @@ export const actions = {
 
     /** Get the VERIFIED authUser from the server */
     if (ctx.res && ctx.res.locals && ctx.res.locals.user) {
+
+      await client
+      .query({
+        query: require("../api/server/queries/categories.gql")
+      })
+      .then(async (data) => {
+        commit("sendCategories", data.data.categories);
+      });
 
       const { allClaims: claims, ...authUser } = ctx.res.locals.user
       /*

@@ -94,26 +94,6 @@
 
             <v-btn text color="blue" @click="dialogRecovery = true"> Recovery token</v-btn></v-row
           >
-          <v-overlay :absolute="absolute" :value="alerta" :opacity="opacity">
-            <v-alert
-              :value="alerta"
-              color="red darken-2"
-              type="error"
-              border="top"
-              transition="scale-transition"
-              >{{ errord.description }}
-              <v-btn
-                color="white"
-                elevation="3"
-                class="ml-3"
-                right
-                icon
-                small
-                @click="alerta = !alerta"
-                ><v-icon dark> mdi-close </v-icon></v-btn
-              ></v-alert
-            >
-          </v-overlay>
         </v-col>
       </v-row>
     </v-container>
@@ -166,12 +146,7 @@ export default {
       overlay: false,
       res: "",
       token: "",
-
       email: "",
-
-      errord: {
-        description: "",
-      },
     };
   },
   created() {
@@ -179,7 +154,6 @@ export default {
       window.addEventListener("beforeinstallprompt", (e) => {
         // Stash the event so it can be triggered later.
         this.deferredPrompt = e;
-        console.log(this.deferredPrompt);
         // Update UI notify the user they can install the PWA
         this.banner = true;
       });
@@ -211,14 +185,6 @@ export default {
         this.banner = false;
         // Show the install prompt
         this.deferredPrompt.prompt();
-        // Wait for the user to respond to the prompt
-        this.deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === "accepted") {
-            console.log("User accepted the install prompt");
-          } else {
-            console.log("User dismissed the install prompt");
-          }
-        });
       }
     },
     ...mapMutations(["sendUserInfo"]),
@@ -272,10 +238,8 @@ export default {
             this.$router.push("/insinght");
           });
       } catch (err) {
-        this.errord.description = "Wrong token";
-        this.alerta = true;
-
         this.overlay = false;
+        this.$toast.error(err);
       }
     },
   },
