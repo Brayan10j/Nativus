@@ -46,14 +46,6 @@ export const mutations = {
 export const actions = {
   async nuxtServerInit({ dispatch, commit }, ctx) {
     const client = ctx.app.apolloProvider.defaultClient;
-    await client
-      .query({
-        query: require("../api/server/queries/categories.gql")
-      })
-      .then(async data => {
-        commit("sendCategories", data.data.categories);
-      });
-
     if (this.$fireAuth === null) {
       throw "nuxtServerInit Example not working - this.$fireAuth cannot be accessed.";
     }

@@ -31,9 +31,8 @@
               v-bind="attrs"
               v-on="on"
             >
-              <v-icon  color="black" left> mdi-cash-multiple </v-icon>
-              <span
-                style=" color: black "
+              <v-icon color="black" left> mdi-cash-multiple </v-icon>
+              <span style="color: black"
                 >Wood Coins : {{ $store.state.userInfo.balance }}
               </span>
             </v-btn>
@@ -56,7 +55,8 @@
             rounded="xl"
             v-bind="attrs"
             v-on="on"
-            ><p style=" color: black "
+            ><p
+              style="color: black"
               class="mx-auto mb-0 text-subtitle-1 font-weight-black"
             >
               Pilgrim Coins :
@@ -418,9 +418,16 @@ export default {
     };
   },
 
-  mounted() {
+  async mounted() {
     var num = Math.floor(Math.random() * 4 + 1);
     this.wallPaper = `https://firebasestorage.googleapis.com/v0/b/pilgrim-a07fc.appspot.com/o/images%2Fwallpapers%2F${num}.jpg?alt=media&token=2c2df7ac-7ee0-48c4-8226-a9d338a6a482`;
+    await this.$apollo
+      .query({
+        query: require("../api/server/queries/categories.gql")
+      })
+      .then(async data => {
+        this.$store.commit("sendCategories", data.data.categories);
+      });
   },
   methods: {
     copyText() {

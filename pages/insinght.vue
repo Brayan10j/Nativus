@@ -13,11 +13,12 @@
         v-for="(itemTab, index) in $store.state.categories"
         :key="index"
       >
-        <v-row v-if="isAccess" class="ml-14">
+        <v-row v-if="isAccess" class="ml-14" no-gutters>
           <v-col v-for="(item, index) in filter" :key="index"  >
             <v-card
               height="350"
               width="300"
+              class="mt-5"
               @click.stop="showItem(item)"
               elevation="16"
             >
