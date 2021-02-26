@@ -1,16 +1,5 @@
 <template>
   <div>
-    <v-data-table
-      v-if="$store.state.userInfo.licenses.length > 0"
-      dense
-      :headers="headers"
-      :items="items"
-      item-key="name"
-      class="elevation-1"
-      disable-pagination
-      hide-default-footer
-    ></v-data-table>
-
     <v-row class="mx-0" width="850">
       <v-col
         v-for="(item, index) in licenses"
@@ -90,6 +79,16 @@
         </v-overlay>
       </v-col>
     </v-row>
+    <v-data-table
+      v-if="$store.state.userInfo.licenses.length > 0"
+      dense
+      :headers="headers"
+      :items="items"
+      item-key="name"
+      class="elevation-1"
+      disable-pagination
+      hide-default-footer
+    ></v-data-table>
     <v-snackbar
     :timeout="-1"
     :value="true"

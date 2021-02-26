@@ -91,8 +91,9 @@
             <v-btn text color="blue" to="/singUp"> Registrati</v-btn></v-row
           >
           <v-row align="center" justify="center">
-
-            <v-btn text color="blue" @click="dialogRecovery = true"> Recovery token</v-btn></v-row
+            <v-btn text color="blue" @click="dialogRecovery = true">
+              Recovery token</v-btn
+            ></v-row
           >
         </v-col>
       </v-row>
@@ -117,7 +118,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialogRecovery= false">
+          <v-btn color="blue darken-1" text @click="dialogRecovery = false">
             Close
           </v-btn>
           <v-btn color="blue darken-1" text @click="recovery"> Send </v-btn>
@@ -195,9 +196,9 @@ export default {
             query: require("../api/server/queries/user.gql"),
             variables: { email: this.email },
           })
-          .then(async ({data}) => {
-            if (data.user == null){
-              throw "User no found"
+          .then(async ({ data }) => {
+            if (data.user == null) {
+              throw "User no found";
             }
             await this.$apollo
               .mutate({

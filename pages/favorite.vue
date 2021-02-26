@@ -5,11 +5,12 @@
         ? []
         : $store.state.userInfo.favorites"
       :key="index"
-      cols="3"
+      
     >
       <v-card
         height="350"
         width="300"
+        class="mx-auto"
         @click.stop="showItem(item)"
         elevation="16"
       >

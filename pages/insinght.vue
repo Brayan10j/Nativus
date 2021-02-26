@@ -7,19 +7,16 @@
     </v-tabs>
     <v-tabs-items
       v-model="model"
-      class="my-2"
       style="background-color: transparent"
     >
       <v-tab-item
         v-for="(itemTab, index) in $store.state.categories"
         :key="index"
-        class="px-2"
       >
-        <v-row v-if="isAccess">
-          <v-col v-for="(item, index) in filter" :key="index">
+        <v-row v-if="isAccess" class="ml-14">
+          <v-col v-for="(item, index) in filter" :key="index"  >
             <v-card
               height="350"
-              class="mx-auto"
               width="300"
               @click.stop="showItem(item)"
               elevation="16"
@@ -51,7 +48,7 @@
                 </v-card-actions>
                 <v-card-actions class="d-flex justify-end mt-n8 mb-n2" v-else>
                   <v-btn text small color="success" v-if="item.price != 0"  @click.stop="buy(item)">
-                    $ {{item.price}}
+                    {{item.price}}
                     
                   </v-btn>
                   <v-btn
@@ -366,6 +363,9 @@ export default {
   methods: {
     async buy(item) {
       try {
+        if(this.$store.state.userInfo.balance < item.price){
+          throw "Balance insuficient"
+        }
         await this.$apollo
           .mutate({
             mutation: require("../api/server/mutations/buy.gql"),
@@ -378,8 +378,9 @@ export default {
             this.$store.commit("UPDATE_BALANCE", data.buy.balance );
             this.$toast.success("Purchase made");
           });
+        
       } catch (error) {
-        alert(error);
+        this.$toast.error(error);
       }
     },
     isFavorite(item) {
