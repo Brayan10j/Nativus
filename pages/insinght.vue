@@ -5,64 +5,14 @@
         {{ itemTab.name }}
       </v-tab>
     </v-tabs>
-    <v-tabs-items
-      v-model="model"
-      style="background-color: transparent"
-    >
+    <v-tabs-items v-model="model" style="background-color: transparent">
       <v-tab-item
         v-for="(itemTab, index) in $store.state.categories"
         :key="index"
       >
         <v-row v-if="isAccess" class="ml-14" no-gutters>
-          <v-col v-for="(item, index) in filter" :key="index"  >
-            <v-card
-              height="350"
-              width="300"
-              class="mt-5"
-              @click.stop="showItem(item)"
-              elevation="16"
-            >
-              <v-img
-                class="white--text align-end"
-                height="200px"
-                :src="item.image"
-              >
-              </v-img>
-              <v-card-subtitle class="pb-0 mb-3">
-                {{ item.date }}
-                </v-card-subtitle>
-                <v-card-actions
-                  class="d-flex justify-end mt-n8 mb-n2"
-                  v-if="$store.state.userInfo.isAdmin"
-                >
-                  <v-icon
-                    color="blue"
-                    class="mx-3"
-                    @click.stop="editItem(item)"
-                  >
-                    mdi-pencil
-                  </v-icon>
-
-                  <v-icon color="red" @click.stop="deleteItem(item)">
-                    mdi-delete
-                  </v-icon>
-                </v-card-actions>
-                <v-card-actions class="d-flex justify-end mt-n8 mb-n2" v-else>
-                  <v-btn text small color="success" v-if="item.price != 0"  @click.stop="buy(item)">
-                    {{item.price}}
-                    
-                  </v-btn>
-                  <v-btn
-                    icon
-                    :color="isFavorite(item) ? 'red' : '#ffffff80'"
-                    @click.stop="addFavorite(item)"
-                  >
-                    <v-icon> mdi-heart </v-icon>
-                  </v-btn>
-                </v-card-actions>
-              
-              <v-card-title class="ajustador">{{ item.tittle }}</v-card-title>
-            </v-card>
+          <v-col v-for="(item, index) in filter" :key="index">
+            <Post :item="item" />
           </v-col>
         </v-row>
 
@@ -98,12 +48,10 @@
       <v-overlay :value="overlay">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </v-overlay>
-      <v-form ref="form" @submit.prevent="save()" lazy-validation>
+      <v-form ref="form" @submit.prevent="addPost" lazy-validation>
         <v-card>
           <v-card-title>
-            <span class="headline">{{
-              editedIndex === -1 ? "New Post" : "Edit Post"
-            }}</span>
+            <span class="headline"> New Post </span>
           </v-card-title>
           <v-card-text>
             <v-container>
@@ -183,13 +131,6 @@
                     @change="onImageSelected"
                     prepend-icon="mdi-camera"
                   ></v-file-input>
-                  <v-img
-                    v-if="editedIndex > -1"
-                    :src="formAdd.image"
-                    max-width="400px"
-                    aspect-ratio="2"
-                  >
-                  </v-img>
                 </v-col>
                 <v-col cols="12" sm="6">
                   <v-file-input
@@ -206,7 +147,9 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close"> Close </v-btn>
+            <v-btn color="blue darken-1" text @click="dialogAdd = false">
+              Close
+            </v-btn>
             <v-btn color="blue darken-1" text type="submit"> Save </v-btn>
           </v-card-actions>
 
@@ -236,116 +179,23 @@
         </v-card>
       </v-form>
     </v-dialog>
-    <v-dialog v-model="dialogDelete" max-width="500px" persistent>
-      <v-card>
-        <v-card-title class="headline"
-          >Are you sure you want to delete this item?</v-card-title
-        >
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-          <v-btn color="blue darken-1" text @click="deletePost">OK</v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <v-dialog
-      v-model="dialogShow"
-      fullscreen
-      hide-overlay
-      transition="dialog-bottom-transition"
-    >
-      <v-card>
-        <v-toolbar dark color="grey darken-3">
-          <v-toolbar-title>{{ formAdd.category }}</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-toolbar-items>
-            <v-btn dark text @click="close"> Close </v-btn>
-          </v-toolbar-items>
-        </v-toolbar>
-
-        <v-card-title class="text-center justify-center py-6">
-          <h3 class="font-weight-bold display-3 text-black">
-            {{ formAdd.tittle }}
-          </h3>
-        </v-card-title>
-        <v-container class="mx-auto">
-          <v-row align="center" align-content="center">
-            <v-col cols="12" sm="12" md="12">
-              <v-img
-                aspect-ratio="2"
-                class="white--text align-end"
-                height="50%"
-                :src="formAdd.image"
-              >
-              </v-img>
-            </v-col>
-          </v-row>
-        </v-container>
-        <v-card-text>
-          <div v-html="formAdd.description"></div>
-          <v-alert
-            v-if="formAdd.files[0]"
-            border="top"
-            colored-border
-            type="info"
-            elevation="2"
-          >
-            Download files
-            <a :href="formAdd.files[0]" target="_blank" download>HERE</a>
-          </v-alert>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-    <v-snackbar v-model="snackbar" :timeout="timeout" color="success">
-      {{ textSnackbar }}
-
-      <template v-slot:action="{ attrs }">
-        <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
   </div>
 </template>
 <script>
-import CKEditor from '~/components/CKEditor.vue';
 export default {
-  components: {CKEditor},
   data() {
     return {
-      categoryName: "",
-      overlay: false,
       dialogDesc: false,
-      snackbar: false,
-      textSnackbar: "",
-      timeout: 4000,
       dialogAdd: false,
-      dialogShow: false,
-      dialogDelete: false,
-      dialog3: false,
+      overlay: false,
       model: "tab-1",
       menu: false,
       date: new Date().toISOString().substr(0, 10),
       imageSeleted: null,
       filesSeleted: null,
-      editedIndex: -1,
-      content: "",
-      absolute: true,
-      opacity: 1,
       formAdd: {
         tittle: "",
         description: "<p></p>",
-        category: "",
-        image: "/images/default.jpeg",
-        author: "",
-        price: 0,
-        date: new Date().toISOString().substr(0, 10),
-        files: [],
-      },
-      defaultForm: {
-        tittle: "",
-        description: "",
         category: "",
         image: "/images/default.jpeg",
         author: "",
@@ -362,69 +212,6 @@ export default {
     },
   },
   methods: {
-    async buy(item) {
-      try {
-        if(this.$store.state.userInfo.balance < item.price){
-          throw "Balance insuficient"
-        }
-        await this.$apollo
-          .mutate({
-            mutation: require("../api/server/mutations/buy.gql"),
-            variables: {
-              _idUser: this.$store.state.userInfo._id,
-              _idProduct: item._id
-            },
-          })
-          .then(async ({ data }) => {
-            this.$store.commit("UPDATE_BALANCE", data.buy.balance );
-            this.$toast.success("Purchase made");
-          });
-        
-      } catch (error) {
-        this.$toast.error(error);
-      }
-    },
-    isFavorite(item) {
-      let favoritePost =
-        this.$store.state.userInfo.favorites == undefined
-          ? []
-          : this.$store.state.userInfo.favorites.map((c) => c.tittle);
-      return favoritePost.includes(item.tittle);
-    },
-    async addFavorite(itemIN) {
-      let item ;
-      item = Object.assign({}, itemIN)
-      let favorites;
-      delete item._id;
-      if (this.isFavorite(item)) {
-        let favoritePost = this.$store.state.userInfo.favorites.map(
-          (c) => c.tittle
-        );
-        var i = favoritePost.indexOf(item.tittle);
-        let fp = JSON.parse(
-          JSON.stringify(this.$store.getters["getUser"].favorites)
-        );
-        fp.splice(i, 1);
-        favorites = fp;
-      } else {
-        favorites = [item].concat(
-          this.$store.state.userInfo.favorites == undefined
-            ? []
-            : this.$store.state.userInfo.favorites
-        ); // para prevenir errores ( agregar favorites a todos los usuarios en la base de datos)
-      }
-      await this.$apollo
-        .mutate({
-          mutation: require("../api/server/mutations/users/editUser.gql"),
-          variables: {
-            _id: this.$store.state.userInfo._id,
-            data: { favorites: favorites },
-          },
-        })
-        .then( ({ data }) => {
-          this.$store.commit("sendUserInfo", data.editUser);
-        });
-    },
     onImageSelected(file) {
       file ? (this.imageSeleted = file) : null;
     },
@@ -434,7 +221,7 @@ export default {
     },
     async addPost(event) {
       this.overlay = true;
-      console.log(this.formAdd.image);
+    
       if (this.imageSeleted != null) {
         const storageRef = this.$fireStorage.ref(
           `/images/posts/${this.imageSeleted.name}`
@@ -477,111 +264,11 @@ export default {
           variables: this.formAdd,
         })
         .then(async (data) => {
-          //event.target.reset();
           await this.$apollo.queries.posts.refresh();
           this.overlay = false;
-          this.textSnackbar = "Post added";
-          this.snackbar = true;
-          console.log(data);
+          this.$toast.success("Post add");
+          this.dialogAdd = false;
         });
-    },
-    async editPost() {
-      this.overlay = true;
-      if (this.imageSeleted != null) {
-        const storageRef = this.$fireStorage.ref(
-          `/images/posts/${this.imageSeleted.name}`
-        );
-        var fileTask = await storageRef
-          .put(this.imageSeleted)
-          .then((snapshot) => {
-            return snapshot.ref.getDownloadURL().then((url) => {
-              this.imageSeleted = null;
-              this.formAdd.image = url;
-              return url;
-            });
-          })
-          .catch((error) => {
-            console.error("Error uploading image", error);
-          });
-      }
-      let id = this.formAdd._id;
-      delete this.formAdd._id;
-      delete this.formAdd.__typename;
-      await this.$apollo
-        .mutate({
-          mutation: require("../api/server/mutations/posts/editPost.gql"),
-          variables: { _id: id, data: this.formAdd },
-        })
-        .then(async (data) => {
-          //event.target.reset();
-          await this.$apollo.queries.posts.refresh();
-          this.overlay = false;
-          this.textSnackbar = data.data.editPost
-            ? "Post edited"
-            : "Post no found";
-          this.snackbar = true;
-          console.log(data);
-        });
-    },
-    editItem(item) {
-      this.editedIndex = this.posts.indexOf(item);
-      this.formAdd = Object.assign({}, item);
-      this.dialogAdd = true;
-    },
-
-    showItem(item) {
-      this.editedIndex = this.posts.indexOf(item);
-      this.formAdd = Object.assign({}, item);
-      this.dialogShow = true;
-    },
-
-    deleteItem(item) {
-      this.formAdd = Object.assign({}, item);
-      this.dialogDelete = true;
-    },
-
-    async deletePost() {
-      this.overlay = true;
-      await this.$apollo
-        .mutate({
-          mutation: require("../api/server/mutations/posts/deletePost.gql"),
-          variables: { _id: this.formAdd._id },
-        })
-        .then(async (data) => {
-          await this.$apollo.queries.posts.refresh();
-          this.overlay = false;
-          this.textSnackbar = data.data.deletePost
-            ? "Post deleted"
-            : "Post no found";
-          this.snackbar = true;
-          console.log(data); // mensajes de respuesta
-        });
-      this.closeDelete();
-    },
-
-    close() {
-      this.editedIndex = -1;
-      this.dialogAdd = false;
-      this.dialogShow = false;
-      this.$nextTick(() => {
-        this.formAdd = Object.assign({}, this.defaultForm);
-      });
-    },
-
-    closeDelete() {
-      this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.formAdd = Object.assign({}, this.defaultForm);
-        this.editedIndex = -1;
-      });
-    },
-    async save() {
-      if (this.editedIndex > -1) {
-        await this.editPost();
-      } else {
-        await this.addPost();
-      }
-      this.close();
     },
   },
   computed: {
@@ -605,11 +292,3 @@ export default {
 };
 </script>
 
-<style scoped>
-.ajustador {
-  word-break: normal;
-}
-#html p {
-  color: black;
-}
-</style>
