@@ -29,7 +29,7 @@
                 gradient="to top right, rgba(3,32,24,.1), rgba(39,42,57,.7)"
               ></v-img>
             </template>
-            <v-toolbar-title>User Register</v-toolbar-title>
+            <v-toolbar-title>Registrazione utente</v-toolbar-title>
           </v-toolbar>
           <v-stepper v-model="e1">
             <v-overlay :value="overlay">
@@ -40,13 +40,13 @@
             </v-overlay>
             <v-stepper-header>
               <v-stepper-step :complete="e1 > 1" step="1" color="info">
-                Referral Token
+                Codice Invito
               </v-stepper-step>
 
               <v-divider></v-divider>
 
               <v-stepper-step :complete="e1 > 2" step="2" color="info">
-                Registration Form
+                Formulario di registrazione
               </v-stepper-step>
             </v-stepper-header>
             <v-form ref="form" v-model="valid" lazy-validation>
@@ -58,18 +58,18 @@
                       filled
                       outlined
                       v-model="user.registrationCode"
-                      label="Reference code*"
-                      hint="The invitation code by another user"
+                      label="Codice invito*"
+                      hint="Scrivi qui il codice invito che hai ricevuto."
                       persistent-hint
                       required
                     ></v-text-field>
                   </v-col>
 
                   <v-btn color="#787b7f" @click="validateToken">
-                    Continue
+                    Avanti
                   </v-btn>
 
-                  <v-btn text @click="cancel"> Cancel </v-btn>
+                  <v-btn text @click="cancel"> Cancellare </v-btn>
                 </v-stepper-content>
 
                 <v-stepper-content step="2">
@@ -118,7 +118,7 @@
             </v-form>
           </v-stepper>
           <v-row align="center" justify="center">
-            You have an account?
+            Hai già un account?
             <v-btn text color="#787b7f" to="/login"> LOGIN </v-btn></v-row
           >
           <v-overlay :absolute="absolute" :value="alerta" :opacity="opacity">

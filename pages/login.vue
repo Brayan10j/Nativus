@@ -63,6 +63,7 @@
                 ></v-progress-circular>
               </v-overlay>
               <v-text-field
+                light
                 dense
                 filled
                 outlined
@@ -85,16 +86,22 @@
                 >Login</v-btn
               >
             </v-card-actions>
+            <v-footer padless color="#424242">
+              <v-col>
+                <v-row align="center" justify="center">
+                  Hai un referal token ?
+                  <v-btn text color="blue" to="/singUp">
+                    Registrati</v-btn
+                  ></v-row
+                >
+                <v-row align="center" justify="center">
+                  <v-btn text color="blue" @click="dialogRecovery = true">
+                    Recovery token</v-btn
+                  ></v-row
+                >
+              </v-col>
+            </v-footer>
           </v-card>
-          <v-row align="center" justify="center">
-            Hai un referal token ?
-            <v-btn text color="blue" to="/singUp"> Registrati</v-btn></v-row
-          >
-          <v-row align="center" justify="center">
-            <v-btn text color="blue" @click="dialogRecovery = true">
-              Recovery token</v-btn
-            ></v-row
-          >
         </v-col>
       </v-row>
     </v-container>

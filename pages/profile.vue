@@ -145,7 +145,7 @@
                   </v-row>
                   <v-row justify="space-between">
                     <v-col cols="5" class="my-auto text-right" tag="strong"
-                      >Invitation Token:</v-col
+                      >Codice invito:</v-col
                     >
                     <v-col cols="7">{{
                       $store.state.userInfo == undefined

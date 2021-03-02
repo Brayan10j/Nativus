@@ -21,7 +21,7 @@
       <v-divider></v-divider>
       <br />
 
-      <v-tooltip top max-width="200">
+      <v-tooltip top max-width="200" color="black">
         <template v-slot:activator="{ on, attrs }">
           <v-row align="center" justify="space-around" rounded>
             <v-btn
@@ -44,7 +44,7 @@
           pilgrim coins</span
         >
       </v-tooltip>
-      <v-tooltip top max-width="200">
+      <v-tooltip top max-width="200" color="black">
         <template v-slot:activator="{ on, attrs }">
           <v-sheet
             color="secondary"
@@ -305,7 +305,11 @@
       </v-overlay>
       <v-card>
         <v-card-title>
-          <span class="headline">Billing</span>
+          <span class="headline">CARICA WOODCOINS</span>
+          <v-spacer></v-spacer>
+          <v-btn text href="https://www.ahumpilgrim.org/woodcoins" target="_blank" >
+            Adquista woodcoins
+          </v-btn>
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -313,7 +317,7 @@
               <v-col cols="12">
                 <v-text-field
                   required
-                  label="Insert your code"
+                  label="Inserci qui il tuo codice"
                   v-model="code"
                 ></v-text-field>
               </v-col>
@@ -323,9 +327,9 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="balance = false">
-            Close
+            CHIUDE
           </v-btn>
-          <v-btn color="blue darken-1" text @click="addBalance"> Send </v-btn>
+          <v-btn color="blue darken-1" text @click="addBalance"> CARICA </v-btn>
         </v-card-actions>
         <v-overlay :absolute="absolute" :value="alerta" :opacity="opacity">
           <v-alert
