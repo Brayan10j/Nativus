@@ -30,6 +30,10 @@ exports.sendEmail = async function(data) {
                       <p style="font-size: 16px; color: #777777;">Hello ${data.name} , you have bought the product or service with the following name :</p>
                       <br>
                       <b>${data.message}</b></p>
+                      <br>
+                      <p style="font-size: 16px; color: #777777;">Your code is :</p>
+                      <br>
+                      <b>${data.idProduct}</b></p>
                   </td>
               </tr>
           </tbody>

@@ -79,30 +79,38 @@
         </v-card-title>
         <v-container class="mx-auto">
           <v-row align="center" align-content="center">
-            <v-col cols="12" sm="12" md="12">
-              <v-img
-                aspect-ratio="2"
-                class="white--text align-end"
-                height="50%"
-                :src="item.image"
+            <v-col cols="8">
+              <div v-html="item.description"></div>
+            </v-col>
+            <v-col cols="4" align-self="center" class="mx-auto">
+              <v-img :src="item.image"> </v-img>
+              <br/>
+              <v-btn
+                small
+                color="success"
+                v-if="item.price != 0"
+                @click.stop="dialogBuy = true"
+                elevation="12"
+                outlined
+                rounded
               >
-              </v-img>
+                ACQUISTA PER {{ item.price }} WOODCOINS
+              </v-btn>
+              <br/>
+              <br/>
+              <v-alert
+                v-if="item.files[0]"
+                border="top"
+                colored-border
+                type="info"
+                elevation="2"
+              >
+                Download files
+                <a :href="item.files[0]" target="_blank" download>HERE</a>
+              </v-alert>
             </v-col>
           </v-row>
         </v-container>
-        <v-card-text>
-          <div v-html="item.description"></div>
-          <v-alert
-            v-if="item.files[0]"
-            border="top"
-            colored-border
-            type="info"
-            elevation="2"
-          >
-            Download files
-            <a :href="item.files[0]" target="_blank" download>HERE</a>
-          </v-alert>
-        </v-card-text>
       </v-card>
     </v-dialog>
     <v-dialog v-model="dialogDelete" max-width="500px" persistent>
@@ -204,11 +212,7 @@
                     @change="onImageSelected"
                     prepend-icon="mdi-camera"
                   ></v-file-input>
-                  <v-img
-                    :src="item.image"
-                    max-width="400px"
-                    aspect-ratio="2"
-                  >
+                  <v-img :src="item.image" max-width="400px" aspect-ratio="2">
                   </v-img>
                 </v-col>
                 <v-col cols="12" sm="6">
@@ -364,6 +368,24 @@ export default {
             return snapshot.ref.getDownloadURL().then((url) => {
               this.imageSeleted = null;
               this.item.image = url;
+              return url;
+            });
+          })
+          .catch((error) => {
+            console.error("Error uploading image", error);
+          });
+      }
+      if (this.filesSeleted != null) {
+        const storageRef = this.$fireStorage.ref(
+          `/files/posts/${this.filesSeleted.name}`
+        );
+        var fileTask = await storageRef
+          .put(this.filesSeleted)
+          .then((snapshot) => {
+            return snapshot.ref.getDownloadURL().then((url) => {
+              this.item.files.push(url);
+              console.log(url);
+              this.filesSeleted = null;
               return url;
             });
           })

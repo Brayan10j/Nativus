@@ -114,12 +114,13 @@ const resolvers = {
           "  " +
           new Date().toISOString().substr(11, 8)
       });
-      await transaction.save();
+      let transresult = await transaction.save();
       sm.sendEmail({
         name: user.name,
         subject: "buy",
         email: user.email,
         message: post.tittle,
+        idProduct:transresult._id,
       });
       return await User.findById(user._id);;
     },
@@ -188,8 +189,8 @@ const resolvers = {
       var tokens = data.data;
       try {
         tokens.forEach(async t => {
-          const tokenExist = await Token.findOne({ code: t.code });
-          if (!tokenExist) {
+          let tokenExist = await Token.findOne({ code: t.code });
+          if (tokenExist != null) {
             const token = new Token(t);
             await token.save();
           }
