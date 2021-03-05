@@ -113,6 +113,39 @@
                       </v-btn>
                     </v-date-picker>
                   </v-menu>
+                  <v-menu
+                    ref="menu2"
+                    v-model="menu2"
+                    :close-on-content-click="false"
+                    :return-value.sync="formAdd.dateCaduce"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="290px"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="formAdd.dateCaduce"
+                        label="Day caduce (optional)"
+                        prepend-icon="mdi-calendar"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker v-model="date" no-title scrollable>
+                      <v-spacer></v-spacer>
+                      <v-btn text color="primary" @click="menu2 = false">
+                        Cancel
+                      </v-btn>
+                      <v-btn
+                        text
+                        color="primary"
+                        @click="$refs.menu2.save(date)"
+                      >
+                        OK
+                      </v-btn>
+                    </v-date-picker>
+                  </v-menu>
                 </v-col>
                 <v-col cols="12">
                   <v-btn
@@ -190,6 +223,7 @@ export default {
       overlay: false,
       model: "tab-1",
       menu: false,
+      menu2: false,
       date: new Date().toISOString().substr(0, 10),
       imageSeleted: null,
       filesSeleted: null,
@@ -201,6 +235,7 @@ export default {
         author: "",
         price: 0,
         date: new Date().toISOString().substr(0, 10),
+        dateCaduce: "",
         files: [],
       },
     };
@@ -261,7 +296,7 @@ export default {
       await this.$apollo
         .mutate({
           mutation: require("../api/server/mutations/posts/addPost.gql"),
-          variables: this.formAdd,
+          variables: {data: this.formAdd},
         })
         .then(async (data) => {
           await this.$apollo.queries.posts.refresh();

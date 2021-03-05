@@ -9,6 +9,7 @@ const PostSchema = new Schema({
   author: String,
   price: Number,
   date: String,
+  dateCaduce: String,
   files: Array,
 });
 

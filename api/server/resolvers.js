@@ -231,7 +231,7 @@ const resolvers = {
       const post = await Post.findByIdAndUpdate(_id, data);
       return post ? true : false;
     },
-    async addPost(_, data) {
+    async addPost(_, {data}) {
       const post = new Post(data);
       await post.save();
       return post;

@@ -29,7 +29,7 @@
         text
         small
         color="success"
-        v-if="item.price != 0"
+        v-if="item.price != 0 || 1 == 2"
         @click.stop="dialogBuy = true"
       >
         ACQUISTA PER {{ item.price }} WOODCOINS
@@ -44,6 +44,9 @@
     </v-card-actions>
 
     <v-card-title class="ajustador">{{ item.tittle }}</v-card-title>
+    <v-card-subtitle v-if="( item.dateCaduce != '') " class="pb-0">
+      {{countDown()}}
+    </v-card-subtitle>
     <v-dialog v-model="dialogBuy" max-width="290">
       <v-card>
         <v-card-title class="headline"> Vuoi comprare ? </v-card-title>
@@ -84,7 +87,7 @@
             </v-col>
             <v-col cols="4" align-self="center" class="mx-auto">
               <v-img :src="item.image"> </v-img>
-              <br/>
+              <br />
               <v-btn
                 small
                 color="success"
@@ -96,8 +99,8 @@
               >
                 ACQUISTA PER {{ item.price }} WOODCOINS
               </v-btn>
-              <br/>
-              <br/>
+              <br />
+              <br />
               <v-alert
                 v-if="item.files[0]"
                 border="top"
@@ -194,6 +197,39 @@
                       </v-btn>
                     </v-date-picker>
                   </v-menu>
+                  <v-menu
+                    ref="menu2"
+                    v-model="menu2"
+                    :close-on-content-click="false"
+                    :return-value.sync="item.dateCaduce"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="290px"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="item.dateCaduce"
+                        label="Day caduce (optional)"
+                        prepend-icon="mdi-calendar"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker v-model="date" no-title scrollable>
+                      <v-spacer></v-spacer>
+                      <v-btn text color="primary" @click="menu2 = false">
+                        Cancel
+                      </v-btn>
+                      <v-btn
+                        text
+                        color="primary"
+                        @click="$refs.menu2.save(date)"
+                      >
+                        OK
+                      </v-btn>
+                    </v-date-picker>
+                  </v-menu>
                 </v-col>
                 <v-col cols="12">
                   <v-btn
@@ -279,12 +315,26 @@ export default {
       dialogShow: false,
       dialogDelete: false,
       menu: false,
+      menu2: false,
       date: new Date().toISOString().substr(0, 10),
       imageSeleted: null,
       filesSeleted: null,
     };
   },
   methods: {
+    countDown() {
+      let date = Math.trunc(new Date(this.item.dateCaduce).getTime() / 1000);
+      let now = Math.trunc(new Date().getTime() / 1000);
+      let minutes = Math.trunc((date - now) / 60) % 60;
+
+      let hours = Math.trunc((date - now) / 60 / 60) % 24;
+
+      let days = Math.trunc((date - now) / 60 / 60 / 24);
+
+      let count = days + " Giorgi " + hours +" Ore " +minutes +" Min"
+      
+      return  this.item.dateCaduce == null? "" : count  
+    },
     async buy(item) {
       try {
         if (this.$store.state.userInfo.balance < item.price) {

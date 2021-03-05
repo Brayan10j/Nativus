@@ -122,6 +122,7 @@ const typeDefs = gql`
     author: String
     price: Int
     date: String
+    dateCaduce: String
     files: [String]
   }
 
@@ -133,6 +134,7 @@ const typeDefs = gql`
     author: String
     price: Int
     date: String
+    dateCaduce: String
     files: [String]
   }
 
@@ -219,14 +221,7 @@ const typeDefs = gql`
 
     ##POST
     addPost(
-      tittle: String
-      description: String
-      category: String
-      image: String
-      author: String
-      price: Int
-      date: String
-      files: [String]
+      data: inputPost
     ): Post
 
     deletePost(

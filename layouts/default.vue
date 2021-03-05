@@ -436,7 +436,7 @@ export default {
   methods: {
     copyText() {
       this.showToken = !this.showToken;
-      navigator.clipboard.writeText(this.$store.state.userInfo.codReferal);
+      navigator.clipboard.writeText(`https://platform.ahumpilgrim.org/singUp/?token=${this.$store.state.userInfo.codReferal}`);
     },
     ...mapMutations(["sendUserInfo", "sendBalance"]),
     async logOut() {

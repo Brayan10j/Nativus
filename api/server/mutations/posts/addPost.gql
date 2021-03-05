@@ -1,22 +1,8 @@
 mutation(
-  $tittle: String
-  $description: String
-  $category: String
-  $image: String
-  $author: String
-  $price: Int
-  $date: String
-  $files:[String]
+  $data: inputPost
 ) {
   addPost(
-    tittle: $tittle
-    description: $description
-    category: $category
-    image: $image
-    author: $author
-    price: $price
-    date: $date
-    files: $files
+    data: $data
   ) {
     _id
   }

@@ -8,6 +8,7 @@ query{
     image
     author
     date
+    dateCaduce
     files
   }
 }

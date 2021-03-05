@@ -83,7 +83,10 @@ export const actions = {
         claims
       });
     } else {
-      ctx.redirect("/login");
+      if(ctx.route.path != "/singUp"){
+        ctx.redirect("/login");
+      }
+      
     }
   },
 

@@ -163,7 +163,7 @@ export default {
         email: "",
         codReferal: "",
         password: "",
-        registrationCode: "",
+        registrationCode: this.$route.query.token,
         licenses: [],
         rol: "USER",
         type: "",
