@@ -212,7 +212,7 @@
               </v-btn>
             </template>
             <span
-              >{{ $store.state.userInfo.codReferal }} Copied in ClipBoard</span
+              >Link Copied in ClipBoard</span
             >
           </v-tooltip>
         </v-row>
