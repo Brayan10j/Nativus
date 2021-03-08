@@ -225,6 +225,9 @@ export default {
     var num = Math.floor(Math.random() * imageURLs.length);
     this.wallPaper = imageURLs[num];
   },
+  mounted(){
+    this.$route.query.token ? this.validateToken : console.log("sin token");
+  },
   methods: {
     cancel() {
       this.$router.push("/login");
@@ -242,16 +245,12 @@ export default {
               this.e1 = 2;
               this.overlay = false;
             } else {
-              //alert("token no found");
-              this.errord.description = "token no found";
-              this.alerta = true;
+              this.$toast.error("token no found");
               this.overlay = false;
             }
           });
       } catch (error) {
-        //alert(error);
-        this.errord.description = error;
-        this.alerta = true;
+        this.$toast.error(error);
       }
     },
     async singUp() {
