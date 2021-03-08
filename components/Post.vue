@@ -29,7 +29,7 @@
         text
         small
         color="success"
-        v-if="item.price != 0 || 1 == 2"
+        v-if="item.price != 0 && allowBuy()"
         @click.stop="dialogBuy = true"
       >
         ACQUISTA PER {{ item.price }} WOODCOINS
@@ -54,9 +54,9 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn text @click="dialogBuy = false"> Disagree </v-btn>
+          <v-btn text @click="dialogBuy = false"> Cancella </v-btn>
 
-          <v-btn text @click.stop="buy(item)"> Agree </v-btn>
+          <v-btn text @click.stop="buy(item)"> Aquista </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -91,7 +91,7 @@
               <v-btn
                 small
                 color="success"
-                v-if="item.price != 0"
+                v-if="item.price != 0 && allowBuy()"
                 @click.stop="dialogBuy = true"
                 elevation="12"
                 outlined
@@ -322,18 +322,19 @@ export default {
     };
   },
   methods: {
+    allowBuy(){  
+      let res = new Date(this.item.dateCaduce) >= new Date() 
+      return this.item.dateCaduce == null? true : res 
+    },
     countDown() {
       let date = Math.trunc(new Date(this.item.dateCaduce).getTime() / 1000);
       let now = Math.trunc(new Date().getTime() / 1000);
       let minutes = Math.trunc((date - now) / 60) % 60;
-
       let hours = Math.trunc((date - now) / 60 / 60) % 24;
-
       let days = Math.trunc((date - now) / 60 / 60 / 24);
-
       let count = days + " Giorgi " + hours +" Ore " +minutes +" Min"
       
-      return  this.item.dateCaduce == null? "" : count  
+      return  this.item.dateCaduce == null? "" :  this.allowBuy() ? count : "Tempo scaduto"
     },
     async buy(item) {
       try {

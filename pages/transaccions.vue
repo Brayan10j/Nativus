@@ -53,9 +53,14 @@ export default {
     desserts: [],
     headers: [
       {
-        text: "ID (user)",
+        text: "ID",
         align: "start",
         sortable: false,
+        value: "_id",
+        class: "text-lg-subtitle-1",
+      },
+      {
+        text: "ID (user)",
         value: "user",
         class: "text-lg-subtitle-1",
       },
@@ -75,7 +80,7 @@ export default {
       else return "green";
     },
     exportExcel: function () {
-       let exportData = this.transactions.map(function (t) {
+      let exportData = this.transactions.map(function (t) {
         delete t.__typename;
         return t
       })

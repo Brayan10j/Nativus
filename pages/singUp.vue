@@ -55,6 +55,7 @@
                   <v-col cols="12" sm="12">
                     <v-text-field
                       dense
+                      autofocus
                       filled
                       outlined
                       v-model="user.registrationCode"
@@ -62,14 +63,15 @@
                       hint="Scrivi qui il codice invito che hai ricevuto."
                       persistent-hint
                       required
+                      @change="validateToken"
                     ></v-text-field>
                   </v-col>
 
-                  <v-btn color="#787b7f" @click="validateToken">
+                  <v-btn color="#787b7f"  @click="validateToken">
                     Avanti
                   </v-btn>
 
-                  <v-btn text @click="cancel"> Cancellare </v-btn>
+                  <v-btn color="#787b7f" @click="cancel"> Cancellare </v-btn>
                 </v-stepper-content>
 
                 <v-stepper-content step="2">
