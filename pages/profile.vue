@@ -168,6 +168,7 @@
             class="elevation-1"
             disable-pagination
             hide-default-footer
+            @click:row="showRefers"
           >
             <template v-slot:[`item.image`]="{ item }">
               <v-icon v-if="item"> mdi-account </v-icon>
@@ -227,6 +228,24 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogshowRefers" max-width="550px" >
+      <v-card>
+          <v-data-table
+            dense
+            :headers="headers"
+            :items="refers2"
+            item-key="xxxx"
+            class="elevation-1"
+            disable-pagination
+            hide-default-footer
+            @click:row="showRefers"
+          >
+            <template v-slot:[`item.image`]="{ item }">
+              <v-icon v-if="item"> mdi-account </v-icon>
+            </template></v-data-table
+          >
+        </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
@@ -236,6 +255,8 @@ const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 export default {
   data() {
     return {
+      refers2: [],
+      dialogshowRefers: false,
       editItem: {},
       dialogDelete: false,
       active: [],
@@ -299,14 +320,10 @@ export default {
       }
     },
     selected() {
-      const code =
-        this.$store.state.userInfo == undefined
-          ? ""
-          : this.$store.state.userInfo.codReferal;
-
+      
       return this.users == undefined
         ? []
-        : this.users.filter(user => user.registrationCode === code);
+        : this.users.filter(user => user.registrationCode === this.$store.state.userInfo.codReferal);
     },
     filterTransactions() {
       const id =
@@ -325,6 +342,10 @@ export default {
   },
 
   methods: {
+    showRefers(row){
+      this.refers2 = this.users.filter(user => user.registrationCode === row.codReferal);
+      this.dialogshowRefers = true;
+    },
     onImageSelected(file) {
       file ? (this.imageSeleted = file) : null;
     },

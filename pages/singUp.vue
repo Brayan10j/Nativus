@@ -226,7 +226,7 @@ export default {
     this.wallPaper = imageURLs[num];
   },
   mounted(){
-    this.$route.query.token ? this.validateToken : console.log("sin token");
+    this.$route.query.token ? this.validateToken() : console.log("sin token");
   },
   methods: {
     cancel() {
