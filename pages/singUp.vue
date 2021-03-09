@@ -50,7 +50,7 @@
               </v-stepper-step>
             </v-stepper-header>
             <v-form ref="form" v-model="valid" lazy-validation>
-              <v-stepper-items>
+              <v-stepper-items >
                 <v-stepper-content step="1">
                   <v-col cols="12" sm="12">
                     <v-text-field
@@ -67,14 +67,12 @@
                     ></v-text-field>
                   </v-col>
 
-                  <v-btn color="#787b7f"  @click="validateToken">
-                    Avanti
-                  </v-btn>
+                  <v-btn color="#787b7f" @click="validateToken"> Avanti </v-btn>
 
                   <v-btn color="#787b7f" @click="cancel"> Cancellare </v-btn>
                 </v-stepper-content>
 
-                <v-stepper-content step="2">
+                <v-stepper-content step="2" >
                   <v-col cols="12">
                     <v-text-field
                       dense
@@ -110,7 +108,7 @@
                     ></v-text-field>
                   </v-col>
 
-                  <v-btn color="#787b7f" @click="singUp" :disabled="!valid">
+                  <v-btn  color="#787b7f" @click="singUp" :disabled="!valid">
                     Continue
                   </v-btn>
 
@@ -118,11 +116,12 @@
                 </v-stepper-content>
               </v-stepper-items>
             </v-form>
+            <v-row align="center" justify="center">
+              Hai già un account?
+              <v-btn text color="#787b7f" to="/login"> LOGIN </v-btn></v-row
+            >
           </v-stepper>
-          <v-row align="center" justify="center">
-            Hai già un account?
-            <v-btn text color="#787b7f" to="/login"> LOGIN </v-btn></v-row
-          >
+
           <v-overlay :absolute="absolute" :value="alerta" :opacity="opacity">
             <v-alert
               :value="alerta"
@@ -225,7 +224,7 @@ export default {
     var num = Math.floor(Math.random() * imageURLs.length);
     this.wallPaper = imageURLs[num];
   },
-  mounted(){
+  mounted() {
     this.$route.query.token ? this.validateToken() : console.log("sin token");
   },
   methods: {
