@@ -78,8 +78,8 @@ const typeDefs = gql`
     type: String
     photo: String
     balance: Int
-    crypto: Int
-    cryptoGen: Int
+    crypto: Float
+    cryptoGen: Float
     permissions: [String]
     referals: [String]
     favorites: [Post]
@@ -101,8 +101,8 @@ const typeDefs = gql`
     type: String
     photo: String
     balance: Int
-    crypto: Int
-    cryptoGen: Int
+    crypto: Float
+    cryptoGen: Float
     permissions: [String]
     referals: [String]
     favorites: [inputPost]
