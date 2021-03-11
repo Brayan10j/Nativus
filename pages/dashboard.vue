@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div v-if="$store.state.userInfo.isAdmin">
+  <v-row>
+    <v-col v-if="$store.state.userInfo.isAdmin" cols="12">
       <v-toolbar flat>
         <v-toolbar-title>CATEGORIES</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
@@ -14,47 +14,6 @@
         >
           <v-icon color="success" small> mdi-plus-circle-outline </v-icon>
         </v-btn>
-        <v-dialog v-model="dialogCategory" max-width="300px">
-          <v-card>
-            <v-card-title class="text-lg-h6">
-              <span class="headline text-lg-h6">{{
-                this.editedIndex === -1 ? "New Category" : "Edit Category"
-              }}</span>
-            </v-card-title>
-            <v-card-text>
-              <v-text-field
-                v-model="editedItem.name"
-                solo
-                label="Name"
-                clearable
-              ></v-text-field>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="resetItem()">
-                Cancel
-              </v-btn>
-              <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title class="headline"
-              >Are you sure you want to delete this item?</v-card-title
-            >
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="resetItem"
-                >Cancel</v-btn
-              >
-              <v-btn color="blue darken-1" text @click="deleteCategory"
-                >OK</v-btn
-              >
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
       </v-toolbar>
       <v-list>
         <v-list-item
@@ -82,16 +41,91 @@
           </v-list-item-action>
         </v-list-item>
       </v-list>
-    </div>
-    <div>total :{{totalPilgrim()}}</div>
-  </div>
+      <v-dialog v-model="dialogCategory" max-width="300px">
+        <v-card>
+          <v-card-title class="text-lg-h6">
+            <span class="headline text-lg-h6">{{
+              this.editedIndex === -1 ? "New Category" : "Edit Category"
+            }}</span>
+          </v-card-title>
+          <v-card-text>
+            <v-text-field
+              v-model="editedItem.name"
+              solo
+              label="Name"
+              clearable
+            ></v-text-field>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="resetItem()">
+              Cancel
+            </v-btn>
+            <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialogDelete" max-width="500px">
+        <v-card>
+          <v-card-title class="headline"
+            >Are you sure you want to delete this item?</v-card-title
+          >
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="resetItem">Cancel</v-btn>
+            <v-btn color="blue darken-1" text @click="deleteCategory">OK</v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-col>
+
+    <v-col cols="12">
+      <v-row>
+        <v-col>
+          <v-card elevation="2">
+            <v-card-text class="my-4 text-center title">
+              Total pilgrims : {{ totalPilgrim() }}
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col>
+          <v-card elevation="2">
+            <v-card-text class="my-4 text-center title">
+              Founders :
+              {{ users.filter((user) => user.type === "FOUNDER").length }}
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col>
+          <v-card elevation="2">
+            <v-card-text class="my-4 text-center title">
+              TeamPilgrim :
+              {{ users.filter((user) => user.type === "TEAMPILGRIM").length }}
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+
+      <v-data-table
+        :headers="headers"
+        :items="users"
+        class="elevation-1"
+        disable-pagination
+        hide-default-footer
+        sort-by="crypto"
+        sort-desc
+      >
+      </v-data-table>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
 import { mapMutations } from "vuex";
 export default {
   data: () => ({
-    online_list: [],
+    users: [],
     content: "",
     dialogCategory: false,
     dialogDelete: false,
@@ -101,6 +135,16 @@ export default {
     editedItem: {
       name: "",
     },
+    headers: [
+      {
+        text: "Name",
+        align: "start",
+        sortable: false,
+        value: "name",
+        class: "text-lg-subtitle-1",
+      },
+      { text: "Pilgrim", value: "crypto", class: "text-lg-subtitle-1" },
+    ],
   }),
   methods: {
     resetItem() {
@@ -161,20 +205,21 @@ export default {
           this.resetItem(); // enviar el dialog como parametro
         });
     },
-    totalPilgrim(){
+    totalPilgrim() {
       let total = 0;
-      if(this.users != undefined){
-        this.users.forEach(u => {
-        total = total + u.crypto;
-      });
+      if (this.users != undefined) {
+        this.users.forEach((u) => {
+          total = total + u.crypto;
+        });
+        return total;
       }
-      return total;
-    }
+    },
   },
   apollo: {
     users: {
       query: require("../api/server/queries/users.gql"),
       fetchPolicy: "cache-and-network",
+      prefetch: false,
     },
   },
 };
