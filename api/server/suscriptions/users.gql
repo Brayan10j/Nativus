@@ -1,0 +1,38 @@
+subscription getUsers{
+  users {
+    _id
+    name
+    email
+    password
+    codReferal
+    registrationCode
+    licenses {
+      name
+      dateStart
+      dateFinish
+    }
+    rol
+    type
+    photo
+    permissions
+    balance
+    crypto
+    cryptoGen
+    referals
+    favorites {
+      tittle
+      price
+      description
+      category
+      image
+      author
+      date
+      files
+    }
+    isAdmin
+    isSuperUser
+    dateCreated
+    active
+    verify
+  }
+}

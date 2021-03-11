@@ -76,6 +76,13 @@ export default {
         inMemoryCacheOptions: {
           addTypename: false, // para quitar el __typename
         },
+        /*wsEndpoint: (() => {
+          if (process.env.NODE_ENV === "development") {
+            return "ws://localhost:3000/graphql";
+          } else {
+            return "wss://platform.ahumpilgrim.org/graphql";
+          }
+        })(),*/
       }
     }
   },

@@ -291,7 +291,8 @@ export default {
   },
   apollo: {
     transactions: {
-      query: require("../api/server/queries/transactions.gql")
+      query: require("../api/server/queries/transactions.gql"),
+      fetchPolicy: "cache-and-network"
       /*variables() { return {
         user: this.$store.state.userInfo._id,
       }}
@@ -326,14 +327,9 @@ export default {
         : this.users.filter(user => user.registrationCode === this.$store.state.userInfo.codReferal);
     },
     filterTransactions() {
-      const id =
-        this.$store.state.userInfo == undefined
-          ? ""
-          : this.$store.state.userInfo._id;
-
       return this.transactions == undefined
         ? []
-        : this.transactions.filter(transaction => transaction.user === id);
+        : this.transactions.filter(transaction => transaction.user === this.$store.state.userInfo._id);
     },
 
     timeline() {

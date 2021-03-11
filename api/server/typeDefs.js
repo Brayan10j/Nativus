@@ -263,6 +263,7 @@ const typeDefs = gql`
   type Subscription {
     postModify: [Post]
     userModify: User
+    getUsers: [User]
   }
 `;
 

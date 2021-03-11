@@ -103,7 +103,7 @@
                 {{ countDown() }}
               </v-card-subtitle>
               <br />
-              <br />
+              <br />  
               <v-alert
                 v-if="item.files[0]"
                 colored-border

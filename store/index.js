@@ -83,7 +83,7 @@ export const actions = {
         claims
       });
     } else {
-      if(ctx.route.path != "/singUp"){
+      if(!ctx.route.query.token ){
         ctx.redirect("/login");
       }
       
