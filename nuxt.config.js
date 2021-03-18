@@ -1,5 +1,7 @@
 import colors from "vuetify/es5/util/colors";
 import server from "./api/server";
+import redirectSSL from 'redirect-ssl'; 
+const http = require("http");
 
 export default {
   // server graphgl
@@ -10,9 +12,18 @@ export default {
           server: { app }
         }
       }) {
-        await server.applyMiddleware({ app, path: "/graphql" });
-        console.log(`🚀 ApolloServer ready at /graphql`);
+        await server.applyMiddleware({ app });
+        const httpServer = await http.createServer(app);
+        await server.installSubscriptionHandlers(httpServer);
+        console.log(`🚀 ApolloServer ready at ${server.graphqlPath}`);
+        console.log(`🚀 Subscriptions ready at ${server.subscriptionsPath}`);
       }
+    }
+  },
+  render: {
+    http2: {
+      push: true,
+      pushAssets: null
     }
   },
   // Global page headers (https://go.nuxtjs.dev/config-head)
@@ -22,7 +33,12 @@ export default {
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { hid: "description", name: "description", content: "" }
+      {
+        hid: "description",
+        name: "description",
+        content:
+          "ahum pilgrim from music to nature è un progetto che nasce dall’incontro di due realtà distinte, per dare vita ad azioni outdoor innovative."
+      }
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
   },
@@ -50,13 +66,12 @@ export default {
     "@nuxtjs/pwa",
     "@nuxtjs/apollo",
     "@nuxtjs/firebase",
-    'nuxt-i18n',
-    '@nuxtjs/toast',
+    "nuxt-i18n",
+    "@nuxtjs/toast"
   ],
   toast: {
-    duration: 1000,
-
-},
+    duration: 1000
+  },
   i18n: {
     detectBrowserLanguage: {
       useCookie: true,
@@ -74,15 +89,15 @@ export default {
           }
         })(),
         inMemoryCacheOptions: {
-          addTypename: false, // para quitar el __typename
+          addTypename: false // para quitar el __typename
         },
-        /*wsEndpoint: (() => {
+        wsEndpoint: (() => {
           if (process.env.NODE_ENV === "development") {
             return "ws://localhost:3000/graphql";
           } else {
             return "wss://platform.ahumpilgrim.org/graphql";
           }
-        })(),*/
+        })()
       }
     }
   },
@@ -97,7 +112,7 @@ export default {
       ],
       // by default the workbox module will not install the service worker in dev environment to avoid conflicts with HMR
       // only set this true for testing and remember to always clear your browser cache in development
-      dev: process.env.NODE_ENV === 'development'
+      dev: process.env.NODE_ENV === "development"
     }
   },
   firebase: {
@@ -112,7 +127,7 @@ export default {
     },
     services: {
       auth: {
-        persistence: 'local', // default
+        persistence: "local", // default
         initialize: {
           onAuthStateChangedMutation: "ON_AUTH_STATE_CHANGED_MUTATION",
           onAuthStateChangedAction: "onAuthStateChangedAction"
@@ -122,7 +137,7 @@ export default {
       storage: true
     }
   },
-  serverMiddleware: ['~/api/'],
+  serverMiddleware: ["~/api/", redirectSSL.create({enabled: process.env.NODE_ENV === 'production'})],
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {},
 
@@ -133,22 +148,22 @@ export default {
       dark: true,
       themes: {
         dark: {
-          primary:'#fdde07',
-          accent: '#cae365',
-          secondary: '#cae365',
+          primary: "#fdde07",
+          accent: "#cae365",
+          secondary: "#cae365",
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
           success: colors.green.accent3
         },
         light: {
-          primary: '#BDBDBD',
-          secondary: '#CFD8DC',
-          accent: '#CFD8DC',
-          error: '#FF5252',
-          info: '#CFD8DC',
-          success: '#4CAF50',
-          warning: '#FFC107',
+          primary: "#BDBDBD",
+          secondary: "#CFD8DC",
+          accent: "#CFD8DC",
+          error: "#FF5252",
+          info: "#CFD8DC",
+          success: "#4CAF50",
+          warning: "#FFC107"
         }
       }
     }
