@@ -70,13 +70,7 @@ export default {
     "@nuxtjs/toast"
   ],
   toast: {
-    duration: 1000
-  },
-  i18n: {
-    detectBrowserLanguage: {
-      useCookie: true,
-      alwaysRedirect: true
-    }
+    duration: 2000
   },
   apollo: {
     clientConfigs: {
@@ -91,13 +85,14 @@ export default {
         inMemoryCacheOptions: {
           addTypename: false // para quitar el __typename
         },
+        /*
         wsEndpoint: (() => {
           if (process.env.NODE_ENV === "development") {
-            return "ws://localhost:3000/graphql";
+            return "ws://localhost:3000/subscriptions";
           } else {
-            return "wss://platform.ahumpilgrim.org/graphql";
+            return "wss://platform.ahumpilgrim.org/subscriptions";
           }
-        })()
+        })()*/
       }
     }
   },

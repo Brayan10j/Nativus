@@ -50,7 +50,7 @@
               </v-stepper-step>
             </v-stepper-header>
             <v-form ref="form" v-model="valid" lazy-validation>
-              <v-stepper-items >
+              <v-stepper-items>
                 <v-stepper-content step="1">
                   <v-col cols="12" sm="12">
                     <v-text-field
@@ -63,7 +63,6 @@
                       hint="Scrivi qui il codice invito che hai ricevuto."
                       persistent-hint
                       required
-                      @change="validateToken"
                     ></v-text-field>
                   </v-col>
 
@@ -72,7 +71,7 @@
                   <v-btn color="#787b7f" @click="cancel"> Cancellare </v-btn>
                 </v-stepper-content>
 
-                <v-stepper-content step="2" >
+                <v-stepper-content step="2">
                   <v-col cols="12">
                     <v-text-field
                       dense
@@ -108,7 +107,7 @@
                     ></v-text-field>
                   </v-col>
 
-                  <v-btn  color="#787b7f" @click="singUp" :disabled="!valid">
+                  <v-btn color="#787b7f" @click="singUp" :disabled="!valid">
                     Continue
                   </v-btn>
 
@@ -145,6 +144,7 @@
         </v-col>
       </v-row>
     </v-container>
+    {{$route.query.token}}
   </v-layout>
 </template>
 
@@ -164,7 +164,7 @@ export default {
         email: "",
         codReferal: "",
         password: "",
-        registrationCode: this.$route.query.token,
+        registrationCode: this.$route.query.token ? this.$route.query.token : "",
         licenses: [],
         rol: "USER",
         type: "",
@@ -233,6 +233,7 @@ export default {
     },
     async validateToken() {
       try {
+        if (this.user.registrationCode == "") throw "Token vacio";
         this.overlay = true;
         await this.$apollo
           .query({
@@ -249,6 +250,7 @@ export default {
             }
           });
       } catch (error) {
+        this.overlay = false;
         this.$toast.error(error);
       }
     },
@@ -258,54 +260,34 @@ export default {
         let res = await this.$fireAuth
           .createUserWithEmailAndPassword(this.user.email, this.user.password)
           .catch(function (error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            // alert(errorMessage);
-            this.errord.description = errorMessage;
-            this.alerta = true;
-
-            // ...
+            this.$toast.error(error);
           });
         this.user.codReferal = res.user.uid.substr(0, 10);
-        console.log(this.user);
-        //
+        await this.$apollo.mutate({
+          mutation: require("../api/server/mutations/users/addUser.gql"),
+          variables: { data: this.user },
+        });
         await this.$apollo
-          .mutate({
-            mutation: require("../api/server/mutations/users/addUser.gql"),
-            variables: { data: this.user },
+          .query({
+            query: require("../api/server/queries/user.gql"),
+            variables: { email: this.user.email },
           })
           .then(async (data) => {
-            console.log(data);
-            await this.$apollo
-              .query({
-                query: require("../api/server/queries/user.gql"),
-                variables: { email: this.user.email },
-              })
-              .then(async (data) => {
-                await this.$apollo
-                  .mutate({
-                    mutation: require("../api/server/mutations/sendEmail.gql"),
-                    variables: {
-                      name: this.user.name,
-                      subject: "singUp",
-                      email: this.user.email,
-                      message: data.data.user._id,
-                    },
-                  })
-                  .then(async (data) => {
-                    console.log(data);
-                  });
-                this.overlay = false;
-                this.dialog = true;
-              });
+            await this.$apollo.mutate({
+              mutation: require("../api/server/mutations/sendEmail.gql"),
+              variables: {
+                name: this.user.name,
+                subject: "singUp",
+                email: this.user.email,
+                message: data.data.user._id,
+              },
+            });
+            this.overlay = false;
+            this.$router.push("/login");
           });
       } catch (error) {
         this.overlay = false;
-        //alert(error);
-        this.errord.description = error;
-        this.alerta = true;
-        this.$router.push("/singUp");
+        this.$toast.error(error);
       }
     },
     validate() {

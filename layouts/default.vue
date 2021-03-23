@@ -212,7 +212,7 @@
               </v-btn>
             </template>
             <span
-              >Link Copied in ClipBoard</span
+              >Link Copiato in documenti</span
             >
           </v-tooltip>
         </v-row>
