@@ -117,7 +117,18 @@
         sort-desc
       >
       </v-data-table>
+      <br>
+      <v-btn block @click="dialogTree = true"> albero di riferimento </v-btn>
     </v-col>
+    <v-dialog v-model="dialogTree">
+      <v-card>
+        <v-treeview activatable :items="arbol()">
+          <template v-slot:prepend="{}">
+            <v-icon>mdi-account </v-icon>
+          </template>
+        </v-treeview>
+      </v-card>
+    </v-dialog>
   </v-row>
 </template>
 
@@ -127,6 +138,7 @@ export default {
   data: () => ({
     users: [],
     content: "",
+    dialogTree: false,
     dialogCategory: false,
     dialogDelete: false,
     category: "",
@@ -137,16 +149,48 @@ export default {
     },
     headers: [
       {
-        text: "Name",
+        text: "Id(User)",
         align: "start",
         sortable: false,
-        value: "name",
+        value: "_id",
         class: "text-lg-subtitle-1",
       },
+      { text: "Name", value: "name", class: "text-lg-subtitle-1" },
       { text: "Pilgrim", value: "crypto", class: "text-lg-subtitle-1" },
     ],
   }),
   methods: {
+    arbol() {
+      let arbol = [
+        {
+          id: this.$store.state.userInfo._id,
+          name: this.$store.state.userInfo.name,
+          children: this.armarArbol(
+            this.users.filter(
+              (user) =>
+                user.registrationCode === this.$store.state.userInfo.codReferal
+            )
+          ),
+        },
+      ];
+      return arbol;
+    },
+    armarArbol(refers) {
+      let ctx = this;
+      let users = this.users;
+      let arbol = [];
+      refers.forEach(function (userIn) {
+        let refersRef = users.filter(
+          (user) => user.registrationCode === userIn.codReferal
+        );
+        arbol.push({
+          id: userIn._id,
+          name: userIn.name,
+          children: ctx.armarArbol(refersRef),
+        });
+      });
+      return arbol;
+    },
     resetItem() {
       this.editedIndex = -1;
       this.editedItem.name = "";
