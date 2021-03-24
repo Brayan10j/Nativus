@@ -106,7 +106,8 @@
           </v-card>
         </v-col>
       </v-row>
-
+      <v-btn block @click="dialogTree = true"> albero di riferimento </v-btn>
+      <br>
       <v-data-table
         :headers="headers"
         :items="users"
@@ -117,10 +118,10 @@
         sort-desc
       >
       </v-data-table>
-      <br>
-      <v-btn block @click="dialogTree = true"> albero di riferimento </v-btn>
+      
+      
     </v-col>
-    <v-dialog v-model="dialogTree">
+    <v-dialog v-model="dialogTree" max-width="500px">
       <v-card>
         <v-treeview activatable :items="arbol()">
           <template v-slot:prepend="{}">
