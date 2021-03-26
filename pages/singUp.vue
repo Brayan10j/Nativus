@@ -144,7 +144,6 @@
         </v-col>
       </v-row>
     </v-container>
-    {{$route.query.token}}
   </v-layout>
 </template>
 
@@ -233,7 +232,7 @@ export default {
     },
     async validateToken() {
       try {
-        if (this.user.registrationCode == "") throw "Token vacio";
+        if (this.user.registrationCode == "") throw "Token invito non valido";
         this.overlay = true;
         await this.$apollo
           .query({

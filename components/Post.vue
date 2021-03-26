@@ -91,7 +91,7 @@
               <v-btn
                 small
                 color="success"
-                v-if="item.price != 0 && allowBuy()"
+                v-if="item.price != 0 && allowBuy() && !$store.state.userInfo.isAdmin"
                 @click.stop="dialogBuy = true"
                 elevation="12"
                 outlined

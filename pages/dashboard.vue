@@ -107,7 +107,7 @@
         </v-col>
       </v-row>
       <v-btn block @click="dialogTree = true"> albero di riferimento </v-btn>
-      <br>
+      <br />
       <v-data-table
         :headers="headers"
         :items="users"
@@ -118,18 +118,69 @@
         sort-desc
       >
       </v-data-table>
-      
-      
     </v-col>
     <v-dialog v-model="dialogTree" max-width="500px">
       <v-card>
-        <v-treeview activatable :items="arbol()">
+        <v-treeview :items="arbol()">
           <template v-slot:prepend="{}">
             <v-icon>mdi-account </v-icon>
+          </template>
+          <template v-slot:append="{ item }">
+            <v-btn fab x-small @click="showInfoUser(item)">
+              <v-icon>mdi-information </v-icon>
+            </v-btn>
           </template>
         </v-treeview>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogUserInfo" max-width="500px">
+      <v-col
+        class="d-flex text-center"
+      >
+              <v-card
+                class="pt-6 mx-auto"
+                flat
+                max-width="400"
+              >
+                <v-card-text>
+                  <v-avatar size="88">
+                    <v-img
+                      :src="userSelected.photo"
+                      class="mb-6"
+                    ></v-img>
+                  </v-avatar>
+                  <h3 class="headline mb-2">
+                    {{ userSelected.name }}
+                  </h3>
+                  <div class="blue--text mb-2">
+                    {{ userSelected.email }}
+                  </div>
+                  <div class="blue--text subheading font-weight-bold">
+                    {{ userSelected.rol }}
+                  </div>
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-row class="text-left" tag="v-card-text">
+                  <v-col class="text-right mr-4 mb-2" tag="strong" cols="5">
+                    Pilgrim:
+                  </v-col>
+                  <v-col>{{ userSelected.crypto }}</v-col>
+                  <v-col class="text-right mr-4 mb-2" tag="strong" cols="5">
+                    Pilgrim Generated:
+                  </v-col>
+                  <v-col>{{ userSelected.cryptoGen }}</v-col>
+                  <v-col class="text-right mr-4 mb-2" tag="strong" cols="5">
+                    Link refer:
+                  </v-col>
+                  <v-col>
+                    <a :href="`https://platform.ahumpilgrim.org/singUp/?token=${userSelected.codReferal}`" target="_blank">{{
+                      userSelected.codReferal
+                    }}</a>
+                  </v-col>
+                </v-row>
+              </v-card>
+              </v-col>
+            </v-dialog>
   </v-row>
 </template>
 
@@ -137,8 +188,15 @@
 import { mapMutations } from "vuex";
 export default {
   data: () => ({
+    userSelected:{
+      photo: "",
+      name: "",
+      email: "",
+      rol: ""
+    },
     users: [],
     content: "",
+    dialogUserInfo: false,
     dialogTree: false,
     dialogCategory: false,
     dialogDelete: false,
@@ -161,6 +219,11 @@ export default {
     ],
   }),
   methods: {
+    showInfoUser(item){
+      let user = this.users.filter((user) =>user._id === item.id)
+      this.userSelected = user[0]
+      this.dialogUserInfo = true
+    },
     arbol() {
       let arbol = [
         {
