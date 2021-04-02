@@ -6,6 +6,7 @@ const Category = require("../models/Category");
 const Token = require("../models/Token");
 const { PubSub, UserInputError } = require("apollo-server-express");
 const sm = require("./nodemailer");
+const { database } = require("firebase");
 
 const pubsub = new PubSub();
 const POST_MODIFY = "POST_MODIFY";
@@ -120,9 +121,9 @@ const resolvers = {
         subject: "buy",
         email: user.email,
         message: post.tittle,
-        idProduct:transresult._id,
+        idProduct: transresult._id
       });
-      return await User.findById(user._id);;
+      return await User.findById(user._id);
     },
     async buyLicense(_, data) {
       const user = await User.findById(data._idUser);
@@ -185,23 +186,14 @@ const resolvers = {
       return await User.findById(_id);
     },
 
-    async addTokens(_, data) {
-      var tokens = data.data;
-      try {
-        tokens.forEach(async t => {
-          let tokenExist = await Token.findOne({ code: t.code });
-          if (tokenExist != null) {
-            const token = new Token(t);
-            await token.save();
-          }
-        });
-      } catch (error) {
-        throw error;
-        // expected output: ReferenceError: nonExistentFunction is not defined
-        // Note - error messages will vary depending on browser
-      } finally {
-        return "tokens add success";
+    async addToken(_, { data }) {
+      let tokenExist = await Token.findOne({ code: data.code });
+      if (tokenExist != null) {
+        throw " Token exist";
       }
+      const token = new Token(data);
+      await token.save();
+      return "tokens add success";
     },
 
     async editToken(_, { _id, data }) {
@@ -231,7 +223,7 @@ const resolvers = {
       const post = await Post.findByIdAndUpdate(_id, data);
       return post ? true : false;
     },
-    async addPost(_, {data}) {
+    async addPost(_, { data }) {
       const post = new Post(data);
       await post.save();
       return post;

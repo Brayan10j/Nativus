@@ -190,8 +190,8 @@ const typeDefs = gql`
       message: String
     ):String
 
-    addTokens(
-      data: [inputToken]
+    addToken(
+      data: inputToken
     ):String
 
     editToken(

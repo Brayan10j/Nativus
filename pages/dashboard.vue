@@ -117,6 +117,9 @@
         sort-by="crypto"
         sort-desc
       >
+      <template v-slot:[`item.crypto`]="{ item }">
+        {{ item.crypto % 1 == 0 ? item.crypto  :item.crypto.toFixed(8)}}
+      </template>
       </v-data-table>
     </v-col>
     <v-dialog v-model="dialogTree" max-width="500px">
