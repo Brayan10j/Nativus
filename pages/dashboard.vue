@@ -85,12 +85,12 @@
         <v-col>
           <v-card elevation="2">
             <v-card-text class="my-4 text-center title">
-              Total pilgrims : {{ totalPilgrim() }}
+              Total pilgrims : {{ (totalPilgrim()).toPrecision(3) }}
             </v-card-text>
           </v-card>
         </v-col>
         <v-col>
-          <v-card elevation="2">
+          <v-card elevation="2" @click="findFounders">
             <v-card-text class="my-4 text-center title">
               Founders :
               {{ users.filter((user) => user.type === "FOUNDER").length }}
@@ -98,7 +98,7 @@
           </v-card>
         </v-col>
         <v-col>
-          <v-card elevation="2">
+          <v-card elevation="2" @click="findTeam">
             <v-card-text class="my-4 text-center title">
               TeamPilgrim :
               {{ users.filter((user) => user.type === "TEAMPILGRIM").length }}
@@ -118,7 +118,7 @@
         sort-desc
       >
       <template v-slot:[`item.crypto`]="{ item }">
-        {{ item.crypto % 1 == 0 ? item.crypto  :item.crypto.toFixed(8)}}
+        {{ item.crypto % 1 == 0 ? item.crypto  :item.crypto.toPrecision(3)}}
       </template>
       </v-data-table>
     </v-col>
@@ -137,53 +137,34 @@
       </v-card>
     </v-dialog>
     <v-dialog v-model="dialogUserInfo" max-width="500px">
-      <v-col
-        class="d-flex text-center"
+      <UserInfo :item="userSelected" /> 
+    </v-dialog>
+    <v-dialog v-model="dialogFounders" max-width="500px">
+      <v-data-table
+        :headers="headers2"
+        :items="founders"
+        class="elevation-1"
+        disable-pagination
+        hide-default-footer
+        sort-by="crypto"
+        sort-desc
+        @click:row="showInfoUser2"
       >
-              <v-card
-                class="pt-6 mx-auto"
-                flat
-                max-width="400"
-              >
-                <v-card-text>
-                  <v-avatar size="88">
-                    <v-img
-                      :src="userSelected.photo"
-                      class="mb-6"
-                    ></v-img>
-                  </v-avatar>
-                  <h3 class="headline mb-2">
-                    {{ userSelected.name }}
-                  </h3>
-                  <div class="blue--text mb-2">
-                    {{ userSelected.email }}
-                  </div>
-                  <div class="blue--text subheading font-weight-bold">
-                    {{ userSelected.rol }}
-                  </div>
-                </v-card-text>
-                <v-divider></v-divider>
-                <v-row class="text-left" tag="v-card-text">
-                  <v-col class="text-right mr-4 mb-2" tag="strong" cols="5">
-                    Pilgrim:
-                  </v-col>
-                  <v-col>{{ userSelected.crypto }}</v-col>
-                  <v-col class="text-right mr-4 mb-2" tag="strong" cols="5">
-                    Pilgrim Generated:
-                  </v-col>
-                  <v-col>{{ userSelected.cryptoGen }}</v-col>
-                  <v-col class="text-right mr-4 mb-2" tag="strong" cols="5">
-                    Link refer:
-                  </v-col>
-                  <v-col>
-                    <a :href="`https://platform.ahumpilgrim.org/singUp/?token=${userSelected.codReferal}`" target="_blank">{{
-                      userSelected.codReferal
-                    }}</a>
-                  </v-col>
-                </v-row>
-              </v-card>
-              </v-col>
-            </v-dialog>
+      </v-data-table>
+    </v-dialog>
+    <v-dialog v-model="dialogTeam" max-width="500px">
+      <v-data-table
+        :headers="headers2"
+        :items="team"
+        class="elevation-1"
+        disable-pagination
+        hide-default-footer
+        sort-by="crypto"
+        sort-desc
+        @click:row="showInfoUser2"
+      >
+      </v-data-table>
+    </v-dialog>
   </v-row>
 </template>
 
@@ -191,6 +172,10 @@
 import { mapMutations } from "vuex";
 export default {
   data: () => ({
+    founders: [],
+    team: [],
+    dialogFounders: false,
+    dialogTeam: false,
     userSelected:{
       photo: "",
       name: "",
@@ -220,10 +205,31 @@ export default {
       { text: "Name", value: "name", class: "text-lg-subtitle-1" },
       { text: "Pilgrim", value: "crypto", class: "text-lg-subtitle-1" },
     ],
+    headers2: [
+      { text: "Name", value: "name", class: "text-lg-subtitle-1" },
+      
+    ],
   }),
+  mounted(){
+    
+    this.team = this.users.filter((user) => user.type === "TEAMPILGRIM")
+  },
   methods: {
+    findFounders(){
+      this.founders = this.users.filter((user) => user.type === "FOUNDER")
+      this.dialogFounders = true
+    },
+    findTeam(){
+      this.team = this.users.filter((user) => user.type === "TEAMPILGRIM")
+      this.dialogTeam = true
+    },
     showInfoUser(item){
       let user = this.users.filter((user) =>user._id === item.id)
+      this.userSelected = user[0]
+      this.dialogUserInfo = true
+    },
+    showInfoUser2(item){
+      let user = this.users.filter((user) =>user._id === item._id)
       this.userSelected = user[0]
       this.dialogUserInfo = true
     },

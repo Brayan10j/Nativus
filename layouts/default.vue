@@ -60,7 +60,7 @@
               class="mx-auto mb-0 text-subtitle-1 font-weight-black"
             >
               Pilgrim Coins :
-              {{ $store.state.userInfo.crypto }}
+              {{ ($store.state.userInfo.crypto).toPrecision(3) }}
             </p></v-sheet
           >
         </template>
