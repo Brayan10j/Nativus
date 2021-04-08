@@ -26,6 +26,7 @@
           <v-row align="center" justify="space-around" rounded>
             <v-btn
               color="primary"
+              width="200"
               elevation="9"
               @click="balance = !balance"
               v-bind="attrs"
@@ -50,7 +51,7 @@
             color="secondary"
             elevation="6"
             height="60"
-            width="150"
+            width="180"
             class="mt-n7 subtitle-2 d-flex align-end mx-auto"
             rounded="xl"
             v-bind="attrs"
@@ -307,7 +308,7 @@
         <v-card-title>
           <span class="headline">CARICA WOODCOINS</span>
           <v-spacer></v-spacer>
-          <v-btn text href="https://www.ahumpilgrim.org/woodcoins" target="_blank" >
+          <v-btn text href="https://www.ahumpilgrim.org/prodotto/coins/" target="_blank" >
             Adquista woodcoins
           </v-btn>
         </v-card-title>

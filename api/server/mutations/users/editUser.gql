@@ -27,6 +27,7 @@ mutation($_id: ID, $data: inputUser) {
       image
       author
       date
+      dateCaduce
       files
     }
     isAdmin

@@ -27,6 +27,7 @@ query($_id: ID) {
       image
       author
       date
+      dateCaduce
       files
     }
     isAdmin
