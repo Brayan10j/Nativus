@@ -25,15 +25,25 @@
       </v-icon>
     </v-card-actions>
     <v-card-actions class="d-flex justify-end mt-n8 mb-n2 mt-2" v-else>
+      <v-tooltip v-if="bought()" top>
+        <template v-slot:activator="{ on, attrs }">
+          <v-icon color="green" dark v-bind="attrs" v-on="on">
+            mdi-check
+          </v-icon>
+        </template>
+        <span>l'hai già comprato</span>
+      </v-tooltip>
+
       <v-btn
         text
         small
         color="success"
-        v-if="item.price > 0 && allowBuy()"
+        v-else-if="item.price > 0 && allowBuy()"
         @click.stop="dialogBuy = true"
       >
         ACQUISTA PER {{ item.price }} WOODCOINS
       </v-btn>
+
       <v-btn
         icon
         :color="isFavorite(item) ? 'red' : '#ffffff80'"
@@ -88,10 +98,20 @@
             <v-col cols="4" align-self="center" class="mx-auto">
               <v-img :src="item.image"> </v-img>
               <br />
+              <v-tooltip v-if="bought()" top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon color="green" dark v-bind="attrs" v-on="on">
+                    mdi-check
+                  </v-icon>
+                </template>
+                <span>l'hai già comprato</span>
+              </v-tooltip>
               <v-btn
                 small
                 color="success"
-                v-if="item.price > 0 && allowBuy() && !$store.state.userInfo.isAdmin"
+                v-else-if="
+                  item.price > 0 && allowBuy() && !$store.state.userInfo.isAdmin
+                "
                 @click.stop="dialogBuy = true"
                 elevation="12"
                 outlined
@@ -103,7 +123,7 @@
                 {{ countDown() }}
               </v-card-subtitle>
               <br />
-              <br />  
+              <br />
               <v-alert
                 v-if="item.files[0]"
                 colored-border
@@ -310,6 +330,7 @@ export default {
   },
   data() {
     return {
+      transaction: [],
       dialogBuy: false,
       overlay: false,
       dialogDesc: false,
@@ -323,10 +344,26 @@ export default {
       filesSeleted: null,
     };
   },
+  apollo: {
+    transaction: {
+      query: require("../api/server/queries/transaction.gql"),
+      fetchPolicy: "cache-and-network",
+      variables() {
+        return {
+          user: this.$store.state.userInfo._id,
+        };
+      },
+    },
+  },
   methods: {
+    bought() {
+      let transactions = this.transaction.map((t) => t.description);
+      let res2 = transactions.includes("Buy " + this.item.tittle);
+      return res2;
+    },
     allowBuy() {
       let res = new Date(this.item.dateCaduce) >= new Date();
-      return this.item.dateCaduce == null ? true : res;
+      return this.item.dateCaduce == null ? true : res && !this.bought();
     },
     countDown() {
       let date = Math.trunc(new Date(this.item.dateCaduce).getTime() / 1000);

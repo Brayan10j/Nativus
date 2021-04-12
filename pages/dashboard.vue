@@ -85,7 +85,7 @@
         <v-col>
           <v-card elevation="2">
             <v-card-text class="my-4 text-center title">
-              Total pilgrims : {{ (totalPilgrim()).toPrecision(3) }}
+              Total pilgrims : {{ (totalPilgrim()).toFixed(4) }}
             </v-card-text>
           </v-card>
         </v-col>

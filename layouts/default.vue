@@ -50,7 +50,7 @@
           <v-sheet
             color="secondary"
             elevation="6"
-            height="60"
+            height="100"
             width="180"
             class="mt-n7 subtitle-2 d-flex align-end mx-auto"
             rounded="xl"
@@ -61,7 +61,8 @@
               class="mx-auto mb-0 text-subtitle-1 font-weight-black"
             >
               Pilgrim Coins :
-              {{ ($store.state.userInfo.crypto).toPrecision(3) }}
+              <br>
+              {{ ($store.state.userInfo.crypto).toFixed(4) }}
             </p></v-sheet
           >
         </template>
